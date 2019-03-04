@@ -1,6 +1,8 @@
 ---
-layout: post
-title: Life
+layout: default
+title: Costa Rica
+parent: Travel
+nav_order: 2
 ---
 
 
