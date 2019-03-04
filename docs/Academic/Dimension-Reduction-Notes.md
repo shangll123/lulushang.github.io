@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title: Methods for dimension reduction
 parent: Academic
 nav_order: 2
