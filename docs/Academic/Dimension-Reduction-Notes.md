@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Methods for dimension reduction
-parent: Travel
+parent: Academic
 nav_order: 2
 ---
 
