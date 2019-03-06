@@ -294,7 +294,7 @@ root@master:~# scp /etc/slurm-llnl/slurm.conf xzlab@comp1:/etc/slurm-llnl/slurm.
 
 ```
 
-# When nodes are drained:
+## When nodes are drained:
 
 Example: when comp1 is drained, use root, copy the following lines on master machine
 
@@ -305,7 +305,7 @@ scontrol show node comp1
 sinfo
 ```
 
-# After restarting, if NFS doesn't work well,
+## After restarting, if NFS doesn't work well,
 or clients show "mount.nfs: Stale file handle" error:
 ```
 root@comp1:~# mount 141.211.10.xxx1:/home/ /home
