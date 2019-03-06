@@ -266,7 +266,7 @@ NodeName=comp1 CPUs=48 RealMemory=95367  State=UNKNOWN
 NodeName=comp2 CPUs=48 RealMemory=95367 State=UNKNOWN
 PartitionName=control Nodes=master Default=NO MaxTime=INFINITE State=UP
 PartitionName=compute Nodes=comp1 Default=YES MaxTime=INFINITE State=UP
-PartitionName=compute Nodes=comp2 Default=YES MaxTime=INFINITE State=UP
+PartitionName=debug Nodes=comp2 Default=YES MaxTime=INFINITE State=UP
 ```
 
 
