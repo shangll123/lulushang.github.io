@@ -6,7 +6,6 @@ has_children: true
 permalink: /docs/Academic
 ---
 
-# Notes
 
 > There is always something left to love.
 
