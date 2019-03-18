@@ -5,9 +5,6 @@ parent: Academic
 nav_order: 4
 ---
 
-
-
-
 When using the RISmed package to search count of literatures of many combinations of terms in a loop, the below error may show on the screen:
 
 ```
@@ -24,8 +21,8 @@ To solve this problem, we just need to add one line in the R code: "Sys.sleep(0.
 For example:
 ```
 library(RISmed)
-
 ```
+
 The traits we want to search:
 ```
 traits = c(
@@ -38,6 +35,7 @@ traits = c(
 "(Ulcerative colitis[Title/Abstract] OR Ulcerative[Title/Abstract])",
 "(Crohn's disease[Title/Abstract] OR Crohn[Title/Abstract])")
 ```
+
 The cell types we want to search:
 ```
 celltype = c(
