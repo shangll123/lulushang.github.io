@@ -1,9 +1,12 @@
 ---
 layout: default
-title: Pubmed_search_in_RISmed
+title: Pubmed search in RISmed
 parent: Academic
 nav_order: 4
 ---
+
+
+
 
 When using the RISmed package to search count of literatures of many combinations of terms in a loop, the below error may show on the screen:
 
