@@ -18,12 +18,11 @@ https://www.codecogs.com/latex/eqneditor.php
 
 <!--- <img src="https://latex.codecogs.com/svg.latex?\sum&space;\bigcup_{1}^{n}\overleftarrow{abc}" title="\sum \bigcup_{1}^{n}\overleftarrow{abc}" /> --->
 
-This note is for preparing journal club presentation on Mar 22, 2019. Mainly based on the original UMAP paper and the UMAP website. (I didn't put the topological part of slides here. The experience of explaining things I don't fully understand to people was so stressful.)
+##### This note is for preparing journal club presentation on Mar 22, 2019. Mainly based on the original UMAP paper and the UMAP website. (I didn't put the topological part of slides here. The experience of explaining things I don't fully understand to people was so stressful.)
 
-UMAP Paper: [UMAP: Uniform Manifold Approximation and Projection for Dimension Reduction](https://arxiv.org/pdf/1802.03426.pdf)
+##### UMAP Paper: [UMAP: Uniform Manifold Approximation and Projection for Dimension Reduction](https://arxiv.org/pdf/1802.03426.pdf)
 
-UMAP tutorial:  
-[How to Use UMAP](https://umap-learn.readthedocs.io/en/latest/basic_usage.html)
+##### UMAP tutorial:  [How to Use UMAP](https://umap-learn.readthedocs.io/en/latest/basic_usage.html)
 
 
 ![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/UMAP/UMAP.001.jpeg)
