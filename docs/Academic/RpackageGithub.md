@@ -5,7 +5,25 @@ parent: Academic
 nav_order: 5
 ---
 
+##### First make a R package:
 
+```
+library(Rcpp)
+library(RcppArmadillo)
+RcppArmadillo.package.skeleton("mypackage", example_code = FALSE)
+setwd("mypackage")
+# delete Read-and-delete-me
+# Modify Description file
+# Copy the R codes to folder R
+# Copy the Cpp codes to folder src
+usethis::use_gpl3_license("Lulu Shang") # Add license 
+compileAttributes(verbose=TRUE) # Find and register Rcpp functions 
+devtools::load_all() # load all functions
+# pkgbuild::compile_dll()
+devtools::document() # create roxygen2 document, don't make .md by hand, let roxygen2 do it
+devtools::check() # check whether the package is OK
+devtools::build() # build a package
+```
 ##### Push R package to github:
 
 Go to the R package dictionary, init the git
@@ -17,22 +35,7 @@ Initialized empty Git repository in /home/lulushang/Projects/course/hyun815/hw1/
 lulushang@master:~/Projects/course/hyun815/hw1/biostat815hw1$ git add .
 ```
 
-Need to first config the identity of user, or we will see the following error
 ```
-lulushang@master:~/Projects/course/hyun815/hw1/biostat815hw1$ git commit -m "Initial commit"
-
-*** Please tell me who you are.
-
-Run
-
-  git config --global user.email "you@example.com"
-  git config --global user.name "Your Name"
-
-to set your account's default identity.
-Omit --global to set the identity only in this repository.
-
-fatal: unable to auto-detect email address (got 'lulushang@master.(none)')
-
 lulushang@master:~/Projects/course/hyun815/hw1/biostat815hw1$ git config --global user.email "shanglu@umich.edu"
 lulushang@master:~/Projects/course/hyun815/hw1/biostat815hw1$ git config --global user.name "shangll123"
 ```
