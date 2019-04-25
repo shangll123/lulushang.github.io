@@ -97,3 +97,5 @@ Branch 'master' set up to track remote branch 'master' from 'origin'.
 
 
 ```
+
+Useful link: https://stackoverflow.com/questions/10298291/cannot-push-to-github-keeps-saying-need-merge
