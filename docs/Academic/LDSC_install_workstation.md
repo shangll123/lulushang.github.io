@@ -70,7 +70,14 @@ source /home/lulushang/bin/activate
 python munge_sumstats.py --sumstats GIANT_BMI_Speliotes2010_publicrelease_HapMapCeuFreq.txt --merge-alleles w_hm3.snplist --out BMI  --a1-inc
 python ldsc.py  --h2 BMI.sumstats.gz  --ref-ld-chr 1000G_Phase3_baselineLD_ldscores/baselineLD.   --frqfile-chr 1000G_Phase3_frq/1000G.EUR.QC.  --w-ld-chr 1000G_Phase3_weights_hm3_no_MHC/weights.hm3_noMHC.   --overlap-annot   --print-coefficients --print-delete-vals   --out BMI.baselineLD
 ```
+#### How to handle different Python version with virtualenv
+```
+virtualenv -p /home/lulushang/bin/python2.7 mypython
 
-
+```
+#### Now when I need to use ldsc
+```
+source activate mypython
+```
 
 
