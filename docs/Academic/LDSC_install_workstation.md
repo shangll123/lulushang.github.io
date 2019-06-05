@@ -72,8 +72,8 @@ python ldsc.py  --h2 BMI.sumstats.gz  --ref-ld-chr 1000G_Phase3_baselineLD_ldsco
 ```
 #### How to handle different Python version with virtualenv
 ```
+cd /home/lulushang/bin
 virtualenv -p /home/lulushang/bin/python2.7 mypython
-
 ```
 #### Now when I need to use ldsc
 ```
