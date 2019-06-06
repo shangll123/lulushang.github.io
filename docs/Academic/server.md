@@ -340,5 +340,18 @@ systemctl restart slurmd
 ```
 
 
+##### Just figured out how to send message across the server to another user
+```
+lulushang@master:~# who
+lulushang pts/4        2019-06-06 15:15 (35.1.180.208)
+```
+##### then you could type like
+```
+lulushang@master:~# write lulushang pts/4
+write: write: you have write permission turned off.
+
+hello
+
+```
 
 
