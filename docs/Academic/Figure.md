@@ -39,3 +39,16 @@ dev.off()
 
 ```
 
+##### barplot
+```
+pdf("Overlap_3methods_mouseOB.pdf",width=14, height=8)
+ggplot(data=dat, aes(x=topcount, y=count, fill=method)) +
+  geom_bar(stat="identity", position=position_dodge())+
+  scale_fill_brewer(palette="Paired")+
+  labs(title="Compare with spatialDE",x="Number of Top Genes selected", y = "Overlapped genes")+
+  theme_minimal(base_size = 22)+
+  theme(legend.position="bottom") 
+dev.off()
+
+
+```
