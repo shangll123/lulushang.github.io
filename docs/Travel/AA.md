@@ -19,3 +19,9 @@ AA
 ![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/AnnArbor/aa7.jpg)
 
 ![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/AnnArbor/aa8.jpg)
+
+![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/AnnArbor/tiane.jpg)
+
+![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/AnnArbor/rainbow.jpg)
+
+![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/AnnArbor/tower.jpg)
