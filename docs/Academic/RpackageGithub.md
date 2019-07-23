@@ -2,7 +2,7 @@
 layout: default
 title: Upload R package to github
 parent: Academic
-nav_order: 5
+nav_order: 3
 ---
 
 ##### First make a R package:
