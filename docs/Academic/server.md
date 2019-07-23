@@ -2,7 +2,7 @@
 layout: default
 title: Server maintenance
 parent: Academic
-nav_order: 2
+nav_order: 1
 ---
 
 <!--- [_config.yml]({{ site.baseurl }}/images/config.png)--->
