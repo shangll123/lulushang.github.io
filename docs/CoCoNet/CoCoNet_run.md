@@ -24,10 +24,8 @@ nav_order: 1
 ```R
 # Install devtools if necessary
 install.packages('devtools')
-
 # Install CoCoNet
 devtools::install_github('shangll123/CoCoNet')
-
 # Load the package
 library(CoCoNet)
 
@@ -67,7 +65,7 @@ In total we have 38 tissues, the network are ordered by the tissue names
 [37] "Vagina"                    "Whole_blood"  
 ```
 The first tissue is "Adipose_subcutaneous", which looks like this:
-```
+```R
 > tissue_net[[1]][1:4,1:4]
                 ENSG00000106546 ENSG00000160224 ENSG00000156150 ENSG00000052850
 ENSG00000106546               0               0               0               0
@@ -75,7 +73,27 @@ ENSG00000160224               0               0               0               0
 ENSG00000156150               0               0               0               0
 ENSG00000052850               0               0               0               0
 ```
+The scaled gene level effect sizes look like this:
+```R
+> outcome_tissue_scale[1:2,]
+                       SCZ        BIP     BIPSCZ  Alzheimer        PBC
+ENSG00000106546 -0.4858255 0.08469493  0.3612639  0.3880098 -0.3153474
+ENSG00000160224 -0.5557115 1.13772920 -0.6826089 -0.5361030  0.1588954
+                        CD        UC        IBD
+ENSG00000106546 -0.3582144 0.3233601 -0.2106639
+ENSG00000160224  1.5500738 1.4571102  1.5182206
+```
 
+
+```
+A=tissue_net[[1]]
+colnames(A)=NULL
+rownames(A)=NULL
+
+result = CoCoNet(outcome_tissue_scale[,3], max_path = 1, A)
+
+
+```
 
 
 
