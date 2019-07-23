@@ -84,14 +84,17 @@ ENSG00000106546 -0.3582144 0.3233601 -0.2106639
 ENSG00000160224  1.5500738 1.4571102  1.5182206
 ```
 
+For the first pair of disease and tissue, 
+BIPSCZ - Adipose_subcutaneous:
 
-```
-A=tissue_net[[1]]
-colnames(A)=NULL
-rownames(A)=NULL
-
+```R
+A = tissue_net[[1]]
+start_time = Sys.time()
 result = CoCoNet(outcome_tissue_scale[,3], max_path = 1, A)
+end_time = Sys.time()
+end_time - start_time
 
+# this step takes several minutes, within 5000M memory.
 
 ```
 
