@@ -1,6 +1,6 @@
 ---
 layout: default
-title: CoCoNet
+title: CoCoNet Usage
 parent: CoCoNet
 nav_order: 1
 ---
