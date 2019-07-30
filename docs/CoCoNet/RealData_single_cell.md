@@ -8,19 +8,19 @@ nav_order: 2
 <img align="left" src="/images/coconuts.png" alt="drawing" width="50"/> CoCoNet
 
 
-#### Set workpath
+##### Set workpath
 
 ```
 workpath = "/home/lulushang/pairwise_project/coconet_cell/panda"
 ```
 
-#### Data downloaded from GTEx Portal:
+##### Data downloaded from GTEx Portal:
 
 ```
 wget https://storage.googleapis.com/gtex_additional_datasets/single_cell_data/GTEx_droncseq_hip_pcf.tar
 ```
 
-#### load needed files
+##### load needed files
 ```
 load("/home/lulushang/pairwise_project/GTEx/data/Sigma_pop_43traits.RData")
 gene_table = read.table("/home/lulushang/pairwise_project/GTEx/data/genetable.txt", header=T)
@@ -41,7 +41,7 @@ cell_anno = read.csv("/home/lulushang/pairwise_project/single_cell_gtex/GTEx_dro
 ```
 
 
-#### grch37 for converting HGNC to ENSG ID
+##### grch37 for converting HGNC to ENSG ID
 
 ```
 library(biomaRt)
@@ -49,7 +49,7 @@ grch37 = useMart(biomart="ENSEMBL_MART_ENSEMBL", host="grch37.ensembl.org", path
 listDatasets(grch37)
 grch37 = useDataset("hsapiens_gene_ensembl",mart=grch37)
 ```
-#### map HGNC ID to ENSG ID, since we are using ENSG IDs in gene effect size file and only keep genes that we already have annotation for TSS TES location
+##### map HGNC ID to ENSG ID, since we are using ENSG IDs in gene effect size file and only keep genes that we already have annotation for TSS TES location
 ```
 dict = rownames(expr)
 HGNC_to_ENSE=getBM(attributes=c('hgnc_symbol','ensembl_gene_id'), 
@@ -89,6 +89,7 @@ expr_mat = expr[match(as.character(dictionary1$hgnc_symbol),rownames(expr) ),]
 #save(dictionary1, file = "dictionary1.RData")
 #save(expr_mat, file = "expr_mat.RData")
 ```
+
 #### Prepare RPKM expression
 ```
 gene_annotate = match(dictionary1$ensembl_gene_id,as.character(gene_table$ENSG_ID))
@@ -97,7 +98,8 @@ cS <- colSums(expr_mat) #Total mapped reads per sample
 rpkm <- (10^6)*t(t(expr_mat/l)/cS)
 #save(rpkm, file = "rpkm.RData")
 ```
-#### double quantile Normalization on log10(rpkm+1)
+
+##### double quantile Normalization on log10(rpkm+1)
 ```
 log10_rpkm = log10(rpkm+1)			    
 save(log10_rpkm, file = "log10_rpkm.RData")			    
@@ -109,7 +111,7 @@ GTEx_expr_sc_log10 = t(GTEx_expr_sc_log10_plus1_cell)
 ```
 
 
-#### make cell type annotation. Get cell type index for each cell
+##### make cell type annotation. Get cell type index for each cell
 ```
 sum(colnames(expr_norm)==as.character(cell_anno$Cell_ID)) 
 colnameexpr = gsub(".", '-', as.character(colnames(expr_norm)), fixed = T)
@@ -160,7 +162,7 @@ dict9900 = dictionary1[ind,]
 #save(GTEx_expr_sc, file = "GTEx_expr_sc.RData")	
 ```
 
-#### make new motif file. In the TF by gene matrix produced by PANDA, if std of any column is 0, it will cause NA in the normalization step, and algorithm won't work. in other words, we retained genes that are TF factors and have at least one connection to genes we already retained. 
+##### make new motif file. In the TF by gene matrix produced by PANDA, if std of any column is 0, it will cause NA in the normalization step, and algorithm won't work. in other words, we retained genes that are TF factors and have at least one connection to genes we already retained. 
 ```
 genenames = rownames(GTEx_expr_sc)
 motif_new = motif[which(as.character(motif$V1) %in% genenames),]
@@ -169,7 +171,7 @@ motif_new = motif[which(as.character(motif$V1) %in% genenames),]
 #> dim(motif)
 #[1] 19476492        3				 
 ```
-#### check if genes in dict9900 could be found in motif_new
+##### check if genes in dict9900 could be found in motif_new
 ```
 #> ind = which(as.character(motif_new$V1) %in% dict9900$hgnc_symbol)
 #> length(ind)
@@ -190,7 +192,7 @@ dict8270 = dict9900[which(dict9900$ensembl_gene_id %in% xx),]
 # save(	dict8270, file = "dict8270.RData")			 
 GTEx_expr_sc_8270 = GTEx_expr_sc[which(dict9900$ensembl_gene_id %in% xx),]	
 ```
-#### need to remove gene with 0 std of i-th column in TF by gene matrix
+##### need to remove gene with 0 std of i-th column in TF by gene matrix
 ```
 i=6560	
 				 
@@ -209,22 +211,23 @@ motif_update = motif_use[-which(as.character(motif_use$V2)=="ENSG00000211746"),]
 # [1] 2141671       3	
 #> dict8269 = dict8270[-6560,]
 #> save(dict8269,file = "dict8269.RData")		
+```
 
-#-------------------------
-# make new ppi file
-#-------------------------				 
 
+##### make new ppi file
+
+```			 
 ppi[,1]=as.character(ppi[,1])
 ppi[,2]=as.character(ppi[,2])				 
 ind1 = which(ppi[,1] %in% dict_update$hgnc_symbol)
 ind2 = which(ppi[,2] %in% dict_update$hgnc_symbol)		
-ind = intersect(ind1, ind2)
-#> length(ind)
-#[1] 13883				 
+ind = intersect(ind1, ind2)				 
 ppi_new = ppi[ind,]				 
 write.table(ppi_new, "ppi_new.txt",  col.names=F, quote=F,row.names=F)
-```		 	 
-#### reorder cells, to prepare input expression file for PANDA
+```	
+
+##### reorder cells, to prepare input expression file for PANDA
+
 ```
 tissue_names = c( "ASC1"     ,    "ASC2"   ,      "END"       ,   "GABA1"    ,    "GABA2"       ,
 "MG"     ,      "NSC"        ,  "ODC1"       ,  "OPC"    ,      "Unclassified",
@@ -245,23 +248,19 @@ for(i in tissue_names){
 GTEx_expr_sc_reorder = GTEx_expr_sc_reorder[,-1]
 my_cell_type_reorder = cbind(colnames(GTEx_expr_sc_reorder), cell_type_reorder)
 				 
-#save(GTEx_expr_sc_reorder, file = "GTEx_expr_sc_reorder.RData")
-#save(motif_new, file = "motif_new.RData")
-#save(my_cell_type_reorder, file = "my_cell_type_reorder.RData")	
-			 
 write.table(GTEx_expr_sc_reorder, "GTEx_expr_sc_reorder.txt",  col.names=F, quote=F)
 write.table(motif_update, "motif_update.txt",  col.names=F, quote=F,row.names=F)
 write.table(my_cell_type_reorder, "my_cell_type_reorder.txt",  col.names=F, quote=F,row.names=F)
 ```
 
-#### run matlab
+##### run matlab
 ```
 nohup matlab -nodisplay -nodesktop -nojvm -nosplash < RunPANDA.m &				 
 ```
 
 		 
  
-#### then collect results
+##### then collect results
 ```		 
 motif_file='motif_update.txt'; % motif prior
 exp_file='GTEx_expr_sc_reorder.txt'; % expression data without headers
@@ -308,7 +307,8 @@ save('TF_gene_names.mat','TFNames','GeneNames')
 ```
 
 
-#### go back to R				 
+##### go back to R
+
 ```			 
 library(R.matlab)
 TF_gene_names = readMat("TF_gene_names.mat")					 
@@ -332,15 +332,6 @@ colnames(mat) = colnames(TF_gene_mat)
 save(mat, file = paste0("Coconet_cell_",i,".RData"))
 }				 
 				 
-#test=TF_gene_mat[,which(colnames(TF_gene_mat) %in% rownames(TF_gene_mat))]			 
-#> test[1:5,1:5]
-#                ENSG00000106546 ENSG00000116017 ENSG00000150347 ENSG00000143437
-#ENSG00000106546        -0.38413         5.11820       -0.303530        -0.49125
-#ENSG00000116017         1.67850         1.92720        2.684100         1.32500
-#ENSG00000150347        -0.15517        -0.71310        0.306340         0.53523
-#ENSG00000143437        -0.40894        -0.31624        0.047128        -0.25759				 
-	
-#---------------------------------------
 				 
 load("/home/lulushang/pairwise_project/Sigma_pop_43traits.RData")				 
 index = which(as.character(gene_table$ENSG_ID) %in% dict8269$ensembl_gene_id)
