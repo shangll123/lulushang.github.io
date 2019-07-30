@@ -143,7 +143,7 @@ done
 ##### Use gemma to get sigma2
 ```
 # note:
-# mkdir gemma_files/output/ADD..., output files into seperate folders
+# mkdir gemma_files/output/SCZ..., output files into seperate folders for 8 traits
 ```
 gemma codes
 ```
