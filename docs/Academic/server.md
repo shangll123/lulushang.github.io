@@ -303,6 +303,11 @@ scontrol update NodeName=comp1 State=DOWN Reason="undraining"
 scontrol update NodeName=comp1 State=RESUME
 scontrol show node comp1
 sinfo
+
+scontrol update NodeName=comp2 State=DOWN Reason="undraining"
+scontrol update NodeName=comp2 State=RESUME
+scontrol show node comp2
+sinfo
 ```
 
 ## After restarting, if NFS doesn't work well,
