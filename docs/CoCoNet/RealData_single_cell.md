@@ -5,9 +5,8 @@ parent: CoCoNet
 nav_order: 2
 ---
 
+<img align="left" src="/images/coconuts.png" alt="drawing" width="50"/> CoCoNet
 
-
-<img align="left" src="/images/coconuts.png" alt="drawing" width="50"/>
 
 #### Set workpath
 
