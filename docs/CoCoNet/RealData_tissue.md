@@ -1,6 +1,6 @@
 ---
 layout: default
-title: RealData Tissue
+title: Network - Tissue
 parent: CoCoNet
 nav_order: 3
 ---
