@@ -40,8 +40,8 @@ root@master:/# showmount -e
 Export list for master:
 /home 141.211.11.xxx3,141.211.9.xxx2
 
-root@comp1:~# mount 141.211.10.xxx1:/home/ /home
-root@comp2:~# mount 141.211.10.xxx1:/home/ /home
+root@comp1:~# mount xxx.xxx.xx.xxx1:/home/ /home
+root@comp2:~# mount xxx.xxx.xx.xxx1:/home/ /home
 ```
 
 start munge
@@ -107,7 +107,7 @@ SlurmUser=slurm
 slurm.conf
 ```
 ControlMachine=master
-ControlAddr=141.211.10.xxx1
+ControlAddr=xxx.xxx.xx.xxx1
 #BackupController=
 #BackupAddr=
 #
@@ -313,12 +313,12 @@ sinfo
 ## After restarting, if NFS doesn't work well,
 or clients show "mount.nfs: Stale file handle" error:
 ```
-root@comp1:~# mount 141.211.10.xxx1:/home/ /home
-root@comp2:~# mount 141.211.10.xxx1:/home/ /home
+root@comp1:~# mount xxx.xxx.xx.xxx1:/home/ /home
+root@comp2:~# mount xxx.xxx.xx.xxx1:/home/ /home
 ```
 Or edit /etc/fstab by adding one line:
 ```
-141.211.10.xxx1:/home       /home   nfs4    _netdev,defaults,nosuid,proto=tcp,auto  0       0
+xxx.xxx.xx.xxx1:/home       /home   nfs4    _netdev,defaults,nosuid,proto=tcp,auto  0       0
 ```
 Then restart NFS
 ```
