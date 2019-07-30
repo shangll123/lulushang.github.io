@@ -5,13 +5,13 @@ parent: CoCoNet
 nav_order: 2
 ---
 
-<img align="left" src="/images/coconuts.png" alt="drawing" width="50"/> CoCoNet
 
+### Build cell type specific networks in GTEx single cell dataset. 
 
 ##### Set workpath
 
 ```
-workpath = "/home/lulushang/pairwise_project/coconet_cell/panda"
+workpath = "~path/coconet_cell/panda"
 ```
 
 ##### Data downloaded from GTEx Portal:
@@ -22,12 +22,12 @@ wget https://storage.googleapis.com/gtex_additional_datasets/single_cell_data/GT
 
 ##### load needed files
 ```
-load("/home/lulushang/pairwise_project/GTEx/data/Sigma_pop_43traits.RData")
-gene_table = read.table("/home/lulushang/pairwise_project/GTEx/data/genetable.txt", header=T)
-motif = read.table("/home/lulushang/pairwise_project/pandas/PANDA_for_server/data/motif.txt") # same as in GTEx tissue PANDA input, downloaded from same website 
-ppi = read.table("/home/lulushang/pairwise_project/pandas/PANDA_for_server/data/ppi.txt") # same as in GTEx tissue PANDA input, downloaded from same website 
-expr = read.table("/home/lulushang/pairwise_project/single_cell_gtex/GTEx_droncseq_hip_pcf/GTEx_droncseq_hip_pcf.umi_counts.txt",header=T) # GTEx single cell expression
-cell_anno = read.csv("/home/lulushang/pairwise_project/single_cell_gtex/GTEx_droncseq_hip_pcf/cell_annotation.csv",header=T) # cell type annotation for GTEx single cell expression
+load("~path/GTEx/data/Sigma_pop_43traits.RData")
+gene_table = read.table("~path/GTEx/data/genetable.txt", header=T)
+motif = read.table("~path/pandas/PANDA_for_server/data/motif.txt") # same as in GTEx tissue PANDA input, downloaded from same website 
+ppi = read.table("~path/pandas/PANDA_for_server/data/ppi.txt") # same as in GTEx tissue PANDA input, downloaded from same website 
+expr = read.table("~path/single_cell_gtex/GTEx_droncseq_hip_pcf/GTEx_droncseq_hip_pcf.umi_counts.txt",header=T) # GTEx single cell expression
+cell_anno = read.csv("~path/single_cell_gtex/GTEx_droncseq_hip_pcf/cell_annotation.csv",header=T) # cell type annotation for GTEx single cell expression
 
 
 #> dim(expr)
@@ -333,7 +333,7 @@ save(mat, file = paste0("Coconet_cell_",i,".RData"))
 }				 
 				 
 				 
-load("/home/lulushang/pairwise_project/Sigma_pop_43traits.RData")				 
+load("~path/Sigma_pop_43traits.RData")				 
 index = which(as.character(gene_table$ENSG_ID) %in% dict8269$ensembl_gene_id)
 sigma_cell = Sigma_pop_43traits[index,]
 #save(sigma_cell, file = "sigma_cell.RData")
