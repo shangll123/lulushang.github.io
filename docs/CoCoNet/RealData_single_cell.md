@@ -6,7 +6,8 @@ nav_order: 2
 ---
 
 
-![CoCoNet](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/coconuts.png)
+
+<img align="left" src="/images/coconuts.png" alt="drawing" width="50"/>
 
 #### Set workpath
 
