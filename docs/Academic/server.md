@@ -24,8 +24,8 @@ not only authorized_keys need to be consistent, but also known_hosts
 root@master:~# mount  /dev/mapper/fileserver-xzlab /home
 
 root@master:/# cat /etc/exports
-/home 141.211.9.xxx2(rw,sync,no_root_squash,no_subtree_check)
-/home 141.211.11.xxx3(rw,sync,no_root_squash,no_subtree_check)
+/home xxx.xxx.9.xxx2(rw,sync,no_root_squash,no_subtree_check)
+/home xxx.xxx.11.xxx3(rw,sync,no_root_squash,no_subtree_check)
 
 root@master:/# service portmap restart
 root@master:/# systemctl enable rpcbind
@@ -38,10 +38,10 @@ root@comp2:~# /etc/init.d/nfs-kernel-server start
 
 root@master:/# showmount -e
 Export list for master:
-/home 141.211.11.xxx3,141.211.9.xxx2
+/home xxx.xxx.11.xxx3,xxx.xxx.9.xxx2
 
-root@comp1:~# mount xxx.xxx.xx.xxx1:/home/ /home
-root@comp2:~# mount xxx.xxx.xx.xxx1:/home/ /home
+root@comp1:~# mount xxx.xxx.10.xxx1:/home/ /home
+root@comp2:~# mount xxx.xxx.10.xxx1:/home/ /home
 ```
 
 start munge
@@ -107,7 +107,7 @@ SlurmUser=slurm
 slurm.conf
 ```
 ControlMachine=master
-ControlAddr=xxx.xxx.xx.xxx1
+ControlAddr=xxx.xxx.10.xxx1
 #BackupController=
 #BackupAddr=
 #
@@ -313,12 +313,12 @@ sinfo
 ## After restarting, if NFS doesn't work well,
 or clients show "mount.nfs: Stale file handle" error:
 ```
-root@comp1:~# mount xxx.xxx.xx.xxx1:/home/ /home
-root@comp2:~# mount xxx.xxx.xx.xxx1:/home/ /home
+root@comp1:~# mount xxx.xxx.10.xxx1:/home/ /home
+root@comp2:~# mount xxx.xxx.10.xxx1:/home/ /home
 ```
 Or edit /etc/fstab by adding one line:
 ```
-xxx.xxx.xx.xxx1:/home       /home   nfs4    _netdev,defaults,nosuid,proto=tcp,auto  0       0
+xxx.xxx.10.xxx1:/home       /home   nfs4    _netdev,defaults,nosuid,proto=tcp,auto  0       0
 ```
 Then restart NFS
 ```
