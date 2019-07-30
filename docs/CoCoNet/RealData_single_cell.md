@@ -1,6 +1,6 @@
 ---
 layout: default
-title: RealData single cell
+title: Network - single cell
 parent: CoCoNet
 nav_order: 2
 ---
