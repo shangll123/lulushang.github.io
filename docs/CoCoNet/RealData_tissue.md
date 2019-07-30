@@ -1,3 +1,10 @@
+---
+layout: default
+title: RealData Tissue
+parent: CoCoNet
+nav_order: 3
+---
+
 
 For the tissue-specific network construction, we used the result from this paper:
 [Understanding Tissue-Specific Gene Regulation](https://www.sciencedirect.com/science/article/pii/S2211124717314183?via%3Dihub)
