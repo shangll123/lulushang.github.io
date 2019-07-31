@@ -164,7 +164,7 @@ let k=0
 for ((i=1; i<=100; i++)); do
 	let k=${k}+1
 	if [ ${k} -eq ${SLURM_ARRAY_TASK_ID} ]; then
-		for TRAIT in ADD Child_BMI Height Menarche SCZ Alzheimer Child_Obes HR MPV T1D Autism College IBD Neuroticism T2D BIPSCZ DS LDL PBC TC BIP EverSmoked LSBMD PCV TG BL FG Lupus PG UC BW FNBMD MCHC PLT YE CAD HB MCH RA CD HDL MCV RBC ; do
+		for TRAIT in SCZ BIP BIPSCZ Alzheimer PBC UC CD IBD; do
 				gnum=`cat ~/effectsize/Analysis/OneMB_snp/chr_${i}.num`
 				BETAFILE=${INPATH1}/${TRAIT}.sumstats
 			for ((j=1; j<=${gnum}; j++)); do
