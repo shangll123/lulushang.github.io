@@ -6,9 +6,9 @@ nav_order: 6
 ---
 
 
-##### We partially validated the identified trait-relevant tissue/cell types for the GWAS diseases by searching PubMed, by following [this paper](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1007186). We reasoned that, if the tissue or cell type is relevant to the disease of interest, then there would be previous publications studying the disease in the particular tissue or cell type. Therefore, by counting the number of previous publications using the key word pairs of trait and tissue or the key word pairs of trait and cell type, we would have a reasonable quantitative estimate on the relevance between the trait and the corresponding tissue/cell type. 
+##### We partially validated the identified trait-relevant tissue/cell types for the GWAS diseases by searching PubMed, by following [this paper](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1007186). 
 
-We used an R package [RISmed](https://cran.r-project.org/web/packages/RISmed/index.html) to efficiently count the number of publications in PubMed that contain the names of both the trait and the tissue/cell type either in the abstract or in the title.
+##### We used an R package [RISmed](https://cran.r-project.org/web/packages/RISmed/index.html) to efficiently count the number of publications in PubMed that contain the names of both the trait and the tissue/cell type either in the abstract or in the title.
 
 ```R
 
@@ -54,29 +54,29 @@ trait_name = c(
 tissues = c(
 "(adipose subcutaneous[Title/Abstract] OR subcutaneous adipose[Title/Abstract])",  
 "(adipose visceral[Title/Abstract] OR visceral adipose[Title/Abstract])",      
-"(adrenal gland[Title/Abstract])"  ,          
+"adrenal gland[Title/Abstract]"  ,          
 "artery aorta[Title/Abstract]"  ,           
 "artery coronary[Title/Abstract]",           
 "artery tibial[Title/Abstract]",       
 "(substantia nigra[Title/Abstract] OR hypothalamus[Title/Abstract] OR hippocampus[Title/Abstract] OR frontal lobe[Title/Abstract] OR cerebral cortex[Title/Abstract] OR amygdala[Title/Abstract])",               		 
-"(cerebellum[Title/Abstract])",       
+"cerebellum[Title/Abstract]",       
 "(nucleus accumbens[Title/Abstract] OR caudate putamen[Title/Abstract] OR caudate nucleus[Title/Abstract])"    ,   
 "breast[Title/Abstract]", 
-"(lymphoblastoid cell line[Title/Abstract])" , 
-"(fibroblast cell line[Title/Abstract])"   ,  
+"lymphoblastoid cell line[Title/Abstract]" , 
+"fibroblast cell line[Title/Abstract]"   ,  
 "(colon sigmoid[Title/Abstract] OR large intestine[Title/Abstract])"      ,
 "(colon transverse[Title/Abstract] OR large intestine[Title/Abstract])"  ,       
-"(gastroesophageal junction[Title/Abstract])",
-"(esophagus mucosa[Title/Abstract])"    ,     
-"(esophagus muscularis[Title/Abstract])",     
-"(heart atrial appendage[Title/Abstract])"   ,
-"(heart left ventricle[Title/Abstract])" ,
-"(kidney cortex[Title/Abstract])"     ,       
+"gastroesophageal junction[Title/Abstract]",
+"esophagus mucosa[Title/Abstract]"    ,     
+"esophagus muscularis[Title/Abstract]",     
+"heart atrial appendage[Title/Abstract]"   ,
+"heart left ventricle[Title/Abstract]" ,
+"kidney cortex[Title/Abstract]"     ,       
 "liver[Title/Abstract]",       
 "lung[Title/Abstract]",              
-"(minor salivary gland[Title/Abstract])"  ,   
-"(skeletal muscle[Title/Abstract])"     ,     
-"(tibial nerve[Title/Abstract])" ,            
+"minor salivary gland[Title/Abstract]"  ,   
+"skeletal muscle[Title/Abstract]"     ,     
+"tibial nerve[Title/Abstract]" ,            
 "ovary[Title/Abstract]"   ,                 
 "pancreas[Title/Abstract]"  ,                
 "pituitary[Title/Abstract]"       ,         
