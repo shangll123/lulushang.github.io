@@ -50,7 +50,7 @@ lik_expon = c()
 		lik_expon[tissue] = re_expon$value
 	}
 
-trait = colnames(sigma_sona)[j]
+trait = myarr[j]
 Tissues = as.factor(tissue_name)
 Tissues_name = tissue_name
 index = c(1:38)
@@ -63,7 +63,7 @@ ranking = rank(lik_expon_minus_mean)
 mydata = data.frame( ranking, h_expon,lik_expon,Tissues_name,index,tissue_color,lik_expon_minus_mean)
 mydata$lik_expon = -mydata$lik_expon # this depends on the outcome of the coconet function is likelihood or -likelihood
 mydata$lik_min = mydata$lik_expon - min(mydata$lik_expon)
-mydata$Trait = rep(colnames(sigma_sona)[j],dim(mydata)[1])
+mydata$Trait = rep(myarr[j],dim(mydata)[1])
 
 dat[[count]] =  mydata
 p[[count]] = ggbarplot(mydata, x = "Tissues_name", y = "lik_min",
@@ -89,8 +89,10 @@ k=k+1
 tiff(paste0("Tissue_",myarr[k],".tiff"), units="in",width=10, height=10,  res=100)
 grid.arrange((p[[k]] + scale_fill_Publication() +theme_Publication()),nrow=1)
 dev.off()
+```
+![Example figure](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/CoCoNet_Figure/coconet_figures.010.tiff)
 
-
+```
 #----------------------
 # Cell likelihood ranking
 #----------------------
@@ -111,7 +113,7 @@ lik_expon = c()
 	}
 h_expon = h_expon
 lik_expon = lik_expon
-trait = colnames(sc_sigma_43)[j]
+trait = myarr[j]
 Tissues = as.factor(cell_type)
 Tissues_name = cell_type
 index = c(1:10)
@@ -124,7 +126,7 @@ mydata = data.frame(h_expon,lik_expon,Tissues_name,index,tissue_color,lik_expon_
 mydata$ranking = rank(mydata$lik_expon)
 mydata$lik_expon = -mydata$lik_expon
 mydata$lik_min = mydata$lik_expon - min(mydata$lik_expon)
-mydata$Trait = rep(colnames(sigma_sona)[j],dim(mydata)[1])
+mydata$Trait = rep(myarr[j],dim(mydata)[1])
 
 dat[[count]] =  mydata
 p[[count]] = ggbarplot(mydata, x = "Tissues_name", y = "lik_min",
@@ -154,6 +156,7 @@ dev.off()
 
 
 ```
+![Example figure](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/CoCoNet_Figure/coconet_figures.019.tiff)
 
 
 
@@ -219,7 +222,11 @@ pdf("Tissue_GTEx_heatmap_unscaled.pdf",width=7, height=7)
 diag(gLogCpmData)=1    
 testHeatmap3(gLogCpmData, gAnnotationData)
 dev.off()
+```
+![Example figure](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/CoCoNet_Figure/coconet_figures.008.tiff)
 
+
+```
 #---------------------------------
 # Cells - same cell type combined
 #---------------------------------
@@ -269,6 +276,8 @@ diag(gLogCpmData)=1
 testHeatmap3(gLogCpmData, gAnnotationData)
 dev.off()
 ```
+
+![Example figure](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/CoCoNet_Figure/coconet_figures.015.single.tiff)
 
 
 
