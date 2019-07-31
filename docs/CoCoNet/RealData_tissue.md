@@ -14,7 +14,7 @@ This paper reconstructed networks from panda, built Gene regulatory networks for
 
 
 ##### First check how many genes in GTEx_PANDA_tissues.RData overlap with our gene level effect sizes extracted from summary statistics.
-```
+```R
 load("GTEx_PANDA_tissues.RData") 
 # annotate genes with grch37 
 library(biomaRt)
@@ -35,19 +35,17 @@ index = which(HGNC_to_ENSE$ensembl_gene_id %in% ENSG_gene_table )
 dict = HGNC_to_ENSE[index,]
 ```
 ##### get edges with both genes exist in ENSG_gene_table
-```
+```R
 # filter genes in first column
 index_col_1 = which(as.character(edges$TF) %in% as.character(dict$hgnc_symbol) )
 # filter genes in second column
 ENSG_gene_table = as.character(gene_table$ENSG_ID)
 index_col_2 = which(as.character(edges$Gene) %in% ENSG_gene_table )
 index_col_edge = intersect(index_col_1, index_col_2)
-#> length(unique(as.character(edges$Gene)[index_col_edge]))
-#[1] 25991
 ```
 
 ##### filter genes by specificity in tissues
-```
+```R
 net_specific = rowSums(netTS)
 index_specific = which(net_specific>0)
 index_specific_col = intersect(index_specific, index_col_edge)
@@ -71,7 +69,7 @@ save(use_edges,file = "use_edges.RData")
 ```
 
 ##### get gene effect sizes for 5359 genes
-```
+```R
 tissue_name = colnames(use_net)
 save(tissue_name, file = "tissue_name.RData")
 gene_tsn = all_gene
@@ -90,10 +88,8 @@ save(sigma_sona, file = "outcome_tissue.RData")
 ##### Build network using edge information
 
  
-```
-
+```R
 # this part of R code can be slow, better to refer to the single cell process procedures and use matlab
-
 name1 = as.character(use_edges$TF)
 name2 = as.character(use_edges$Gene)
 index1 = NULL
