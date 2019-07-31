@@ -13,11 +13,9 @@ nav_order: 1
 
 ![CoCoNet\ Schematic Overview](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/CoCoNet_Figure/Figure1.tiff)
 
+##### **CoCoNet** is an efficient method to facilitate the identification of trait-relevant tissues or cell types. We apply CoCoNet for an in-depth analysis of four neurological disorders and four autoimmune diseases, where we integrate the corresponding GWASs with bulk RNAseq data from 38 tissues and single cell RNAseq data from 10 cell types. Our Paper on bioRxiv: [Leveraging Gene Co-expression Patterns to Infer Trait-Relevant Tissues in Genome-wide Association Studies](https://www.biorxiv.org/content/biorxiv/early/2019/07/17/705129.full.pdf)
 
 ##### **CoCoNet** incorporates tissue-specific gene co-expression networks constructed from either bulk or single cell RNA sequencing (RNAseq) studies with GWAS data for trait-tissue inference. In particular, CoCoNet relies on a covariance regression network model to express gene-level effect sizes for the given GWAS trait as a function of the tissue-specific co-expression adjacency matrix. With a composite likelihood-based inference algorithm, CoCoNet is scalable to tens of thousands of genes. 
- 
-
-##### **CoCoNet** is an efficient method to facilitate the identification of trait-relevant tissues or cell types. We apply CoCoNet for an in-depth analysis of four neurological disorders and four autoimmune diseases, where we integrate the corresponding GWASs with bulk RNAseq data from 38 tissues and single cell RNAseq data from 10 cell types. Our Paper on bioRxiv: [Leveraging Gene Co-expression Patterns to Infer Trait-Relevant Tissues in Genome-wide Association Studies](https://www.biorxiv.org/content/biorxiv/early/2019/07/17/705129.full.pdf)
 
 
 ## Install the Package
@@ -28,7 +26,6 @@ install.packages('devtools')
 devtools::install_github('shangll123/CoCoNet')
 # Load the package
 library(CoCoNet)
-
 ```
 
 ## Example: GTEx tissues in GWAS trait BIPSCZ
