@@ -35,44 +35,7 @@ Some pictures in Costa Rica: Jan 4 - Jan 12, 2019
 ![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/costaricaFigures/street1.jpeg)
 
 
-![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/costaricaFigures/street2.jpeg)
-
-
-![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/costaricaFigures/street3.jpeg)
-
-
-![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/costaricaFigures/street4.jpeg)
-
-
-![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/costaricaFigures/church.jpeg)
-
-
-![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/costaricaFigures/park.jpeg)
-
-
-![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/costaricaFigures/penquan.jpeg)
-
-
-![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/costaricaFigures/gezi.jpeg)
-
-
-![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/costaricaFigures/museum.jpeg)
-
-
-![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/costaricaFigures/maodan.jpeg)
-
-
 ![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/costaricaFigures/flower.jpeg)
-
-
-![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/costaricaFigures/lunch.jpeg)
-
-
-![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/costaricaFigures/qian.jpeg)
-
-
-![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/costaricaFigures/parks.jpeg)
-
 
 ![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/costaricaFigures/DSC_0163.jpeg)
 
