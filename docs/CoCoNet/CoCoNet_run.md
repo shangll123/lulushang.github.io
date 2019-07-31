@@ -91,7 +91,7 @@ result = CoCoNet(outcome_tissue_scale[,3], max_path = 1, A)
 end_time = Sys.time()
 end_time - start_time
 
-# this step takes several minutes, within 5000M memory.
+# this step takes several minutes, on average 3000M memory.
 
 ```
 
