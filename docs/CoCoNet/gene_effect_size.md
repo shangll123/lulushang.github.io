@@ -140,7 +140,7 @@ fi
 done
 ```
 
-##### Use gemma to get sigma2
+##### Use gemma to get per-SNP heritability
 ```
 # note:
 # mkdir gemma_files/output/SCZ..., output files into seperate folders for 8 traits
@@ -176,7 +176,7 @@ fi
 done
 ```
 
-##### Extract sigma2 
+##### Extract per-SNP heritability
 
 ```R
 Traits_name=c( "SCZ", "BIP", "BIPSCZ",  "Alzheimer","PBC", "CD", "UC", "IBD")
