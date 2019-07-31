@@ -21,7 +21,7 @@ wget https://storage.googleapis.com/gtex_additional_datasets/single_cell_data/GT
 ```
 
 ##### load needed files
-```
+```R
 load("~path/outcome_cell_scale.RData")
 gene_table = read.table("~path/genetable.txt", header=T)
 motif = read.table("~path/pandas/PANDA_for_server/data/motif.txt") # same as in GTEx tissue PANDA input, downloaded from same website 
@@ -41,14 +41,14 @@ cell_anno = read.csv("~path/single_cell_gtex/GTEx_droncseq_hip_pcf/cell_annotati
 
 ##### grch37 for converting HGNC to ENSG ID
 
-```
+```R
 library(biomaRt)
 grch37 = useMart(biomart="ENSEMBL_MART_ENSEMBL", host="grch37.ensembl.org", path="/biomart/martservice")
 listDatasets(grch37)
 grch37 = useDataset("hsapiens_gene_ensembl",mart=grch37)
 ```
 ##### map HGNC ID to ENSG ID, since we are using ENSG IDs in gene effect size file and only keep genes that we already have annotation for TSS TES location
-```
+```R
 dict = rownames(expr)
 HGNC_to_ENSE=getBM(attributes=c('hgnc_symbol','ensembl_gene_id'), 
        filters = 'hgnc_symbol', 
@@ -63,7 +63,7 @@ expr_mat = expr[match(as.character(dictionary1$hgnc_symbol),rownames(expr) ),]
 ```
 
 #### Prepare RPKM expression
-```
+```R
 gene_annotate = match(dictionary1$ensembl_gene_id,as.character(gene_table$ENSG_ID))
 l = gene_table$distance[gene_annotate]
 cS <- colSums(expr_mat) #Total mapped reads per sample
@@ -72,7 +72,7 @@ rpkm <- (10^6)*t(t(expr_mat/l)/cS)
 ```
 
 ##### double quantile Normalization on log10(rpkm+1)
-```
+```R
 log10_rpkm = log10(rpkm+1)			    		    
 GTEx_expr_sc_log10_plus1_gene <- t(apply(log10_rpkm,2, function(x) qqnorm(x, plot=F)$x))		 
 GTEx_expr_sc_log10_plus1_cell <- t(apply(GTEx_expr_sc_log10_plus1_gene,1, function(x) qqnorm(x, plot=F)$x))
@@ -80,7 +80,7 @@ GTEx_expr_sc_log10 = t(GTEx_expr_sc_log10_plus1_cell)
 #save(GTEx_expr_sc_log10, file = "GTEx_expr_sc_log10.RData")				    
 ```
 ##### make cell type annotation. Get cell type index for each cell
-```
+```R
 sum(colnames(expr_norm)==as.character(cell_anno$Cell_ID)) 
 colnameexpr = gsub(".", '-', as.character(colnames(expr_norm)), fixed = T)
 type_in_order = c()
@@ -97,7 +97,7 @@ for(i in celluniquetype){
 }
 ```	 
 #### calculate gene specificity by cell type					 
-```	
+```R	
 library( matrixStats )
 IQR_rpkmlog10_all = unlist(apply(GTEx_expr_sc_log10,1, function(x) IQR(x)))     
 median_rpkmlog10_all = rowMedians(GTEx_expr_sc_log10) 
@@ -113,7 +113,7 @@ m = rowSums(gene_rpkmlog10_specifity)
 
 ##### retained genes with total specificity score in tissues greater than the median value across all genes. 
 
-```				 
+```R				 
 ind = which(m>-2.803) # use median
 length(ind)
 GTEx_expr_sc = GTEx_expr_sc_log10[ind,]
@@ -122,7 +122,7 @@ dict9900 = dictionary1[ind,]
 ```
 
 ##### make new motif file. In the TF by gene matrix produced by PANDA, if std of any column is 0, it will cause NA in the normalization step, and algorithm won't work. in other words, we retained genes that are TF factors and have at least one connection to genes we already retained. 
-```
+```R
 genenames = rownames(GTEx_expr_sc)
 motif_new = motif[which(as.character(motif$V1) %in% genenames),]			 
 xx=intersect(as.character(motif_new$V2), dict9900$ensembl_gene_id)
@@ -131,7 +131,7 @@ dict8270 = dict9900[which(dict9900$ensembl_gene_id %in% xx),]
 GTEx_expr_sc_8270 = GTEx_expr_sc[which(dict9900$ensembl_gene_id %in% xx),]	
 ```
 ##### need to remove gene with 0 std of i-th column in TF by gene matrix
-```
+```R
 i=6560					 				 
 # update files		 
 dict_update = dict8270[-6560,]	
@@ -141,7 +141,7 @@ motif_update = motif_use[-which(as.character(motif_use$V2)=="ENSG00000211746"),]
 ```
 ##### make new ppi file
 
-```			 
+```R		 
 ppi[,1]=as.character(ppi[,1])
 ppi[,2]=as.character(ppi[,2])				 
 ind1 = which(ppi[,1] %in% dict_update$hgnc_symbol)
@@ -153,7 +153,7 @@ write.table(ppi_new, "ppi_new.txt",  col.names=F, quote=F,row.names=F)
 
 ##### reorder cells, to prepare input expression file for PANDA
 
-```
+```R
 tissue_names = c( "ASC1"     ,    "ASC2"   ,      "END"       ,   "GABA1"    ,    "GABA2"       ,
 "MG"     ,      "NSC"        ,  "ODC1"       ,  "OPC"    ,      "Unclassified",
 "exCA1"     ,   "exCA3"  ,      "exDG"     ,    "exPFC1"    ,   "exPFC2" )
@@ -186,7 +186,7 @@ nohup matlab -nodisplay -nodesktop -nojvm -nosplash < RunPANDA.m &
 ```
 
 ##### then collect results
-```	
+```matlab	
 % in matlab (faster than in R)
 motif_file='motif_update.txt'; % motif prior
 exp_file='GTEx_expr_sc_reorder.txt'; % expression data without headers
@@ -228,7 +228,7 @@ save('TF_gene_names.mat','TFNames','GeneNames')
 ```
 ##### go back to R
 
-```			 
+```R			 
 library(R.matlab)
 TF_gene_names = readMat("TF_gene_names.mat")					 
 i=1
