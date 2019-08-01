@@ -11,8 +11,7 @@ nav_order: 1
 
 <!--- <img src="https://latex.codecogs.com/svg.latex?\sum&space;\bigcup_{1}^{n}\overleftarrow{abc}" title="\sum \bigcup_{1}^{n}\overleftarrow{abc}" /> --->
 
-![CoCoNet\ Schematic Overview]
-<img align="left" src="/images/CoCoNet_Figure/Figure1.tiff" alt="drawing" width="80"/> 
+<img align="left" src="/images/CoCoNet_Figure/Figure1.tiff" alt="drawing" width="300"/> 
 
 <!---[try](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/CoCoNet_Figure/Figure1.tiff)--->
 
