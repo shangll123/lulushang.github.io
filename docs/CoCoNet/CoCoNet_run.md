@@ -23,7 +23,7 @@ nav_order: 1
 # Install devtools if necessary
 install.packages('devtools')
 # Install CoCoNet
-devtools::install_github('shangll123/CoCoNet')
+devtools::install_github('xzhoulab/CoCoNet')
 # Load the package
 library(CoCoNet)
 ```
