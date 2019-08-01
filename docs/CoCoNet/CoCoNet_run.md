@@ -13,6 +13,8 @@ nav_order: 1
 
 <!--- <img align="left" src="/images/CoCoNet_Figure/Figure1.tiff" alt="drawing" width="300"/> --->
 
+<img align="left" src="/images/coconetmain.tiff" alt="drawing" width="600"/>
+
 ![Example figure](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/CoCoNet_Figure/Figure1.tiff)
 
 
