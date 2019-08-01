@@ -22,6 +22,8 @@ nav_order: 1
 ```R
 # Install devtools if necessary
 install.packages('devtools')
+# Try below command if have problem with installing devtools on windows:
+# install.packages('devtools',type = "win.binary")
 # Install CoCoNet
 devtools::install_github('xzhoulab/CoCoNet')
 # Load the package
