@@ -11,7 +11,10 @@ nav_order: 1
 
 <!--- <img src="https://latex.codecogs.com/svg.latex?\sum&space;\bigcup_{1}^{n}\overleftarrow{abc}" title="\sum \bigcup_{1}^{n}\overleftarrow{abc}" /> --->
 
-![CoCoNet\ Schematic Overview](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/CoCoNet_Figure/Figure1.tiff)
+![CoCoNet\ Schematic Overview]
+<img align="left" src="/images/CoCoNet_Figure/Figure1.tiff" alt="drawing" width="80"/> 
+
+<!---[try](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/CoCoNet_Figure/Figure1.tiff)--->
 
 ##### **CoCoNet** is an efficient method to facilitate the identification of trait-relevant tissues or cell types. We apply CoCoNet for an in-depth analysis of four neurological disorders and four autoimmune diseases, where we integrate the corresponding GWASs with bulk RNAseq data from 38 tissues and single cell RNAseq data from 10 cell types. Our Paper on bioRxiv: [Leveraging Gene Co-expression Patterns to Infer Trait-Relevant Tissues in Genome-wide Association Studies](https://www.biorxiv.org/content/biorxiv/early/2019/07/17/705129.full.pdf)
 
