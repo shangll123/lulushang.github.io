@@ -708,7 +708,12 @@ tiff(paste0("Tissue_",myarr[k],".tiff"), units="in",width=10, height=10,  res=10
 grid.arrange((p[[k]] + scale_fill_Publication() +theme_Publication()),nrow=1)
 dev.off()
 ```
+
+##### Plot ranking of tissues
+
 <img align="left" src="/images/tissuerank.png" alt="drawing" width="1400"/>
+
+##### Cell likelihood ranking:
 
 ```
 #----------------------
@@ -775,8 +780,9 @@ dev.off()
 
 ```
 
-
+##### Plot ranking of cell types
 <img align="left" src="/images/cellrank.png" alt="drawing" width="1400"/>
+
 
 ##### Heatmap of Jaccard index for tissues / cell types
 
@@ -893,7 +899,7 @@ testHeatmap3(gLogCpmData, gAnnotationData)
 dev.off()
 ```
 
-<img align="left" src="/images/cellheat.png" alt="drawing" width="1500"/>
+<img align="left" src="/images/cellheat.png" alt="drawing" width="900"/>
 
 
 # Section 5: Pubmed search results
