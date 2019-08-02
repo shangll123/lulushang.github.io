@@ -641,6 +641,8 @@ scale_colour_Publication <- function(...){
 ```
 
 ##### Plot ranking of likelihoods
+
+Plot ranking of tissues
 ```R
 #----------------------
 # Tissue likelihood ranking 
@@ -709,7 +711,7 @@ grid.arrange((p[[k]] + scale_fill_Publication() +theme_Publication()),nrow=1)
 dev.off()
 ```
 
-
+Plot ranking of cell types
 ```
 #----------------------
 # Cell likelihood ranking
@@ -775,7 +777,7 @@ dev.off()
 
 ```
 
-
+Plot heatmap of tissues measured by Jaccard Index
 ```R
 library(BiRewire)
 library(corrplot)
@@ -838,7 +840,7 @@ dev.off()
 ```
 
 
-
+Plot heatmap of cell types measured by Jaccard Index
 ```
 #---------------------------------
 # Cells - same cell type combined
@@ -889,6 +891,7 @@ diag(gLogCpmData)=1
 testHeatmap3(gLogCpmData, gAnnotationData)
 dev.off()
 ```
+
 ##### Plot ranking of tissues
 
 <img align="left" src="/images/tissuerank.png" alt="drawing" width="1200"/>
@@ -910,8 +913,6 @@ dev.off()
 # Section 5: Pubmed search results
 
 ##### We partially validated the identified trait-relevant tissue/cell types for the GWAS diseases by searching PubMed, by following [this paper](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1007186). 
-
-##### We used an R package [RISmed](https://cran.r-project.org/web/packages/RISmed/index.html) to efficiently count the number of publications in PubMed that contain the names of both the trait and the tissue/cell type either in the abstract or in the title.
 
 ```R
 
