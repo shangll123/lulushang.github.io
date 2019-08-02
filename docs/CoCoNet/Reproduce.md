@@ -904,9 +904,8 @@ dev.off()
 
 ##### Heatmap of Jaccard index for cell types
 
-<img align="left" src="/images/cellheat.png" alt="drawing" width="500"/>
+<img align="left" src="/images/cellheat.png" alt="drawing" width="1000"/>
 
-========
 
 # Section 5: Pubmed search results
 
@@ -1174,8 +1173,155 @@ save(results, file = paste0("~path/rolypoly/tissue/bootstrap_results_",disease,"
 ```
 
 # Section 7: LDSC codes for GTEx tissues 
+
+Codes for cell types are similar.
+
 ```R
 
+# load expression data and sample info
+load("~path/GTEx_PANDA_tissues.RData")
+# load genes used in coconet
+load("~path/all_gene.RData")
+
+ind = unlist(lapply(all_gene, function(x) which(rownames(exp) %in% x)))
+subset_expr = exp[ind,]
+Tissues_name = unique(as.character(samples$Tissue))[order(unique(as.character(samples$Tissue)))]
+
+sample_size = NULL
+count = 0
+tissue_index = list()
+sample_size = list()
+for(i in Tissues_name){
+count = count+1
+tissue_index[[count]] = which(as.character(samples$Tissue) %in% i)
+sample_size[[count]]=length(tissue_index[[count]])
+}
+
+len = unlist(lapply(tissue_index,length))
+ind = tissue_index
+
+# follow LDSC paper, combine brain tissues
+brain = c(tissue_index[[7]], tissue_index[[8]],tissue_index[[9]])
+
+
+X_mat = list()
+use_index = list()
+for(k in 1:length(Tissues_name)){
+	if(length(which(k %in% c(1:38)[-c(7:9)])>0)){
+		col1 = rep(-1,length(unlist(ind)))
+		col1[ind[[k]]] = 1
+		X_mat[[k]] = matrix(0, length(col1), 2)
+		X_mat[[k]][,1] = col1
+		X_mat[[k]][,2] = 1
+		use_index[[k]] = c(1:9435)
+		}else{
+		col1 = rep(-1,length(unlist(ind)))
+		X_mat[[k]] = matrix(0, length(col1), 2)
+		X_mat[[k]][,1] = col1
+		X_mat[[k]][,2] = 1
+		part1 = c(1:sum(len[1:6]))
+		part2 = c(tissue_index[[k]])
+		part3 = c((sum(len[1:9])+1):sum(len))
+		X_mat[[k]][part2,1] = 1
+		X_mat[[k]] = X_mat[[k]][c(part1, part2, part3),]
+		use_index[[k]] = c(part1, part2, part3)
+	}
+}
+
+get_t_stat = function(my_X, my_Y){
+	my_N = dim(my_X)[1]
+	my_XTX_inv = solve(t(my_X)%*%my_X)
+	my_XTY = t(my_X)%*%my_Y
+	MSE_part = my_Y - my_X%*%my_XTX_inv%*%my_XTY
+	MSE = t(MSE_part)%*%MSE_part/my_N
+	t = (my_XTX_inv%*%my_XTY)[1,1]/sqrt(MSE* my_XTX_inv[1,1])
+	return(t)
+}
+
+
+library(parallel)
+
+# filter genes according to the paper
+geneL = rowSums(subset_expr)
+sampleL = colSums(subset_expr)
+GTEx.expr = subset_expr
+ENSG_coor = read.table("~path/example_ldsc/myldscore/ENSG_coord.txt",header=T)
+ind = intersect(as.character(ENSG_coor$GENE) ,rownames(subset_expr))
+GTEx.expr = subset_expr[which(rownames(subset_expr)  %in% ind),]
+save(GTEx.expr, file = "GTEx.expr.RData")
+
+c1 = rep(c(1:38), each = length(ind))
+c2 = rep(c(1:length(ind)), 38)
+d1 = data.frame(c1,c2)
+start_time <- Sys.time()
+tstat = mcmapply( FUN = function(x, y) {get_t_stat(X_mat[[x]], unlist(GTEx.expr[y,use_index[[x]]]))}, d1[,1], d1[,2] ,mc.cores= 5)
+end_time <- Sys.time()
+end_time - start_time
+
+# collect results
+tstat_mat = matrix(tstat, length(ind), 38)
+z_stat_GTEX = tstat_mat
+save(z_stat_GTEX, file = "z_stat_GTEX.RData")
+
+abs_z_stat_GTEXsc = abs(z_stat_GTEX)
+top2000 = apply(t(abs_z_stat_GTEXsc), 1, function(x) order(-x)[1:2000])
+allgene = rownames(GTEx.expr)
+
+for(k in 1:38){
+	gene_2000 = allgene[top2000[,k]]
+	write.table(gene_2000, file = paste0("gene2000_tissuetype",k,".txt"), col.names=F, row.names = F, quote = F)
+}
+
+#-------------
+# step 1: make annotation
+#-------------
+
+for  mylines in `seq 1 38`
+do
+part_start=1
+part_end=22
+for  chr in `seq $part_start $part_end`
+do
+python ~path/ldsc/make_annot.py \
+		--gene-set-file ~path/ldsc/TissueGtex/gene2000_tissue/gene2000_tissuetype${mylines}.txt \
+		--gene-coord-file ~path/example_ldsc/myldscore/ENSG_coord.txt \
+		--windowsize 100000 \
+		--bimfile ~/refEUR/ping_chr_${chr}.bim \
+		--annot-file ~path/ldsc/TissueGtex/anno/gene2000_tissuetype${mylines}_chr${chr}.annot.gz
+done
+done
+
+
+#-------------
+# step 2: calculate ldscore
+#-------------
+part_start=1
+part_end=22
+
+for  mylines in `seq 1 38`
+do
+for  chr in `seq $part_start $part_end`
+do
+echo ${chr}
+python ~path/ldsc/ldsc.py --l2 --bfile ~/refEUR/ping_chr_${chr} --ld-wind-cm 1 --annot ~path/ldsc/TissueGtex/anno/gene2000_tissuetype${mylines}_chr${chr}.annot.gz --thin-annot --out ~path/ldsc/TissueGtex/gene2000_ldscore/gene2000_tissuetype${mylines}_chr${chr}
+done
+done
+
+#-------------
+# step 3: calculate tissue specific
+#-------------
+
+declare -a arr=( "SCZ" "BIP" "BIPSCZ" "Alzheimer"  "IBD"   "UC"  "CD"  "PBC" )	
+for i in "${arr[@]}"
+do
+echo "$i"
+python ~path/ldsc/ldsc.py \
+    --h2-cts ~/sumstat/${i}.sumstats \
+    --ref-ld-chr ~path/example_ldsc/1000G_EUR_Phase3_baseline/baseline. \
+    --out ~path/ldsc/TissueGtex/results/${i} \
+    --ref-ld-chr-cts tissuetype.ldcts \
+    --w-ld-chr ~path/example_ldsc/weights_hm3_no_hla/weights.
+done
 
 ```
 
