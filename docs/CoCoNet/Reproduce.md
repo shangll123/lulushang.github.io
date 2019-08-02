@@ -708,10 +708,6 @@ tiff(paste0("Tissue_",myarr[k],".tiff"), units="in",width=10, height=10,  res=10
 grid.arrange((p[[k]] + scale_fill_Publication() +theme_Publication()),nrow=1)
 dev.off()
 ```
-##### Plot ranking of tissues
-
-<img align="left" src="/images/tissuerank.png" alt="drawing" width="1200"/>
-
 
 
 ```
@@ -779,10 +775,6 @@ dev.off()
 
 ```
 
-##### Plot ranking of cell types
-<img align="left" src="/images/cellrank.png" alt="drawing" width="1200"/>
-
-
 
 ```R
 library(BiRewire)
@@ -844,9 +836,6 @@ diag(gLogCpmData)=1
 testHeatmap3(gLogCpmData, gAnnotationData)
 dev.off()
 ```
-##### Heatmap of Jaccard index for tissues / cell types
-
-<img align="left" src="/images/tissueheatmap.png" alt="drawing" width="1200"/>
 
 
 
@@ -900,6 +889,18 @@ diag(gLogCpmData)=1
 testHeatmap3(gLogCpmData, gAnnotationData)
 dev.off()
 ```
+##### Plot ranking of tissues
+
+<img align="left" src="/images/tissuerank.png" alt="drawing" width="1200"/>
+
+##### Plot ranking of cell types
+<img align="left" src="/images/cellrank.png" alt="drawing" width="1200"/>
+
+
+##### Heatmap of Jaccard index for tissues / cell types
+
+<img align="left" src="/images/tissueheatmap.png" alt="drawing" width="1200"/>
+
 
 ##### Heatmap of Jaccard index for cell types
 
@@ -1073,7 +1074,112 @@ results_all_percentage_use_cell = round(results_all_percentage_cell,4)*100
 write.csv(results_all_percentage_use_cell, "pubmed_result_celltype.csv",quote=F)
 
 
+```
+
+# Section 6: RolyPoly codes for GTEx tissues 
+Codes for cell types are similar.
+
+```R
+
+# modify by using normalized expression in 38 tissues from paper
+# load expression data and sample info
+load("~path/sonawane/GTEx_PANDA_tissues.RData")
+# load 5359 genes in CoCoNet
+load("~path/sonawane/all_gene.RData")
+
+ind = unlist(lapply(all_gene, function(x) which(rownames(exp) %in% x)))
+subset_expr = exp[ind,]
+Tissues_name = unique(as.character(samples$Tissue))[order(unique(as.character(samples$Tissue)))]
+
+
+sample_size = NULL
+count = 0
+tissue_index = list()
+sample_size = list()
+for(i in Tissues_name){
+count = count+1
+tissue_index[[count]] = which(as.character(samples$Tissue) %in% i)
+sample_size[[count]]=length(tissue_index[[count]])
+}
+
+anno = matrix(0,5359,38)
+for(i in 1:38){
+	anno[,i] = rowMeans(subset_expr[,tissue_index[[i]]])
+}
+
+colnames(anno) = Tissues_name
+rownames(anno) = rownames(subset_expr)
+
+# normalize the annotation matrix
+
+anno_norm = lapply(c(1:dim(anno)[1]), function(i)  scale(anno[i,])^2)
+annonorm <- matrix(unlist(anno_norm), ncol = 38, byrow = TRUE)
+
+colnames(annonorm) = Tissues_name
+rownames(annonorm) = rownames(subset_expr)
+save(annonorm, file = "~path/rolypoly/tissue/annonorm.RData")
+
+# make annotation, file downloaded from LDSC
+ENSG_coor = read.table("~path/ldsc_run/example_ldsc/myldscore/ENSG_coord.txt",header=T)
+
+ge = as.character(ENSG_coor$GENE)
+ind = unlist(lapply(rownames(subset_expr), function(x) which(ge %in% x)))
+Gene_anno = ENSG_coor[ind,]
+chrom = Gene_anno$CHR
+start = Gene_anno$START-5000
+end = Gene_anno$START+5000
+label = Gene_anno$GENE
+Gene_annotation = data.frame(chrom, start, end, label)
+chrom = as.character(Gene_annotation$chrom)
+gene_name01 = strsplit(chrom,"[chr]")
+gene_name02 = c()
+for(i in 1:length(gene_name01)){gene_name02[i]=paste0(gene_name01[[i]][4])}
+chrom = as.integer(gene_name02)
+Gene_annotation$chrom = chrom
+Gene_annotation$label = as.character(Gene_annotation$label)
+save(Gene_annotation, file = "~path/rolypoly/tissue/Gene_annotation.RData")
+
+require(rolypoly); require(dplyr); require(ggplot2)
+
+
+myarr=c( "SCZ","BIP", "BIPSCZ" ,"DS" ,"Alzheimer" , "IBD" ,  "UC" , "CD"  ,"PBC" )	
+for(i in c(1:8)){
+disease = myarr[i]
+load("~path/rolypoly/tissue/annonorm.RData")
+load("~path/rolypoly/tissue/Gene_annotation.RData")
+load(paste0("~path/rolypoly/gwas_data_",disease,".RData"))
+ld_path = "~path/rolypoly/EUR_LD_FILTERED_NONAN_R"
+gwas_data$rsid = as.character(gwas_data$rsid)
+
+start_time <- Sys.time()
+rp <- rolypoly_roll(
+  gwas_data = gwas_data,
+  block_annotation = Gene_annotation,
+  block_data = annonorm,
+  ld_folder = ld_path
+)
+end_time <- Sys.time()
+t = end_time - start_time
+
+save(rp , file =  paste0("~path/rolypoly/tissue/rp_",disease,".RData"))
+
+results = list()
+results$btvalues = rp$bootstrap_results %>% arrange(-bt_value)
+results$time = t
+results$brief = rp$full_results$parameters %>% sort
+save(results, file = paste0("~path/rolypoly/tissue/bootstrap_results_",disease,".RData"))
+
+}
+```
+
+# Section t: LDSC codes for GTEx tissues 
+```R
 
 
 ```
+
+
+
+
+
 
