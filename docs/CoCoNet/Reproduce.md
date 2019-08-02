@@ -906,6 +906,7 @@ dev.off()
 
 <img align="left" src="/images/cellheat.png" alt="drawing" width="500"/>
 
+========
 
 # Section 5: Pubmed search results
 
@@ -1172,7 +1173,7 @@ save(results, file = paste0("~path/rolypoly/tissue/bootstrap_results_",disease,"
 }
 ```
 
-# Section t: LDSC codes for GTEx tissues 
+# Section 7: LDSC codes for GTEx tissues 
 ```R
 
 
