@@ -9,6 +9,6 @@ permalink: /docs/Academic
 
 > There is always something left to love.
 
-> -- Gabriel García Márquez
+> -- Gabriel García Márquez, "One Hundred Years of Solitude"
 
 {: .fs-6 .fw-300 }
