@@ -1,6 +1,6 @@
 ---
 layout: default
-title: About me
+title: LuluShang
 parent: About me
 nav_order: 1
 ---
