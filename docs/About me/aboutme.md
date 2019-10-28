@@ -7,7 +7,7 @@ nav_order: 1
 
 
 
-##### My name is Lulu Shang, a second-year Ph.D. student in the Department of Biostatistics, University of Michigan, working with Prof. [Xiang Zhou](http://www.xzlab.org).
+My name is Lulu Shang, a second-year Ph.D. student in the Department of Biostatistics, University of Michigan, working with Prof. Xiang Zhou.
 
 
 #### Education
