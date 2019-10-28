@@ -1,7 +1,7 @@
 ---
 layout: default
 title: About me
-nav_order: 1
+nav_order: 5
 has_children: true
 permalink: /docs/Aboutme
 ---
