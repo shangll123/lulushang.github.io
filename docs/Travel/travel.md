@@ -7,7 +7,7 @@ permalink: /docs/Travel
 ---
 
 
-> It's enough for me to be sure that you and I exist at this moment.
+> Time passes.
 
 > -- Gabriel García Márquez, "One Hundred Years of Solitude"
 
