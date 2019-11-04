@@ -7,7 +7,7 @@ permalink: /docs/Academic
 ---
 
 
-> There is always something left to love.
+> Incredible things are happening in the world.
 
 > -- Gabriel García Márquez, "One Hundred Years of Solitude"
 
