@@ -44,6 +44,7 @@ dev.off()
 ##### histogram
 
 ```
+
 pdf(paste0("Histogram_",num_variable[k],".pdf"),width=8, height=8)
 ggplot(df, aes(x=df[,k])) +
   geom_histogram(bins = 150,color="darkblue", fill="lightblue")+
@@ -52,6 +53,17 @@ ggplot(df, aes(x=df[,k])) +
   geom_density(alpha=0.6)+
    labs(title=paste0(num_variable[k]),x=paste0(num_variable[k]), y = "Count")
 dev.off()
+```
+##### density plot
+```
+
+pdf("density_eqtl_EU_200kb.pdf")
+  ggplot(eqtl_table_EU2, aes(x = eqtl_table_EU_rs_dist_tss)) + 
+  geom_density(aes(fill = eQTL_order), alpha = 0.4) + 
+  geom_vline(data = mu, aes(xintercept = grp.median, color = eQTL_order), linetype = "dashed") + 
+  labs(title="EU population, distance to tss within 200kb",x ="Distance to TSS(kb)") 
+dev.off()
+
 
 ```
 ##### barplot
