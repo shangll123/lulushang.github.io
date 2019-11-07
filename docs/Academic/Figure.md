@@ -5,7 +5,7 @@ parent: Academic
 nav_order: 4
 ---
 
-##### violin plot example
+##### violin plot 
 
 ```
 pdf(paste0("Number_independent_eQTL_vs_ratio_violinplot_EA.pdf"),width=10, height=6)
@@ -38,7 +38,19 @@ p10
 dev.off()
 
 ```
+##### histogram
 
+```
+pdf(paste0("Histogram_",num_variable[k],".pdf"),width=8, height=8)
+ggplot(df, aes(x=df[,k])) +
+  geom_histogram(bins = 150,color="darkblue", fill="lightblue")+
+  geom_vline(aes(xintercept=median(df[,k])),linetype="dashed")+ 
+  theme_minimal(base_size = 22)+
+  geom_density(alpha=0.6)+
+   labs(title=paste0(num_variable[k]),x=paste0(num_variable[k]), y = "Count")
+dev.off()
+
+```
 ##### barplot
 ```
 pdf("Overlap_3methods_mouseOB.pdf",width=14, height=8)
@@ -49,6 +61,70 @@ ggplot(data=dat, aes(x=topcount, y=count, fill=method)) +
   theme_minimal(base_size = 22)+
   theme(legend.position="bottom") 
 dev.off()
+```
+
+##### pie plot
+
+```
+
+df = data.frame("State" = statenames,"Percentage" = statenum)
+library(ggplot2)
+
+pdf("Pie_state.pdf",width=8, height=8)
+pie = ggplot(df, aes(x="", y=Percentage, fill=State)) + geom_bar(stat="identity", width=1)
+pie = pie + coord_polar("y", start=0) + geom_text(aes(label = paste0(round(Percentage*100), "%")), position = position_stack(vjust = 0.5))
+pie = pie + scale_fill_brewer(palette = "Set3") 
+pie = pie + labs(x = NULL, y = NULL, fill = NULL, title = "State")
+pie = pie + theme_classic() + theme(axis.line = element_blank(),
+          axis.text = element_blank(),
+          axis.ticks = element_blank(),
+          plot.title = element_text(hjust = 0.5, color = "#666666"))
+pie
+dev.off()         
+```
+
+##### scatter plot
+```
+pdf(paste0("update_single_tissue_simu_rank_scatter_my_h",my_h,".pdf"))
+ggplot(mydata, aes(x=originalranking, y=subs)) +
+  geom_point(shape=19, fill="#56B4E9", color="#56B4E9", size=3)+
+  geom_smooth(method=lm, se=FALSE, fullrange=TRUE,color="tomato1")+
+  theme_bw(base_size=25)+
+  labs(title=paste0("sigmal strength: ",my_h),
+       x="Tissue ranks in the original dataset", y = "Tissue ranks in perturbed dataset")
+dev.off()
+
+```
+
+##### line plot
+```
+
+#--------------------------
+pdf(paste0("update_single_tissue_simu_reproducibility_my_h",my_h,".pdf"))
+ggplot(topss, aes(x=tis, y=reproducibility)) +
+  geom_point(shape=19, fill="hotpink1", color="hotpink1", size=3)+
+  geom_line() +
+  #geom_smooth(method=lm, se=FALSE, fullrange=TRUE,color="tomato1")+
+  theme_bw(base_size=25)+
+  ylim(0,1)+
+  labs(title=paste0("Signal strength: ",my_h),
+       x="Tissue ranks in the original dataset", y = "Reproducibility")
+dev.off()
+
+#--------------------------
+#  y: #eQTLs, x: #PCs
+PC = c(0,  5, 10, 15, 20)
+nG = PC_eQTL
+nPC = length(PC)
+pdf("eSNP_vs_PC_AA.pdf", 4,3)
+plot(0, 0, xlim=c(0, 20), ylim=c(0, 600000), type="n", xlab="Number of Genotype PCs", ylab="Number of eSNPs", main="",cex.lab=1.2)
+abline(v=seq(0, 20, 5), lty=2, col="lightgrey")
+abline(h=seq(0, 600000, 50000), lty=2, col="lightgrey")
+points(PC, nG, type="o", col=COL[2], pch=20, lwd=2)
+#legend("bottomright", legend=c("eQTLs vs PCs at 5% FDR in African American"), fill=c(COL[1], "grey"), bg="white", cex=1.2)
+dev.off()
 
 
 ```
+
+
