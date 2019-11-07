@@ -21,6 +21,7 @@ dev.off()
 
 ##### boxplot
 ```
+#-----
 pdf(paste0("Number_independent_eQTL_vs_ratio_boxplot_AA.pdf"),width=6, height=6)
 p <- ggplot(dat, aes(x = num, y = pve )) +
         geom_boxplot(alpha = 0.8,fill = "cornflowerblue") + 
@@ -39,6 +40,28 @@ p <- ggplot(dat, aes(x = num, y = pve )) +
         #facet_grid(. ~ Method)
 p
 dev.off()
+
+#-----
+
+dat = data.frame(Method, ranking, Tissue, Tissue_types)
+pdf(paste0(disease,"_grid_A1.pdf"),width=5, height=5)
+p10 <- ggplot(dat, aes(x = Tissue_types, y = ranking, fill = Tissue_types)) +
+        geom_boxplot(alpha = 0.7) +scale_fill_manual(values=c("skyblue2","seagreen3"))+
+        scale_y_continuous(name = "Rank of Tissues",
+                           breaks = seq(0, 40, 5),
+                           limits=c(0, 40)) +
+        scale_x_discrete(name = " ") +
+        ggtitle(paste0(disease_name[i])) +
+        theme_bw() +
+        theme(plot.title = element_text(size = 20,  face = "bold"),
+              text = element_text(size = 20),
+              axis.title = element_text(face="bold"),
+              axis.text.x=element_text(size = 15) ,
+              legend.position = "bottom") +
+        facet_grid(. ~ Method)
+p10
+dev.off()
+
 
 ```
 ##### histogram
@@ -141,4 +164,43 @@ dev.off()
 
 ```
 
+##### heatmap
+```
+mapDrugToColor<-function(annotations){
+    colorsVector = ifelse(annotations["category"]=="Others", 
+        "blue", ifelse(annotations["category"]=="Brain related", 
+        "green", "red"))
+    return(colorsVector)
+}
+   
+testHeatmap3<-function(logCPM, annotations) {    
+    sampleColors = mapDrugToColor(annotations)
+    
+    # Assign just column annotations
+    heatmap3(logCPM, margins=c(16,16), ColSideColors=sampleColors,scale="none") 
+    # Assign column annotations and make a custom legend for them
+    heatmap3(logCPM, margins=c(16,16), ColSideColors=sampleColors, scale="none",
+        legendfun=function()showLegend(legend=c("Others", 
+        "Brain related", "Colon related"), col=c("blue", "green", "red"), cex=1))
+    
+    # Assign column annotations as a mini-graph instead of colors,
+    # and use the built-in labeling for them
+    ColSideAnn<-data.frame(Drug=annotations[["category"]])
+    heatmap3(logCPM,ColSideAnn=ColSideAnn,
+        ColSideFun=function(x)showAnn(x),
+        ColSideWidth=0.8)
+}
+
+category = c(rep("Others",6),rep("Brain related",3),rep("Others",3),"Colon related", 
+"Colon related", rep("Others",16),"Colon related","Others","Colon related",rep("Others",5))
+
+gAnnotationData = data.frame(tissue_name, category)
+gLogCpmData = a
+
+pdf("Tissue_GTEx_heatmap_unscaled.pdf",width=7, height=7)
+diag(gLogCpmData)=1    
+testHeatmap3(gLogCpmData, gAnnotationData)
+dev.off()
+
+```
 
