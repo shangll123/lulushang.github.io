@@ -12,16 +12,19 @@ pdf(paste0("Number_independent_eQTL_vs_ratio_violinplot_EA.pdf"),width=10, heigh
 dp <- ggplot(dat, aes(x=num, y=pve)) + 
   geom_violin(trim=FALSE)+
   geom_boxplot(width=0.1, fill="white")+
-  labs(title="European American",x="Number of independent eQTLs", y = "Ratio of indep eQTLs-PVE / cis-PVE")
-dp + scale_fill_brewer(palette="RdBu") + theme_minimal(base_size = 22)
+  labs(title="European American",x="Number of independent eQTLs", y = "Ratio of indep eQTLs-PVE / cis-PVE")+
+  scale_fill_brewer(palette="RdBu") + 
+  theme_minimal(base_size = 22)
+dp
 dev.off()
 ```
 
 ##### boxplot
 ```
 pdf(paste0("Number_independent_eQTL_vs_ratio_boxplot_AA.pdf"),width=6, height=6)
-p10 <- ggplot(dat, aes(x = num, y = pve )) +
-        geom_boxplot(alpha = 0.8,fill = "cornflowerblue") + #scale_fill_manual(values=c("chocolate1","seagreen3"))+
+p <- ggplot(dat, aes(x = num, y = pve )) +
+        geom_boxplot(alpha = 0.8,fill = "cornflowerblue") + 
+        scale_fill_manual(values=c("chocolate1","seagreen3"))+
         scale_y_continuous(name = "Ratio of indep eQTLs-PVE / cis-PVE",
                            #breaks = seq(0, 9, 1),
                            limits=c(0, 1)) +
@@ -34,7 +37,7 @@ p10 <- ggplot(dat, aes(x = num, y = pve )) +
               axis.text.x=element_text(size = 18) ,
               legend.position = "bottom")# +
         #facet_grid(. ~ Method)
-p10
+p
 dev.off()
 
 ```
@@ -69,7 +72,6 @@ dev.off()
 
 df = data.frame("State" = statenames,"Percentage" = statenum)
 library(ggplot2)
-
 pdf("Pie_state.pdf",width=8, height=8)
 pie = ggplot(df, aes(x="", y=Percentage, fill=State)) + geom_bar(stat="identity", width=1)
 pie = pie + coord_polar("y", start=0) + geom_text(aes(label = paste0(round(Percentage*100), "%")), position = position_stack(vjust = 0.5))
@@ -104,7 +106,7 @@ pdf(paste0("update_single_tissue_simu_reproducibility_my_h",my_h,".pdf"))
 ggplot(topss, aes(x=tis, y=reproducibility)) +
   geom_point(shape=19, fill="hotpink1", color="hotpink1", size=3)+
   geom_line() +
-  #geom_smooth(method=lm, se=FALSE, fullrange=TRUE,color="tomato1")+
+  geom_smooth(method=lm, se=FALSE, fullrange=TRUE,color="tomato1")+
   theme_bw(base_size=25)+
   ylim(0,1)+
   labs(title=paste0("Signal strength: ",my_h),
