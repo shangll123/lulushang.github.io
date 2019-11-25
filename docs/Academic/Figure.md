@@ -5,7 +5,7 @@ parent: Academic
 nav_order: 4
 ---
 
-##### violin plot 
+## violin plot 
 
 ```
 pdf(paste0("Number_independent_eQTL_vs_ratio_violinplot_EA.pdf"),width=10, height=6)
@@ -19,7 +19,7 @@ dp
 dev.off()
 ```
 
-##### boxplot
+## boxplot
 ```
 #-----
 pdf(paste0("Number_independent_eQTL_vs_ratio_boxplot_AA.pdf"),width=6, height=6)
@@ -64,7 +64,7 @@ dev.off()
 
 
 ```
-##### histogram
+## histogram
 
 ```
 
@@ -77,7 +77,7 @@ ggplot(df, aes(x=df[,k])) +
    labs(title=paste0(num_variable[k]),x=paste0(num_variable[k]), y = "Count")
 dev.off()
 ```
-##### density plot
+## density plot
 ```
 
 pdf("density_eqtl_EU_200kb.pdf")
@@ -89,7 +89,7 @@ dev.off()
 
 
 ```
-##### barplot
+## barplot
 ```
 pdf("Overlap_3methods_mouseOB.pdf",width=14, height=8)
 ggplot(data=dat, aes(x=topcount, y=count, fill=method)) +
@@ -101,7 +101,7 @@ ggplot(data=dat, aes(x=topcount, y=count, fill=method)) +
 dev.off()
 ```
 
-##### pie plot
+## pie plot
 
 ```
 
@@ -120,7 +120,7 @@ pie
 dev.off()         
 ```
 
-##### scatter plot
+## scatter plot
 ```
 pdf(paste0("update_single_tissue_simu_rank_scatter_my_h",my_h,".pdf"))
 ggplot(mydata, aes(x=originalranking, y=subs)) +
@@ -133,7 +133,7 @@ dev.off()
 
 ```
 
-##### line plot
+## line plot
 ```
 
 #--------------------------
@@ -164,7 +164,7 @@ dev.off()
 
 ```
 
-##### heatmap
+## heatmap
 ```
 mapDrugToColor<-function(annotations){
     colorsVector = ifelse(annotations["category"]=="Others", 
@@ -203,4 +203,28 @@ testHeatmap3(gLogCpmData, gAnnotationData)
 dev.off()
 
 ```
+## QQ plot
+https://uw-gac.github.io/topmed_workshop_2017/association-tests.html#association-testing-with-aggregate-units
+```
+library(ggplot2)
+qqPlot <- function(pval) {
+    pval <- pval[!is.na(pval)]
+    n <- length(pval)
+    x <- 1:n
+    dat <- data.frame(obs=sort(pval),
+                      exp=x/n,
+                      upper=qbeta(0.025, x, rev(x)),
+                      lower=qbeta(0.975, x, rev(x)))
+    
+    ggplot(dat, aes(-log10(exp), -log10(obs))) +
+        geom_line(aes(-log10(exp), -log10(upper)), color="gray") +
+        geom_line(aes(-log10(exp), -log10(lower)), color="gray") +
+        geom_point() +
+        geom_abline(intercept=0, slope=1, color="red") +
+        xlab(expression(paste(-log[10], "(expected P)"))) +
+        ylab(expression(paste(-log[10], "(observed P)"))) +
+        theme_bw()
+}    
 
+qqPlot(assoc$Wald.pval)
+```
