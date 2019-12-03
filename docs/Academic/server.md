@@ -344,6 +344,14 @@ Finally restart slurmd on each of the three machines:
 systemctl restart slurmd
 ```
 
+# when the firewall ufw is blocking traffic from the compute node and slurmctld/slurmd are not active
+
+on master:
+```
+systemctl start slurmctld
+sudo ufw allow from xxx.xxx.9.xx
+sudo ufw allow from xxx.xxx.11.xxx
+```
 
 ##### Just figured out how to send message across the server to another user
 ```
