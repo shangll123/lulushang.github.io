@@ -28,6 +28,7 @@ nav_order: 1
 
 ## Install the Package
 ```R
+# (Need to make sure the R package "Rcpp" is already installed.)
 # Install devtools if necessary
 install.packages('devtools')
 # Install CoCoNet
