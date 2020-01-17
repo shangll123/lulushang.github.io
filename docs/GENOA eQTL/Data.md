@@ -16,7 +16,7 @@ Description of the file format, all analysis code and scripts used in the paper 
 The gene expression data used in this analysis is available at the Gene Expression Omnibus (GEO Study Accession: [GSE138914](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE138914) for AA; [GSE49531](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE49531) for EA).
 
 ### - SNP data
-The SNP data is available from the Database of Genotypes and Phenotypes (dbGaP Study Accession: phs001238.v2.p1). 
+The SNP data is available from the Database of Genotypes and Phenotypes (dbGaP Study Accession: [phs001238.v2.p1](https://www.ncbi.nlm.nih.gov/projects/gap/cgi-bin/study.cgi?study_id=phs001238.v2.p1)). 
 
 Data can also be obtained from the corresponding author on reasonable request.
 
