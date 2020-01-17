@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Upload R package to github
-parent: Academic
+parent: Notes
 nav_order: 3
 ---
 
