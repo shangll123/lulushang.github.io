@@ -5,18 +5,9 @@ parent: GENOA eQTL
 nav_order: 1
 ---
 
-<!--- [_config.yml]({{ site.baseurl }}/images/config.png)--->
 
-<!--- <img src="https://latex.codecogs.com/svg.latex?\Large&space;x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />--->
 
-<!--- <img src="https://latex.codecogs.com/svg.latex?\sum&space;\bigcup_{1}^{n}\overleftarrow{abc}" title="\sum \bigcup_{1}^{n}\overleftarrow{abc}" /> --->
-
-<!--- <img align="left" src="/images/CoCoNet_Figure/Figure1.tiff" alt="drawing" width="300"/> --->
-
-<!---<img align="left" src="/images/coconetmain.tiff" alt="drawing" width="800"/>--->
-<img align="left" src="/images/Figure1.png" alt="drawing" width="1500"/>
-
-<!---![Example figure](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/Figure1.png)--->
+<img align="left" src="/images/genoafigure/Figure1.png" alt="drawing" width="1500"/>
 
 
 
@@ -26,22 +17,6 @@ nav_order: 1
 ##### **CoCoNet** incorporates tissue-specific gene co-expression networks constructed from either bulk or single cell RNA sequencing (RNAseq) studies with GWAS data for trait-tissue inference. In particular, CoCoNet relies on a covariance regression network model to express gene-level effect sizes for the given GWAS trait as a function of the tissue-specific co-expression adjacency matrix. With a composite likelihood-based inference algorithm, CoCoNet is scalable to tens of thousands of genes. 
 
 
-## Install the Package
-```R
-# (Need to make sure the R package "Rcpp" is already installed.)
-# Install devtools if necessary
-install.packages('devtools')
-# Install CoCoNet
-devtools::install_github('xzhoulab/CoCoNet')
-# Load the package
-library(CoCoNet)
-
-# For windows users: 
-# Try "install.packages('devtools',type = "win.binary")" if you have problems with installing devtools on windows.
-# For mac users:
-# This package requires Rcpp and RcppArmadillo as dependencies, which require Xcode or other compilers.
-
-```
 
 ## Example: GTEx tissues in GWAS trait BIPSCZ
 
