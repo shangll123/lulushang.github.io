@@ -1,9 +1,9 @@
 ---
 layout: default
-title: Academic
+title: Notes
 nav_order: 2
 has_children: true
-permalink: /docs/Academic
+permalink: /docs/Notes
 ---
 
 
