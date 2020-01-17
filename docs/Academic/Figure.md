@@ -1,7 +1,7 @@
 ---
 layout: default
-title: ggplot figures
-parent: Academic
+title: Make figures
+parent: Notes
 nav_order: 4
 ---
 
