@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Server maintenance
-parent: Academic
+parent: Notes
 nav_order: 1
 ---
 
