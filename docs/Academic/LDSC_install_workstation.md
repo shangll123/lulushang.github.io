@@ -1,7 +1,7 @@
 ---
 layout: default
 title: LDSC installation on workstations
-parent: Academic
+parent: Notes
 nav_order: 2
 ---
 
