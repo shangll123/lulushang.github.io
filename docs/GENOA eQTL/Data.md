@@ -23,4 +23,4 @@ Data can also be obtained from the corresponding author on reasonable request.
 
 ## Citations
 
-Lulu Shang*, Jennifer A. Smith*, Wei Zhao, Minjung Kho, Stephen T. Turner, Thomas H. Mosley, Sharon L.R. Kardia†, Xiang Zhou† (2020). Contrasting the genetic architecture underlying gene expression levels in European Americans and African Americans: An eQTL mapping study in GENOA. (Under review)
+Lulu Shang\*, Jennifer A. Smith\*, Wei Zhao, Minjung Kho, Stephen T. Turner, Thomas H. Mosley, Sharon L.R. Kardia†, Xiang Zhou† (2020). Contrasting the genetic architecture underlying gene expression levels in European Americans and African Americans: An eQTL mapping study in GENOA. (Under review)
