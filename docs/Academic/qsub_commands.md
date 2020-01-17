@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Qsub commands
-parent: Academic
+parent: Notes
 nav_order: 5
 ---
 
