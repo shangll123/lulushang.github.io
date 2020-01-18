@@ -16,5 +16,3 @@ My name is Lulu Shang. I am a second-year Ph.D. student in the Department of Bio
 ##### - M.S., Biostatistics, University of Michigan, 2018
 ##### - B.S., Biology, Zhiyuan College, Shanghai Jiao Tong University, 2016
 
-
-
