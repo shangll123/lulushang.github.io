@@ -6,8 +6,9 @@ has_children: true
 permalink: /docs/Aboutme
 ---
 
+<img align="left" src="/images/headphoto.jpeg" alt="drawing" width="80"/> 
+My name is Lulu Shang. I am a second-year Ph.D. student in the Department of Biostatistics, University of Michigan, advised by Prof. Xiang Zhou.
 
-##### My name is Lulu Shang. I am a second-year Ph.D. student in the Department of Biostatistics, University of Michigan, advised by Prof. Xiang Zhou.
 
 #### Education
 
