@@ -9,9 +9,11 @@ permalink: /docs/GENOAeQTL
 
 {: .fs-6 .fw-300 }
 
+## About this project
+
 ### Contrasting the genetic architecture underlying gene expression levels in European Americans and African Americans: An eQTL mapping study in GENOA.
 
-#### About this project
+
 
 * Most existing expression quantitative trait locus (eQTL) mapping studies have been focused on individuals of European ancestry, but are underrepresented in other populations including populations with African ancestry. 
 
