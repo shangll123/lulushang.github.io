@@ -7,7 +7,7 @@ nav_order: 4
 
 ## violin plot 
 
-```
+```R
 pdf(paste0("Number_independent_eQTL_vs_ratio_violinplot_EA.pdf"),width=10, height=6)
 dp <- ggplot(dat, aes(x=num, y=pve)) + 
   geom_violin(trim=FALSE)+
@@ -20,7 +20,7 @@ dev.off()
 ```
 
 ## boxplot
-```
+```R
 #-----
 pdf(paste0("Number_independent_eQTL_vs_ratio_boxplot_AA.pdf"),width=6, height=6)
 p <- ggplot(dat, aes(x = num, y = pve )) +
@@ -66,7 +66,7 @@ dev.off()
 ```
 ## histogram
 
-```
+```R
 
 pdf(paste0("Histogram_",num_variable[k],".pdf"),width=8, height=8)
 ggplot(df, aes(x=df[,k])) +
@@ -90,7 +90,7 @@ dev.off()
 
 ```
 ## barplot
-```
+```R
 pdf("Overlap_3methods_mouseOB.pdf",width=14, height=8)
 ggplot(data=dat, aes(x=topcount, y=count, fill=method)) +
   geom_bar(stat="identity", position=position_dodge())+
@@ -103,7 +103,7 @@ dev.off()
 
 ## pie plot
 
-```
+```R
 
 df = data.frame("State" = statenames,"Percentage" = statenum)
 library(ggplot2)
@@ -121,7 +121,7 @@ dev.off()
 ```
 
 ## scatter plot
-```
+```R
 pdf(paste0("update_single_tissue_simu_rank_scatter_my_h",my_h,".pdf"))
 ggplot(mydata, aes(x=originalranking, y=subs)) +
   geom_point(shape=19, fill="#56B4E9", color="#56B4E9", size=3)+
@@ -134,7 +134,7 @@ dev.off()
 ```
 
 ## line plot
-```
+```R
 
 #--------------------------
 pdf(paste0("update_single_tissue_simu_reproducibility_my_h",my_h,".pdf"))
@@ -165,7 +165,7 @@ dev.off()
 ```
 
 ## heatmap
-```
+```R
 mapDrugToColor<-function(annotations){
     colorsVector = ifelse(annotations["category"]=="Others", 
         "blue", ifelse(annotations["category"]=="Brain related", 
@@ -205,7 +205,7 @@ dev.off()
 ```
 ## QQ plot
 https://uw-gac.github.io/topmed_workshop_2017/association-tests.html#association-testing-with-aggregate-units
-```
+```R
 library(ggplot2)
 qqPlot <- function(pval) {
     pval <- pval[!is.na(pval)]
@@ -233,7 +233,7 @@ qqPlot(assoc$Wald.pval)
 I modified the codes from https://genome.sph.umich.edu/wiki/Code_Sample:_Generating_QQ_Plots_in_R
 
 so that the points won't be along the y-axis when we observe many small p values 
-```
+```R
 library(lattice)
 qqunif.plot<-function(pvalues, 
 	should.thin=T, thin.obs.places=2, thin.exp.places=2, 
