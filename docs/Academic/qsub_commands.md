@@ -32,3 +32,42 @@ qdel `seq -f "%.0f" 735911 735932`
 ```
 To be continued...
 
+##### request storage
+```
+qlogin -l vf=10g
+
+qlogin -q skardia_lab.q
+
+```
+##### quit screen
+```
+screen -X -S 12345 quit
+```
+
+
+##### zip & unzip
+```
+tar -xvzf XXX.tar.gz
+tar -xvf xxx.tar 
+tar -xvjf guitar_songs.tar.bz2
+
+gunzip xxx.txt.gz
+unzip squash.zip
+
+bzip2 -d xxx.bz2
+bzip2 -d -v xxx.bz2
+bzip2 -d -k xxx.bz2
+bunzip2 xxx.bz2
+
+```
+
+##### use R
+```
+/usr/local/mbni/garage/skardia_lab/R-3.4.1/bin/R
+
+```
+
+##### check folder size
+```
+du -sh folder
+```
