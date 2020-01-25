@@ -251,7 +251,15 @@ rownames(mat) = colnames(TF_gene_mat)
 colnames(mat) = colnames(TF_gene_mat)					 
 save(mat, file = paste0("Coconet_cell_",i,".RData"))
 }				 
-				 				 
+
+
+# above is weighted network, make it symmetric and binary
+load(paste0("Coconet_cell_",i,".RData"))
+mat = Matrix::forceSymmetric(mat)
+mat = (mat>0)*1
+diag(mat)=0
+
+
 ```				 
 
 
