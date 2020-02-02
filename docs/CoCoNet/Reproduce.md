@@ -11,7 +11,7 @@ nav_order: 2
 
 ##### Set workpath
 
-```
+```R
 workpath = "~path/coconet_cell/panda"
 ```
 
@@ -728,7 +728,7 @@ dev.off()
 ```
 
 Plot ranking of cell types
-```
+```R
 #----------------------
 # Cell likelihood ranking
 #----------------------
@@ -857,7 +857,7 @@ dev.off()
 
 
 Plot heatmap of cell types measured by Jaccard Index
-```
+```R
 #---------------------------------
 # Cells - same cell type combined
 #---------------------------------
