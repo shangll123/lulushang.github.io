@@ -375,6 +375,13 @@ for(xx in 1:length(index1)){
 save(mat, file = paste0("mat_weighted_tissue_",j,".RData"))
 
 }
+
+# above is weighted network, make it symmetric and binary
+load(paste0("mat_weighted_tissue_",j,".RData"))
+mat = Matrix::forceSymmetric(mat)
+mat = (mat>0)*1
+diag(mat)=0
+
 ```
 
 # Section 3: gene effect size estimation
