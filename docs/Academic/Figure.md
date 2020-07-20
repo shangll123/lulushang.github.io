@@ -203,6 +203,74 @@ testHeatmap3(gLogCpmData, gAnnotationData)
 dev.off()
 
 ```
+
+## heatmap change margin size and color
+```R
+library(BiRewire)
+library(corrplot)
+library(heatmap3)
+
+#---------------------------------
+# Tissues 
+#---------------------------------
+
+load("tissue_net.RData")
+load("tissue_name.RData")
+Tissue_network = tissue_net
+
+# calculate Jaccard Index between each pair of tissues
+
+a = matrix(0,38,38)
+for(i in 1:38){
+	for(j in (i+1):38){
+		a[i,j] = birewire.similarity( Tissue_network[[i]],Tissue_network[[j]])
+		a[j,i] = a[i,j]
+	}
+	print(i)
+	print(a[i,])
+}
+colnames(a) = tissue_name
+rownames(a) = tissue_name
+
+# use heatmap3
+mapDrugToColor<-function(annotations){
+    colorsVector = ifelse(annotations["category"]=="Others", 
+        "blue", ifelse(annotations["category"]=="Brain related", 
+        "green", "red"))
+    return(colorsVector)
+}
+testHeatmap3<-function(logCPM, annotations) {    
+    sampleColors = mapDrugToColor(annotations)
+    
+    # Assign just column annotations
+    heatmap3(logCPM, margins=c(10,10), ColSideColors=sampleColors,scale="none",col = colorRampPalette(c("firebrick", "yellow", "white"))(1024)) 
+    # Assign column annotations and make a custom legend for them
+    heatmap3(logCPM, margins=c(10,10), ColSideColors=sampleColors, scale="none",col = colorRampPalette(c("firebrick", "yellow", "white"))(1024),
+        legendfun=function()showLegend(legend=c("Others", 
+        "Brain related", "Colon related"), col=c("blue", "green", "red"), cex=1))
+    
+    # Assign column annotations as a mini-graph instead of colors,
+    # and use the built-in labeling for them
+    ColSideAnn<-data.frame(Drug=annotations[["category"]])
+    heatmap3(logCPM,ColSideAnn=ColSideAnn,
+        ColSideFun=function(x)showAnn(x),
+        margins=c(10,10),
+        ColSideWidth=0.8)
+}
+category = c(rep("Others",6),rep("Brain related",3),rep("Others",3),"Colon related", 
+"Colon related", rep("Others",16),"Colon related","Others","Colon related",rep("Others",5))
+gAnnotationData = data.frame(tissue_name, category)
+gLogCpmData = a
+pdf("Tissue_GTEx_heatmap_unscaled.pdf",width=8, height=8)
+diag(gLogCpmData)=1    
+testHeatmap3(gLogCpmData, gAnnotationData)
+dev.off()
+
+
+
+
+```
+
 ## QQ plot
 https://uw-gac.github.io/topmed_workshop_2017/association-tests.html#association-testing-with-aggregate-units
 ```R
