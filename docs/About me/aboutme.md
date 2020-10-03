@@ -11,7 +11,7 @@ permalink: /docs/Aboutme
 
 
 ---
-##### My name is Lulu Shang. I am a second-year Ph.D. student in the Department of Biostatistics, University of Michigan, advised by Prof. [Xiang Zhou](http://xzlab.org).  
+##### My name is Lulu Shang. I am a third-year Ph.D. student in the Department of Biostatistics, University of Michigan, advised by Prof. [Xiang Zhou](http://xzlab.org).  
 ---
 
   
