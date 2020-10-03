@@ -7,7 +7,7 @@ permalink: /docs/Aboutme
 ---
 
 
-<img align="left" src="/images/myheadphoto.jpeg" alt="drawing" width="100"/>      
+<img align="left" src="/images/lulu.jpeg" alt="drawing" width="100"/>      
 
 
 ---
