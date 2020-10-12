@@ -5,7 +5,7 @@ parent: Notes
 nav_order: 3
 ---
 
-##### First make a R package:
+##### First make an R package:
 
 ```
 library(Rcpp)
@@ -36,8 +36,8 @@ lulushang@master:~/Projects/course/hyun815/hw1/biostat815hw1$ git add .
 ```
 
 ```
-lulushang@master:~/Projects/course/hyun815/hw1/biostat815hw1$ git config --global user.email "shanglu@umich.edu"
-lulushang@master:~/Projects/course/hyun815/hw1/biostat815hw1$ git config --global user.name "shangll123"
+lulushang@master:~/Projects/course/hyun815/hw1/biostat815hw1$ git config --global user.email "youremail@xxx.edu"
+lulushang@master:~/Projects/course/hyun815/hw1/biostat815hw1$ git config --global user.name "yourname"
 ```
 
 Now we can write the first commit
