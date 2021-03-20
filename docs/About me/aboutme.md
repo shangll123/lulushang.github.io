@@ -21,3 +21,7 @@ permalink: /docs/Aboutme
 ##### - M.S., Biostatistics, University of Michigan, 2018
 ##### - B.S., Biology, Zhiyuan College, Shanghai Jiao Tong University, 2016
 
+
+
+[Twitter](https://twitter.com/shang_lulu)
+[Google Scholar](https://scholar.google.com/citations?user=tkt5ZOYAAAAJ&hl=zh-CN&authuser=1)
