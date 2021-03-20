@@ -14,4 +14,4 @@ permalink: /docs/GENOAeQTL
 ### Contrasting the genetic architecture underlying gene expression levels in European Americans and African Americans: An eQTL mapping study in GENOA.
 
 
-
+<img align="left" src="/images/eqtl.jpg" alt="drawing" width="500"/>  
