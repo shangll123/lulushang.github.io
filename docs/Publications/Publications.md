@@ -8,7 +8,8 @@ permalink: /docs/Publications
 
 {: .fs-6 .fw-300 }
 
-•	**Lulu Shang** , Jennifer A. Smith, Xiang Zhou (2020). ```diff 
+•	**Lulu Shang** , Jennifer A. Smith, Xiang Zhou (2020). 
+```diff 
 + Leveraging Gene Co-expression Patterns to Infer Trait-Relevant Tissues in Genome-wide Association Studies. Published in PLOS Genetics
 + ```.<br />
 [PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/LuluShang_PlosGenetics2020.pdf){: .btn .btn-purple }
