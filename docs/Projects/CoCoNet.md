@@ -1,9 +1,10 @@
 ---
 layout: default
 title: CoCoNet
-nav_order: 5
+nav_order: 1
 has_children: true
-permalink: /docs/CoCoNet
+parent: Projects
+permalink: /docs/Projects/CoCoNet
 ---
 
 
