@@ -11,7 +11,7 @@ permalink: /docs/Resources/Server
 
 
 ## Three machines
-```
+```bash
 master
 comp1
 comp2
@@ -21,7 +21,7 @@ comp2
 not only authorized_keys need to be consistent, but also known_hosts
 
 ## Mount hard disk and build NFS system
-```
+```bash
 root@master:~# mount  /dev/mapper/fileserver-xzlab /home
 
 root@master:/# cat /etc/exports
@@ -46,11 +46,11 @@ root@comp2:~# mount xxx.xxx.10.xxx1:/home/ /home
 ```
 
 start munge
-```
+```bash
 /etc/init.d/munge start
 ```
 test munge
-```
+```bash
 # test
 munge -n
 # Check if a credential can be locally decoded:
@@ -66,7 +66,7 @@ remunge
 
 when problems show up in munge:
 
-```
+```bash
 
 root@comp1:~# munge -n
 munge: Error: Failed to access "/var/run/munge/munge.socket.2": No such file or directory
@@ -85,12 +85,12 @@ munged --force --syslog
 
 
 start MYSQL
-```
+```bash
 /etc/init.d/mysql restart
 ```
 
 slurmdbd.conf
-```
+```bash
 AuthType=auth/munge
 AuthInfo=/var/run/munge/munge.socket.2
 DbdHost=localhost
@@ -106,7 +106,7 @@ SlurmUser=slurm
 
 
 slurm.conf
-```
+```bash
 ControlMachine=master
 ControlAddr=xxx.xxx.10.xxx1
 #BackupController=
@@ -275,20 +275,20 @@ PartitionName=debug Nodes=comp2 Default=YES MaxTime=INFINITE State=UP
 
 check real memory:
 
-```
+```bash
 free -m
 ```
 
 #######
 
 on all three nodes start slurmd
-```
+```bash
 systemctl start slurmd
 systemctl status slurmd
 systemctl enable slurmd
 ```
 
-```
+```bash
 root@master:~# systemctl restart slurmctld
 root@master:~# systemctl restart slurmd
 root@master:~# scp /etc/slurm-llnl/slurm.conf xzlab@comp1:/etc/slurm-llnl/slurm.conf
@@ -299,7 +299,7 @@ root@master:~# scp /etc/slurm-llnl/slurm.conf xzlab@comp1:/etc/slurm-llnl/slurm.
 
 Example: when comp1 is drained, use root, copy the following lines on master machine
 
-```
+```bash
 scontrol update NodeName=comp1 State=DOWN Reason="undraining"
 scontrol update NodeName=comp1 State=RESUME
 scontrol show node comp1
@@ -313,54 +313,54 @@ sinfo
 
 ## After restarting, if NFS doesn't work well,
 or clients show "mount.nfs: Stale file handle" error:
-```
+```bash
 root@comp1:~# mount xxx.xxx.10.xxx1:/home/ /home
 root@comp2:~# mount xxx.xxx.10.xxx1:/home/ /home
 ```
 Or edit /etc/fstab by adding one line:
-```
+```bash
 xxx.xxx.10.xxx1:/home       /home   nfs4    _netdev,defaults,nosuid,proto=tcp,auto  0       0
 ```
 Then restart NFS
-```
+```bash
 /etc/init.d/nfs-kernel-server restart
 (first on master then on two clients)
 ```
 
 ## After restarting the machine:
 First restart munge on master, comp1, and comp2 respectively:
-```
+```bash
 /etc/init.d/munge start
 ```
 Then restart mysql on each of the three machines:
-```
+```bash
 /etc/init.d/mysql restart
 ```
 Next restart slurmctld on master:
-```
+```bash
 systemctl restart slurmctld
 ```
 Finally restart slurmd on each of the three machines:
-```
+```bash
 systemctl restart slurmd
 ```
 
 # when the firewall ufw is blocking traffic from the compute node and slurmctld/slurmd are not active
 
 on master:
-```
+```bash
 systemctl start slurmctld
 sudo ufw allow from xxx.xxx.9.xx
 sudo ufw allow from xxx.xxx.11.xxx
 ```
 
 ##### Just figured out how to send message across the server to another user
-```
+```bash
 lulushang@master:~# who
 lulushang pts/4        2019-06-06 15:15 (xx.x.xxx.xxx)
 ```
 ##### then you could type like
-```
+```bash
 lulushang@master:~# write lulushang pts/4
 write: write: you have write permission turned off.
 
