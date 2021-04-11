@@ -31,7 +31,7 @@ permalink: /docs/Miscellaneous
 * **MIDAS symposium**, Ann Arbor, MI, 10/2018
 “Identify Trait-relevant Cell Types by Integrating scRNAseq with GWAS.”
 * **MIDAS symposium**, Ann Arbor, MI, 11/2019
-“Leveraging gene co-expression pattern to infer trait-relevant tissues in genome-wide association studies.” **Winner of “Most Interesting Methodological Advancement” Poster Award**.
+“Leveraging gene co-expression pattern to infer trait-relevant tissues in genome-wide association studies.” Winner of “Most Interesting Methodological Advancement” Poster Award.
 
 ### Honors
 * 2020 Excellence in Research Honorable Mention, Department of Biostatistics, University of Michigan, 11/2020
