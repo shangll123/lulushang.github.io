@@ -24,7 +24,7 @@ permalink: /docs/Miscellaneous
 	* **Center for Statistical Genetics**, Department of Biostatistics, University of Michigan<br />
 	“Leveraging gene co-expression pattern to infer trait-relevant tissues in genome-wide association studies”, 09/2019
 	* **Michigan Institute for Data Science (MIDAS)** single cell working group<br />
-		*Research Talk: “Leveraging gene co-expression pattern to infer trait-relevant tissues in genome-wide association studies”, 06/2019
+		* Research Talk: “Leveraging gene co-expression pattern to infer trait-relevant tissues in genome-wide association studies”, 06/2019
  		* Journal Club: “Deep generative modeling for single-cell transcriptomics”, 01/2018 	<br />
 
 ### Posters
