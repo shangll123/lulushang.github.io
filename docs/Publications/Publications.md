@@ -32,7 +32,7 @@ Published in the Journal of Nutrition.<br />
 
 *	<img align="left" src="/images/paper_icon.png" alt="drawing" width="20"/> **Epigenetic loci for blood pressure are associated with hypertensive target organ damage in older African Americans from the Genetic Epidemiology Network of Arteriopathy (GENOA) study**<br />
 Published in BMC Medical Genomics.<br />
-<img align="left" src="/images/pen.png" alt="drawing" width="20"/>	Minjung Kho, Wei Zhao, Scott M. Ratliff, Farah Ammous, Thomas H. Mosley, **Lulu Shang**, Sharon L.R. Kardia, Xiang Zhou, Jennifer A. Smith (2020). 
+<img align="left" src="/images/pen.png" alt="drawing" width="20"/>	Minjung Kho, Wei Zhao, Scott M. Ratliff, Farah Ammous, Thomas H. Mosley, **Lulu Shang**, Sharon L.R. Kardia, Xiang Zhou, Jennifer A. Smith (2020). <br />
 [PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/MJ_BMC2020.pdf){: .btn .btn-purple }
 [DOI](https://bmcmedgenomics.biomedcentral.com/articles/10.1186/s12920-020-00791-0){: .btn .btn-blue }<br />
 
@@ -50,7 +50,7 @@ Published in BioMed Research International.<br />
 
 *	<img align="left" src="/images/paper_icon.png" alt="drawing" width="20"/> **A review of the statistical methods for identifying trait-relevant tissues and cell types** <br />
 Published in Frontiers in Genetics.<br />
-<img align="left" src="/images/pen.png" alt="drawing" width="20"/> Huanhuan Zhu*, **Lulu Shang** \*, Xiang Zhou (2020). 
+<img align="left" src="/images/pen.png" alt="drawing" width="20"/> Huanhuan Zhu*, **Lulu Shang** \*, Xiang Zhou (2020). <br />
 [PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/HuanhuanZhu_Frontiers2021.pdf){: .btn .btn-purple }
 [DOI](https://www.frontiersin.org/articles/10.3389/fgene.2020.587887/full){: .btn .btn-blue }<br />
 
