@@ -13,7 +13,7 @@ permalink: /docs/Miscellaneous
 * International Conference Platform Talks
 	* **American Society of Human Genetics (ASHG) Annual Meeting**, Houston, TX, 10/2019 <br />
 	“Leveraging gene co-expression pattern to infer trait-relevant tissues in genome-wide association studies.”<br />
-	* **American Society of Human Genetics (ASHG) Annual Meeting**, 10/2020<br />
+	* **American Society of Human Genetics (ASHG) Annual Meeting**, Virtual Meeting, 10/2020<br />
 	“Genetic determinants of DNA methylation and gene expression in African Americans: An mQTL mapping study in GENOA”
 * Invited Talks
 	* **Shandong University**, China<br />
