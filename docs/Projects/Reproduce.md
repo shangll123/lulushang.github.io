@@ -4,7 +4,7 @@ title: Reproduce
 nav_order: 2
 has_children: false
 parent: CoCoNet
-/docs/Projects/CoCoNet/Reproduce
+permalink:/docs/Projects/CoCoNet/Reproduce
 ---
 
 
