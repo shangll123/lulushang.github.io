@@ -11,7 +11,7 @@ permalink: /
 
 
 
-***My name is Lulu Shang. I am a third-year Ph.D. student in the Department of Biostatistics, University of Michigan, advised by Prof. [Xiang Zhou](http://xzlab.org). My research interests center around the development and application of statistical and computational methods for genetic and genomic studies such as spatially resolved transcriptomics studies. 
+**My name is Lulu Shang. I am a third-year Ph.D. student in the Department of Biostatistics, University of Michigan, advised by Prof. [Xiang Zhou](http://xzlab.org). My research interests center around the development and application of statistical and computational methods for genetic and genomic studies such as spatially resolved transcriptomics studies. 
 
 
 [Twitter](https://twitter.com/shang_lulu)
