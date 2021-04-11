@@ -10,7 +10,7 @@ permalink: /docs/Miscellaneous
 {: .fs-6 .fw-300 }
 
 ### Talks
-* International Conference Platform Talks
+* ####International Conference Platform Talks
 	* American Society of Human Genetics (ASHG) Annual Meeting, Houston, TX, 10/2019 <br />
 	“Leveraging gene co-expression pattern to infer trait-relevant tissues in genome-wide association studies.”<br />
 	* American Society of Human Genetics (ASHG) Annual Meeting, 10/2020<br />
