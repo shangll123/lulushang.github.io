@@ -4,6 +4,7 @@ title: CoCoNet run
 nav_order: 1
 has_children: false
 parent: CoCoNet
+permalink: /docs/Projects/CoCoNet/CoCoNet_run
 ---
 
 
