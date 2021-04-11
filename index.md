@@ -6,5 +6,11 @@ description: ""
 permalink: /
 ---
 
-![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/costaricaFigures/DSC_0218.jpeg)
+
+<img align="top" src="/images/lulu.jpeg" alt="photo" width="300"/> 
+
+
+
+#### My name is Lulu Shang. I am a third-year Ph.D. student in the Department of Biostatistics, University of Michigan, advised by Prof. [Xiang Zhou](http://xzlab.org). 
+
 
