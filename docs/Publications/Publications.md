@@ -8,15 +8,29 @@ permalink: /docs/Publications
 
 {: .fs-6 .fw-300 }
 
-
-(* authors contributed equally; # co-corresponding authors)
-
-•	**Lulu Shang** , Jennifer A. Smith, Xiang Zhou (2020). [Leveraging Gene Co-expression Patterns to Infer Trait-Relevant Tissues in Genome-wide Association Studies. Published in PLOS Genetics](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1008734).<br />
+•	**Lulu Shang** , Jennifer A. Smith, Xiang Zhou (2020). ```diff 
++ Leveraging Gene Co-expression Patterns to Infer Trait-Relevant Tissues in Genome-wide Association Studies. Published in PLOS Genetics
++ ```.<br />
 [PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/LuluShang_PlosGenetics2020.pdf){: .btn .btn-purple }
 [DOI](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1008734){: .btn .btn-blue }
 [Github](https://github.com/xzhoulab/CoCoNet){: .btn .btn-green }<br />
 
-•	**Lulu Shang** \*, Jennifer A. Smith\*, Wei Zhao, Minjung Kho, Stephen T. Turner, Thomas H. Mosley, Sharon L.R. Kardia#, Xiang Zhou# (2020). [Contrasting the genetic architecture underlying gene expression levels in European Americans and African Americans: An eQTL mapping study in GENOA. Published in the American Journal of Human Genetics (AJHG)](https://www.sciencedirect.com/science/article/pii/S0002929720300781?via%3Dihub).<br />
+```diff
+- text in red
++ text in green
+! text in orange
+# text in gray
+@@ text in purple (and bold)@@
+```
+
+(* authors contributed equally; # co-corresponding authors)
+
+•	**Lulu Shang** , Jennifer A. Smith, Xiang Zhou (2020). Leveraging Gene Co-expression Patterns to Infer Trait-Relevant Tissues in Genome-wide Association Studies. Published in PLOS Genetics.<br />
+[PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/LuluShang_PlosGenetics2020.pdf){: .btn .btn-purple }
+[DOI](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1008734){: .btn .btn-blue }
+[Github](https://github.com/xzhoulab/CoCoNet){: .btn .btn-green }<br />
+
+•	**Lulu Shang** \*, Jennifer A. Smith\*, Wei Zhao, Minjung Kho, Stephen T. Turner, Thomas H. Mosley, Sharon L.R. Kardia#, Xiang Zhou# (2020). [Contrasting the genetic architecture underlying gene expression levels in European Americans and African Americans: An eQTL mapping study in GENOA.](https://www.sciencedirect.com/science/article/pii/S0002929720300781?via%3Dihub)Published in the American Journal of Human Genetics (AJHG).<br />
 [PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/LuluShang_AJHG2020.pdf){: .btn .btn-purple }
 [DOI](https://www.sciencedirect.com/science/article/pii/S0002929720300781?via%3Dihub){: .btn .btn-blue }
 [Github](https://github.com/shangll123/GENOA_eQTL)<br />
