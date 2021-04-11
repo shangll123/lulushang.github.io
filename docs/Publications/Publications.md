@@ -11,7 +11,8 @@ permalink: /docs/Publications
 
 (* authors contributed equally; # co-corresponding authors)
 
-* <img align="left" src="/images/paper_icon.png" alt="drawing" width="20"/> **Leveraging Gene Co-expression Patterns to Infer Trait-Relevant Tissues in Genome-wide Association Studies. Published in PLOS Genetics**<br />
+* <img align="left" src="/images/paper_icon.png" alt="drawing" width="20"/> **Leveraging Gene Co-expression Patterns to Infer Trait-Relevant Tissues in Genome-wide Association Studies**. 
+Published in PLOS Genetics.<br />
 <img align="left" src="/images/pen.png" alt="drawing" width="20"/> **Lulu Shang**, Jennifer A. Smith, Xiang Zhou (2020). <br />
 [PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/LuluShang_PlosGenetics2020.pdf){: .btn .btn-purple }
 [DOI](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1008734){: .btn .btn-blue }
@@ -19,7 +20,7 @@ permalink: /docs/Publications
 
 * <img align="left" src="/images/paper_icon.png" alt="drawing" width="20"/> **Contrasting the genetic architecture underlying gene expression levels in European Americans and African Americans: An eQTL mapping study in GENOA**<br />
 Published in the American Journal of Human Genetics (AJHG).<br />
-<img align="left" src="/images/pen.png" alt="drawing" width="20"/> **Lulu Shang** \*, Jennifer A. Smith\*, Wei Zhao, Minjung Kho, Stephen T. Turner, Thomas H. Mosley, Sharon L.R. Kardia#, Xiang Zhou# (2020). <br />
+<img align="left" src="/images/pen.png" alt="drawing" width="20"/> **Lulu Shang**\*, Jennifer A. Smith\*, Wei Zhao, Minjung Kho, Stephen T. Turner, Thomas H. Mosley, Sharon L.R. Kardia#, Xiang Zhou# (2020). <br />
 [PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/LuluShang_AJHG2020.pdf){: .btn .btn-purple }
 [DOI](https://www.sciencedirect.com/science/article/pii/S0002929720300781?via%3Dihub){: .btn .btn-blue }
 [Github](https://github.com/shangll123/GENOA_eQTL){: .btn .btn-green }<br />
@@ -30,28 +31,32 @@ Published in the Journal of Nutrition.<br />
 [DOI](https://academic.oup.com/jn/article-abstract/150/10/2635/5896940?redirectedFrom=fulltext){: .btn .btn-blue }<br />
 
 *	<img align="left" src="/images/paper_icon.png" alt="drawing" width="20"/> **Epigenetic loci for blood pressure are associated with hypertensive target organ damage in older African Americans from the Genetic Epidemiology Network of Arteriopathy (GENOA) study**<br />
-<img align="left" src="/images/pen.png" alt="drawing" width="20"/>	Minjung Kho, Wei Zhao, Scott M. Ratliff, Farah Ammous, Thomas H. Mosley, **Lulu Shang**, Sharon L.R. Kardia, Xiang Zhou, Jennifer A. Smith (2020). Published in BMC Medical Genomics.<br />
+Published in BMC Medical Genomics.<br />
+<img align="left" src="/images/pen.png" alt="drawing" width="20"/>	Minjung Kho, Wei Zhao, Scott M. Ratliff, Farah Ammous, Thomas H. Mosley, **Lulu Shang**, Sharon L.R. Kardia, Xiang Zhou, Jennifer A. Smith (2020). 
 [PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/MJ_BMC2020.pdf){: .btn .btn-purple }
 [DOI](https://bmcmedgenomics.biomedcentral.com/articles/10.1186/s12920-020-00791-0){: .btn .btn-blue }<br />
 
 *	<img align="left" src="/images/paper_icon.png" alt="drawing" width="20"/> **Epigenome-wide Association Study Identifies DNA Methylation Sites Associated with Target Organ Damage in Older African Americans** <br />
-<img align="left" src="/images/pen.png" alt="drawing" width="20"/> Farah Ammous, Wei Zhao, Scott M. Ratliff, Minjung Kho, **Lulu Shang**, Thomas H. Mosley, Lawrence Bielak, Sharon L.R. Kardia, Xiang Zhou, Jennifer A. Smith (2020).  Published in Epigenetics.<br />
+Published in Epigenetics.<br />
+<img align="left" src="/images/pen.png" alt="drawing" width="20"/> Farah Ammous, Wei Zhao, Scott M. Ratliff, Minjung Kho, **Lulu Shang**, Thomas H. Mosley, Lawrence Bielak, Sharon L.R. Kardia, Xiang Zhou, Jennifer A. Smith (2020).  
 [PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/FarahAmmous_Epigenetics2020.pdf){: .btn .btn-purple }
 [DOI](https://www.tandfonline.com/doi/full/10.1080/15592294.2020.1827717){: .btn .btn-blue }<br />
 
 *	<img align="left" src="/images/paper_icon.png" alt="drawing" width="20"/> **Ranking Cancer Proteins by Integrating PPI Network and Protein Expression Profiles** <br />
-<img align="left" src="/images/pen.png" alt="drawing" width="20"/> Jie Ren, **Lulu Shang**, Qing Wang, and Jing Li (2019). <br />
 Published in BioMed Research International.<br />
+<img align="left" src="/images/pen.png" alt="drawing" width="20"/> Jie Ren, **Lulu Shang**, Qing Wang, and Jing Li (2019). <br />
 [PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/Ren_BRI2019.pdf){: .btn .btn-purple }
 [DOI](https://www.hindawi.com/journals/bmri/2019/3907195/){: .btn .btn-blue }<br />
 
 *	<img align="left" src="/images/paper_icon.png" alt="drawing" width="20"/> **A review of the statistical methods for identifying trait-relevant tissues and cell types** <br />
-<img align="left" src="/images/pen.png" alt="drawing" width="20"/> Huanhuan Zhu*, **Lulu Shang** \*, Xiang Zhou (2020). . Published in Frontiers in Genetics.<br />
+Published in Frontiers in Genetics.<br />
+<img align="left" src="/images/pen.png" alt="drawing" width="20"/> Huanhuan Zhu*, **Lulu Shang** \*, Xiang Zhou (2020). 
 [PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/HuanhuanZhu_Frontiers2021.pdf){: .btn .btn-purple }
 [DOI](https://www.frontiersin.org/articles/10.3389/fgene.2020.587887/full){: .btn .btn-blue }<br />
 
 *	<img align="left" src="/images/paper_icon.png" alt="drawing" width="20"/> **Pinpointing miRNA and genes enrichment over trait-relevant tissue network in Genome-Wide Association Studies**<br />
-<img align="left" src="/images/pen.png" alt="drawing" width="20"/>	Binze Li; Julian Dong; Jiaqi Yu; Yuqi Fan; **Lulu Shang**; Xiang Zhou; Yongsheng Bai  (2020).  Published in BMC Medical Genomics.<br />
+Published in BMC Medical Genomics.<br />
+<img align="left" src="/images/pen.png" alt="drawing" width="20"/>	Binze Li; Julian Dong; Jiaqi Yu; Yuqi Fan; **Lulu Shang**; Xiang Zhou; Yongsheng Bai  (2020).  
 [PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/Li_BMC2020.pdf){: .btn .btn-purple }
 [DOI](https://link.springer.com/article/10.1186/s12920-020-00830-w){: .btn .btn-blue }<br />
 
