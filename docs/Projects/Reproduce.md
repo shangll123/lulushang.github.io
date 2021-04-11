@@ -2,7 +2,7 @@
 layout: default
 title: Reproduce
 nav_order: 2
-has_children: false
+has_children: true
 parent: CoCoNet
 permalink: /docs/Projects/CoCoNet/Reproduce
 ---
