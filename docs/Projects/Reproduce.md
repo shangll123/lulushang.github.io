@@ -4,8 +4,10 @@ title: Reproduce
 nav_order: 2
 has_children: false
 parent: CoCoNet
-permalink:/docs/Projects/CoCoNet/Reproduce
+permalink: /docs/Projects/CoCoNet/Reproduce
 ---
+
+
 
 
 #### All of the processed data for the following analysis could be found [here](https://drive.google.com/open?id=1XkyFp8_k1FLoYiaL_PYjYzusYoc8Lwz_).
