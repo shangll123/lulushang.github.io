@@ -11,8 +11,8 @@ permalink: /docs/Publications
 
 (* authors contributed equally; # co-corresponding authors)
 
-* **Leveraging Gene Co-expression Patterns to Infer Trait-Relevant Tissues in Genome-wide Association Studies. Published in PLOS Genetics<br />
-:pencil2: **Lulu Shang** , Jennifer A. Smith, Xiang Zhou (2020). <br />
+* <img align="left" src="/images/paper_icon.png" alt="drawing" width="20"/> **Leveraging Gene Co-expression Patterns to Infer Trait-Relevant Tissues in Genome-wide Association Studies. Published in PLOS Genetics<br />
+<img align="left" src="/images/pen.png" alt="drawing" width="20"/> **Lulu Shang** , Jennifer A. Smith, Xiang Zhou (2020). <br />
 [PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/LuluShang_PlosGenetics2020.pdf){: .btn .btn-purple }
 [DOI](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1008734){: .btn .btn-blue }
 [Github](https://github.com/xzhoulab/CoCoNet){: .btn .btn-green }<br />
