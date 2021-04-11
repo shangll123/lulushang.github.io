@@ -2,7 +2,7 @@
 layout: default
 title: CoCoNet run
 nav_order: 1
-has_children: false
+has_children: true
 parent: CoCoNet
 permalink: /docs/Projects/CoCoNet/CoCoNet_run
 ---
