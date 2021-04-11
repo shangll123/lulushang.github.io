@@ -11,16 +11,16 @@ permalink: /docs/Publications
 
 (* authors contributed equally; # co-corresponding authors)
 
-1. Leveraging Gene Co-expression Patterns to Infer Trait-Relevant Tissues in Genome-wide Association Studies. Published in PLOS Genetics.<br />
+1. **** Leveraging Gene Co-expression Patterns to Infer Trait-Relevant Tissues in Genome-wide Association Studies. Published in PLOS Genetics.<br />
 **Lulu Shang** , Jennifer A. Smith, Xiang Zhou (2020). <br />
 [PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/LuluShang_PlosGenetics2020.pdf){: .btn .btn-purple }
 [DOI](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1008734){: .btn .btn-blue }
 [Github](https://github.com/xzhoulab/CoCoNet){: .btn .btn-green }<br />
 
-•	**Lulu Shang** \*, Jennifer A. Smith\*, Wei Zhao, Minjung Kho, Stephen T. Turner, Thomas H. Mosley, Sharon L.R. Kardia#, Xiang Zhou# (2020). _Contrasting the genetic architecture underlying gene expression levels in European Americans and African Americans: An eQTL mapping study in GENOA_. Published in the American Journal of Human Genetics (AJHG).<br />
+2. **Lulu Shang** \*, Jennifer A. Smith\*, Wei Zhao, Minjung Kho, Stephen T. Turner, Thomas H. Mosley, Sharon L.R. Kardia#, Xiang Zhou# (2020). _Contrasting the genetic architecture underlying gene expression levels in European Americans and African Americans: An eQTL mapping study in GENOA_. Published in the American Journal of Human Genetics (AJHG).<br />
 [PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/LuluShang_AJHG2020.pdf){: .btn .btn-purple }
 [DOI](https://www.sciencedirect.com/science/article/pii/S0002929720300781?via%3Dihub){: .btn .btn-blue }
-[Github](https://github.com/shangll123/GENOA_eQTL)<br />
+[Github](https://github.com/shangll123/GENOA_eQTL){: .btn .btn-green }<br />
 
 •	Minjung Kho, Jennifer A Smith, Niek Verweij, **Lulu Shang**, Kathleen A Ryan, Wei Zhao, Erin B Ware, Ron T Gansevoort, Marguerite R Irvin, Jung Eun Lee, Stephen T Turner, Joohon Sung, Pim van der Harst, Donna K Arnett, Ana Baylin, Sung Kyun Park, Young Ah Seo, Yen Pei C Chang, Xiang Zhou, John C Lieske, Sharon LR Kardia (2020). _Genome-wide meta-analysis identifies suggestive loci for sodium intake, potassium intake, and their ratio measured from 24-hour or half-day urine samples_. Published in the Journal of Nutrition.<br />
 [DOI](https://academic.oup.com/jn/article-abstract/150/10/2635/5896940?redirectedFrom=fulltext){: .btn .btn-blue }<br />
