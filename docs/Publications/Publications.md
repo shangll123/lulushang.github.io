@@ -11,7 +11,8 @@ permalink: /docs/Publications
 
 (* authors contributed equally; # co-corresponding authors)
 
-•	**Lulu Shang** , Jennifer A. Smith, Xiang Zhou (2020). _Leveraging Gene Co-expression Patterns to Infer Trait-Relevant Tissues in Genome-wide Association Studies_. Published in PLOS Genetics.<br />
+1. Leveraging Gene Co-expression Patterns to Infer Trait-Relevant Tissues in Genome-wide Association Studies. Published in PLOS Genetics.<br />
+**Lulu Shang** , Jennifer A. Smith, Xiang Zhou (2020). <br />
 [PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/LuluShang_PlosGenetics2020.pdf){: .btn .btn-purple }
 [DOI](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1008734){: .btn .btn-blue }
 [Github](https://github.com/xzhoulab/CoCoNet){: .btn .btn-green }<br />
@@ -29,20 +30,20 @@ permalink: /docs/Publications
 [DOI](https://bmcmedgenomics.biomedcentral.com/articles/10.1186/s12920-020-00791-0){: .btn .btn-blue }<br />
 
 •	Farah Ammous, Wei Zhao, Scott M. Ratliff, Minjung Kho, **Lulu Shang**, Thomas H. Mosley, Lawrence Bielak, Sharon L.R. Kardia, Xiang Zhou, Jennifer A. Smith (2020). _Epigenome-wide Association Study Identifies DNA Methylation Sites Associated with Target Organ Damage in Older African Americans_. Published in Epigenetics.<br />
-[PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/FarahAmmous_Epigenetics2020.pdf)
-[DOI](https://www.tandfonline.com/doi/full/10.1080/15592294.2020.1827717)<br />
+[PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/FarahAmmous_Epigenetics2020.pdf){: .btn .btn-purple }
+[DOI](https://www.tandfonline.com/doi/full/10.1080/15592294.2020.1827717){: .btn .btn-blue }<br />
 
 •	Jie Ren, **Lulu Shang**, Qing Wang, and Jing Li (2019). _Ranking Cancer Proteins by Integrating PPI Network and Protein Expression Profiles_. Published in BioMed Research International.<br />
-[PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/Ren_BRI2019.pdf)
-[DOI](https://www.hindawi.com/journals/bmri/2019/3907195/)<br />
+[PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/Ren_BRI2019.pdf){: .btn .btn-purple }
+[DOI](https://www.hindawi.com/journals/bmri/2019/3907195/){: .btn .btn-blue }<br />
 
 •	Huanhuan Zhu*, **Lulu Shang** \*, Xiang Zhou (2020). _A review of the statistical methods for identifying trait-relevant tissues and cell types_. Published in Frontiers in Genetics.<br />
-[PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/HuanhuanZhu_Frontiers2021.pdf)
-[DOI](https://www.frontiersin.org/articles/10.3389/fgene.2020.587887/full)<br />
+[PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/HuanhuanZhu_Frontiers2021.pdf){: .btn .btn-purple }
+[DOI](https://www.frontiersin.org/articles/10.3389/fgene.2020.587887/full){: .btn .btn-blue }<br />
 
 •	Binze Li; Julian Dong; Jiaqi Yu; Yuqi Fan; **Lulu Shang**; Xiang Zhou; Yongsheng Bai  (2020). _Pinpointing miRNA and genes enrichment over trait-relevant tissue network in Genome-Wide Association Studies_. Published in BMC Medical Genomics.<br />
-[PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/Li_BMC2020.pdf)
-[DOI](https://link.springer.com/article/10.1186/s12920-020-00830-w)<br />
+[PDF](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/papers/Li_BMC2020.pdf){: .btn .btn-purple }
+[DOI](https://link.springer.com/article/10.1186/s12920-020-00830-w){: .btn .btn-blue }<br />
 
 
 
