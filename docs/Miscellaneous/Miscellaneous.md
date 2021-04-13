@@ -22,10 +22,12 @@ permalink: /docs/Miscellaneous
 	* **The Biostatistics Department Diversity Equity and Inclusion (DEI) Seminar**, University of Michigan<br />
 	“Contrasting the genetic architecture underlying gene expression levels in European Americans and African Americans: An eQTL mapping study in GENOA”, 03/2020
 	* **Center for Statistical Genetics**, Department of Biostatistics, University of Michigan<br />
-	“Leveraging gene co-expression pattern to infer trait-relevant tissues in genome-wide association studies”, 09/2019
+	“Leveraging gene co-expression pattern to infer trait-relevant tissues in genome-wide association studies”, 09/2019<br />
 	* **Michigan Institute for Data Science (MIDAS)** single cell working group<br />
 		* Research Talk: “Leveraging gene co-expression pattern to infer trait-relevant tissues in genome-wide association studies”, 06/2019<br />
+ 	* **Michigan Institute for Data Science (MIDAS)** single cell working group<br />
  		* Journal Club: “Deep generative modeling for single-cell transcriptomics”, 01/2018 	<br />
+
 
 ### Posters
 * **MIDAS symposium**, Ann Arbor, MI, 10/2018
