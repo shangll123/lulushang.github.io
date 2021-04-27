@@ -10,4 +10,4 @@ permalink: /docs/Education
 ## Education
 ##### - PhD student, Biostatistics, University of Michigan, 2018 - Present
 ##### - M.S., Biostatistics, University of Michigan, 2018
-##### - B.S., Biology, Zhiyuan Honor College, Shanghai Jiao Tong University, 2016
+##### - B.S., Biology, Zhiyuan Honors Program, Shanghai Jiao Tong University, 2016
