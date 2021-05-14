@@ -15,9 +15,6 @@ permalink: /docs/Miscellaneous
 	“Leveraging gene co-expression pattern to infer trait-relevant tissues in genome-wide association studies.”<br />
 	* **American Society of Human Genetics (ASHG) Annual Meeting**, Virtual Meeting, 10/2020<br />
 	“Genetic determinants of DNA methylation and gene expression in African Americans: An mQTL mapping study in GENOA”
-* Invited Talks
-	* **Shandong University**, Virtual Meeting, 08/2020 <br />
-	“Leveraging gene co-expression pattern to infer trait-relevant tissues in genome-wide association studies”
 * Presentations at the University of Michigan
 	* **The Biostatistics Department Diversity Equity and Inclusion (DEI) Seminar**, University of Michigan<br />
 	“Contrasting the genetic architecture underlying gene expression levels in European Americans and African Americans: An eQTL mapping study in GENOA”, 03/2020<br />
