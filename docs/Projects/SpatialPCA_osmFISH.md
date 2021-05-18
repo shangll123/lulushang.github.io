@@ -46,9 +46,10 @@ expr=scale_expr(expr)
 dat = data_prepare_func(expr, info)
 bandwidth = bandwidth_select(expr, info,method="Silverman")
 K=kernel_build(kernelpara="gaussian", dat$ED2,bandwidth) 
-Est_para = SpatialPCA_estimate_parameter(dat_input=dat,PCnum=20)
-Est_W = SpatialPCA_estimate_W(Est_para$par, dat,PCnum=20)
-Est_Z = SpatialPCA_estimate_Z(Est_para$par,dat,Est_W,PCnum=20)
+Est_para = SpatialPCA_estimate_parameter_largedata(dat_input=dat,PCnum=20)
+Est_W = SpatialPCA_estimate_W_largedata(Est_para$par, dat,PCnum=20)
+Est_Z = SpatialPCA_estimate_Z_largedata(Est_para$par,dat,Est_W,PCnum=20)
+
 
 ```
 
