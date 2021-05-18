@@ -3,8 +3,8 @@ layout: default
 title: SpatialPCA package
 nav_order: 1
 has_children: true
-parent: CoCoNet
-permalink: /docs/Projects/SpatialPCA/SpatialPCA
+parent: SpatialPCA
+permalink: /docs/Projects/SpatialPCA/Package
 ---
 
 
