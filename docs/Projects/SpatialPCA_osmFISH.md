@@ -46,6 +46,16 @@ expr=scale_expr(expr)
 dat = data_prepare_func(expr, info)
 bandwidth = bandwidth_select(expr, info,method="Silverman")
 K=kernel_build(kernelpara="gaussian", dat$ED2,bandwidth) 
+
+# Set the number of PCs. Here we pre-calculate some matrices that will be useful in SpatialPCA functions for large data. In this way we could save some time in each iteration.
+PC_num = 20
+dat$YMt = t(dat$YM)
+dat$KYM = K%*%dat$YMt
+dat$K = K
+eigen_res = eigs_sym(K, k=PC_num, which = "LM")
+dat$delta = eigen_res$values
+dat$U = eigen_res$vectors
+
 Est_para = SpatialPCA_estimate_parameter_largedata(dat_input=dat,PCnum=20)
 Est_W = SpatialPCA_estimate_W_largedata(Est_para$par, dat,PCnum=20)
 Est_Z = SpatialPCA_estimate_Z_largedata(Est_para$par,dat,Est_W,PCnum=20)
