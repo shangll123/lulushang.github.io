@@ -1,10 +1,10 @@
 ---
 layout: default
-title: CoCoNet run
+title: Package
 nav_order: 1
 has_children: true
 parent: CoCoNet
-permalink: /docs/Projects/CoCoNet/CoCoNet_run
+permalink: /docs/Projects/CoCoNet/package
 ---
 
 
