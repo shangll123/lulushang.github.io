@@ -49,6 +49,7 @@ K=kernel_build(kernelpara="gaussian", dat$ED2,bandwidth)
 
 # Set the number of PCs. Here we pre-calculate some matrices that will be useful in SpatialPCA functions for large data. 
 # In this way we could save a lot of time in each iteration.
+require(RSpectra)
 PC_num = 20
 dat$YMt = t(dat$YM)
 dat$KYM = K%*%dat$YMt
