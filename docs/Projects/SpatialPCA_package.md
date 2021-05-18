@@ -17,7 +17,7 @@ permalink: /docs/Projects/SpatialPCA/Package
 <!--- <img align="left" src="/images/CoCoNet_Figure/Figure1.tiff" alt="drawing" width="300"/> --->
 
 <!---<img align="left" src="/images/coconetmain.tiff" alt="drawing" width="800"/>--->
-<img align="top" src="/images/SpatialPCA_Figure1.png" alt="drawing" width="1500"/>
+<img align="top" src="/images/SpatialPCA_Figure1.png" alt="drawing" width="1200"/>
 
 <!---![Example figure](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/Figure1.png)--->
 
