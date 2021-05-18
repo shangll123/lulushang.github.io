@@ -10,9 +10,6 @@ permalink: /docs/Projects/SpatialPCA/ST
 
 ##### We illustrate the benefits of SpatialPCA through four different downstream analyses: spatial transcriptomics visualization, spatial domain detection, spatial trajectory inference on the tissue, and high-resolution spatial map reconstruction. 
 
-
-We first analyzed a HER2-positive breast tumor data, which contains 15,030 genes measured on 613 spatial locations. 
-
 ##### ST breast tumor data are downloaded from [https://github.com/almaan/her2st](https://github.com/almaan/her2st).
 
 ### Section 1: Data processing.
