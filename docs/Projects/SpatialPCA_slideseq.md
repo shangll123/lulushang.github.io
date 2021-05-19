@@ -634,7 +634,7 @@ geneset3 = as.character(data3$gene_traj3)[which(data3$p_value_traj3<0.05/dim(SCT
 genelist[[1]] = geneset1
 genelist[[2]] = geneset2
 genelist[[3]] = geneset3
-load("/net/mulan/disk2/shanglu/Projects/spatialPCA/manuscript_v4/slideseq/pseudotime_related_geneset_granule.RData")
+load("pseudotime_related_geneset_granule.RData")
 cellid = which(meta_data$SpatialPCA_Louvain %in% c("1","6","3"))
 SCTcount_granule = SCTcount[,cellid]
 data1 = na.omit(data.frame(gene_traj1, p_value_traj1))
