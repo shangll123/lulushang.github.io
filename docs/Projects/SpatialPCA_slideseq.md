@@ -476,10 +476,10 @@ library(MAST)
 library(fdrtool)
 library(qvalue)
 
-load("/net/mulan/disk2/shanglu/Projects/spatialPCA/manuscript_v3/fixbeta/slideseq/use/sim_SpatialPCA.RData")
-load(paste0("/net/mulan/disk2/jiaqiang/kdc/experiment/manuscript/final_set/v1/realdata/data/slideseq/Puck_180430_6_zero_removed_nomt.rds"))
+load("sim_SpatialPCA.RData") # load SpatialPCA slingshot object 
+load(paste0("Puck_180430_6_zero_removed_nomt.rds"))
+load("expr_0.05.RData")
 
-load("/net/mulan/disk2/shanglu/Projects/spatialPCA/manuscript_v2/slideseq_data/expr_0.05.RData")
 sp_count = as.matrix(sp_count)
 expr_counts = sp_count[,match(colnames(expr),colnames(sp_count))]
 iCounts = expr_counts
@@ -526,13 +526,12 @@ for(celltypenum in 1:max(meta_data$SpatialPCA_Louvain)){
 Use gene sets from the Molecular Signatures Database (MSigDB) available from the Broad Institute
 
 ```R
-
-load("/net/mulan/disk2/shanglu/Projects/spatialPCA/manuscript_v2/slideseq_data/expr_0.05.RData")
-load(paste0("/net/mulan/disk2/jiaqiang/kdc/experiment/manuscript/final_set/v1/realdata/data/slideseq/Puck_180430_6_zero_removed_nomt.rds"))
-SCTcount = sp_count[,match(colnames(expr),colnames(sp_count))]
 library(gprofiler2)
 library(ggplot2)
 library(tidyverse)
+load("expr_0.05.RData")
+load(paste0("Puck_180430_6_zero_removed_nomt.rds"))
+SCTcount = sp_count[,match(colnames(expr),colnames(sp_count))]
 
 h: hallmark gene sets hallmark gene sets as Gene Symbols  h.all.v7.4.symbols.gmt
 c2: curated gene sets KEGG gene sets as Gene Symbols  c2.cp.kegg.v7.4.symbols.gmt
