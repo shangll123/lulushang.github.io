@@ -11,7 +11,7 @@ permalink: /docs/Projects/SpatialPCA/osmFISH
 ##### We illustrate the benefits of SpatialPCA through four different downstream analyses: spatial transcriptomics visualization, spatial domain detection, spatial trajectory inference on the tissue, and high-resolution spatial map reconstruction. 
 
 
-##### osmFISH expressin and coordinate data are downloaded from [https://github.com/linnarsson-lab/osmFISH_celltype_analysis/blob/master/osmFISH_SScortex_mouse_all_cells.loom](https://github.com/linnarsson-lab/osmFISH_celltype_analysis/blob/master/osmFISH_SScortex_mouse_all_cells.loom) and processed into txt files.
+##### osmFISH expressin and coordinate data are downloaded from [https://github.com/linnarsson-lab/osmFISH_celltype_analysis/blob/master/osmFISH_SScortex_mouse_all_cells.loom](https://github.com/linnarsson-lab/osmFISH_celltype_analysis/blob/master/osmFISH_SScortex_mouse_all_cells.loom) and processed into txt files that could be downloaded [here](https://www.dropbox.com/sh/wgrtuq5wzumz0l8/AACIpJeYQnoCf0pCu8j6q2bQa?dl=0).
 
 ### Section 1: Data processing.
 
