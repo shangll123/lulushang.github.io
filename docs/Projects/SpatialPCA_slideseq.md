@@ -22,7 +22,7 @@ Load packages.
   library(openxlsx)
 ```
 
-We used SPARK-X to select spatial genes as input for SpatialPCA. The "Puck_180430_6_zero_removed_nomt.rds" data could be downloaded from [here](https://drive.google.com/file/d/1t1ITBO6RvlV_GK5ze6RYC59lzRIf0n3L/view?usp=sharing). 
+We used SPARK-X to select spatial genes as input for SpatialPCA. The "Puck_180430_6_zero_removed_nomt.rds" data could be downloaded from [here](https://www.dropbox.com/sh/wgrtuq5wzumz0l8/AACIpJeYQnoCf0pCu8j6q2bQa?dl=0). 
 ```R
 # Calling SPARK-X functions. 
 source("~/kdc_batch_eigen_correct.R")
