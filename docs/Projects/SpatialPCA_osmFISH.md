@@ -440,7 +440,7 @@ pseudotime_traj1 = sim@colData@listData$slingPseudotime_1
 pseudotime_traj2 = sim@colData@listData$slingPseudotime_2
 pseudotime_traj3 = sim@colData@listData$slingPseudotime_3
 clusterlabels = meta_data$SpatialPCA_Walktrap
-gridnum = 10
+gridnum = 20
 color_in = c(  "plum1", "dodgerblue","mediumaquamarine",  "palegreen4", "chocolate1","lightblue2","#F0E442",  "black","#CC79A7","mediumpurple","seagreen1")
 p_traj1 = plot_trajectory(pseudotime_traj1, info,clusterlabels,gridnum,color_in,pointsize=2 ,arrowlength=0.2,arrowsize=0.8,textsize=15 )
 p_traj2 = plot_trajectory(pseudotime_traj2, info,clusterlabels,gridnum,color_in,pointsize=2 ,arrowlength=0.2,arrowsize=0.8,textsize=15 )
@@ -471,7 +471,7 @@ Z_high_pseudotime_traj3 = simhigh@colData@listData$slingPseudotime_3
 Z_high_pseudotime_traj4 = simhigh@colData@listData$slingPseudotime_4
 
 cluster = Z_high_clusters
-gridnum = 20
+gridnum = 30
 color_in = c(  "plum1", "palegreen4","mediumaquamarine",  "dodgerblue", "chocolate1",
             "#F0E442","lightblue2",  "black")
 p_traj1 = plot_trajectory(Z_high_pseudotime_traj1, Z_high$Location_star,cluster,gridnum,color_in,pointsize=0.5 ,arrowlength=0.2,arrowsize=0.8,textsize=15 )
