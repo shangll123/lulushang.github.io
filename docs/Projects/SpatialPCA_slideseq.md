@@ -215,7 +215,7 @@ dev.off()
 ### Section 4: Use clustering results from SpatialPCA to obtain spatial domains.
 We used Louvain clustering results in the main analysis to save time, because Walktrap in large data is pretty slow. In slideseq data we used 8 clusters. 
 ```R
-N_k_nearest=c(seq(from=30,to=90,by=5),100,150,200,250)
+N_k_nearest=c(seq(from=30,to=90,by=5),seq(from=100,to=1000,by=50))
 louvain_cluster_SpatialPCA = louvain_clustering(knearest = N_k_nearest, dat$Z_spatial)
 N_k_nearest=c(seq(from=100,to=1000,by=50))
 louvain_cluster_PCA = louvain_clustering(knearest = N_k_nearest, dat$Z_pca)
@@ -224,7 +224,7 @@ louvain_cluster_NMF = louvain_clustering(knearest = N_k_nearest, dat$Z_NMF)
 
 colnames(info) = c("sdimx","sdimy")
 meta_data = info
-meta_data$SpatialPCA_Louvain = louvain_cluster_SpatialPCA$cluster_label[[28]]
+meta_data$SpatialPCA_Louvain = louvain_cluster_SpatialPCA$cluster_label[[28]] # k_nearest=800
 meta_data$PCA_Louvain = louvain_cluster_PCA$cluster_label[[5]]
 meta_data$NMF_Louvain = louvain_cluster_NMF$cluster_label[[11]]
 meta_data$HMRF = cluster_HMRF[[21]]
