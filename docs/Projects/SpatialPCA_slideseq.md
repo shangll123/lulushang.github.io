@@ -270,7 +270,7 @@ cellid = which(meta_data$SpatialPCA_Louvain %in% c("1","6","3"))
 sim_spatialPCA_granule = SingleCellExperiment(assays = list(counts = result$Z_spatial[,cellid]))
 reducedDims(sim_spatialPCA_granule) <- SimpleList(DRM = t(result$Z_spatial[,cellid]))
 colData(sim_spatialPCA_granule)$louvain <- factor(meta_data$SpatialPCA_Louvain[cellid])    
-sim_spatialPCA_granule  <-slingshot(sim_spatialPCA_granule, clusterLabels = 'louvain', reducedDim = 'DRM',start.clus="1" )
+sim_spatialPCA_granule  <-slingshot(sim_spatialPCA_granule, clusterLabels = 'louvain', reducedDim = 'DRM',start.clus="3" )
 summary(sim_spatialPCA_granule@colData@listData)
 # > summary(sim_spatialPCA_granule@colData@listData)
 #                   Length Class  Mode   
