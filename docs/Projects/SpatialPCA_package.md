@@ -33,4 +33,4 @@ library(devtools)
 install_github("shangll123/SpatialPCA")
 ```
 
-## Detailed tutorial: [SpatialPCA tutorial](http://lulushang.org/SpatialPCA.html)
+Tutorial being updated, will come soon.
