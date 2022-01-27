@@ -32,5 +32,5 @@ parent: SpatialPCA
 library(devtools)
 install_github("shangll123/SpatialPCA")
 ```
-## Try it out!
+## Let's try it!
 [SpatialPCA Tutorial](http://lulushang.org/SpatialPCA_Tutorial/index.html)
