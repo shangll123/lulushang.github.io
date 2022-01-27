@@ -9,9 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Lulu Shang, Xiang Zhou" />
 
+<meta name="date" content="2022-01-27" />
 
-<title>Breast Tumor</title>
+<title>Installation</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -380,7 +382,9 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Breast Tumor</h1>
+<h1 class="title toc-ignore">Installation</h1>
+<h4 class="author">Lulu Shang, Xiang Zhou</h4>
+<h4 class="date">2022-01-27</h4>
 
 </div>
 
@@ -539,6 +543,7 @@ Untracked files:
 Unstaged changes:
     Modified:   analysis/_site.yml
     Modified:   analysis/index.Rmd
+    Modified:   analysis/license.Rmd
 
 </code></pre>
 <p>
@@ -558,117 +563,17 @@ There are no past versions. Publish this analysis with <code>wflow_publish()</co
 </div>
 </div>
 </div>
-<pre class="r"><code>library(SpatialPCA)
-library(ggplot2)</code></pre>
-<div id="loading-data" class="section level4">
-<h4>Loading data</h4>
-<p>The breast tumor data is available <a href="https://github.com/almaan/her2st">here</a>. We also saved the raw data that we used in our examples in RData format, which can be downloaded from <a href="https://drive.google.com/drive/folders/1mkXV3kQKqwxk42SW4Rb263FgFj2K8HhT?usp=sharing">here</a>.</p>
-<pre class="r"><code>load(&quot;./data/ST_data.RData&quot;) 
-print(dim(rawcount)) # The count matrix
-print(dim(location)) # The location matrix</code></pre>
-</div>
-<div id="create-spatialpca-object" class="section level4">
-<h4>Create SpatialPCA Object</h4>
-<p>SpatialPCA takes the raw count data and location coordinates as inputs. We first create a S4 object in the CreateSpatialPCAObject function, then select spatial genes using sparkx in this dataset with large sample size.</p>
-<pre class="r"><code># location matrix: n x 2, count matrix: g x n.
-# here n is spot number, g is gene number.
-# here the column names of sp_count and rownames of location should be matched
-ST = CreateSpatialPCAObject(counts=rawcount, location=location, project = &quot;SpatialPCA&quot;,gene.type=&quot;spatial&quot;,sparkversion=&quot;spark&quot;, gene.number=3000,customGenelist=NULL,min.loctions = 20, min.features=20)</code></pre>
-</div>
-<div id="estimate-spatial-pcs" class="section level4">
-<h4>Estimate spatial PCs</h4>
-<p>SpatialPCA constructs a kernel matrix to model the spatial pattern of spatial PCs.</p>
-<pre class="r"><code>ST = SpatialPCA_buildKernel(ST, kerneltype=&quot;gaussian&quot;, bandwidthtype=&quot;SJ&quot;)
-ST = SpatialPCA_EstimateLoading(ST,fast=FALSE,SpatialPCnum=20)
-ST = SpatialPCA_SpatialPCs(ST, fast=FALSE)</code></pre>
-<p>In this data, we select “SJ” to use Sheather &amp; Jones (1991) method, which is usually used in small size datasets to calculate the kernel bandwidth. The user can also specify other bandwidth on their own if needed. After specifying the kernel matrix, SpatialPCA estimates the loading matrix and the spatial PCs.</p>
-</div>
-<div id="detect-spatial-domains" class="section level4">
-<h4>Detect spatial domains</h4>
-<p>SpatialPCA detects spatial domains through clustering on the spatial PCs. Here we use louvain’s clustering method, which is faster than walktrap method in large sample datasets.</p>
-<pre class="r"><code>clusterlabel= walktrap_clustering(7, ST@SpatialPCs,round(sqrt(dim(ST@location)[1])))
-clusterlabel_refine=refine_cluster_10x(clusterlabel,ST@location,shape=&quot;square&quot;)</code></pre>
-</div>
-<div id="spatial-domains-detected-by-spatialpca." class="section level4">
-<h4>Spatial domains detected by SpatialPCA.</h4>
-<pre class="r"><code># set color
-cbp_spatialpca &lt;- c(  &quot;mediumaquamarine&quot;, &quot;lightblue2&quot;,&quot;#F0E442&quot;,  &quot;plum1&quot;,&quot;chocolate1&quot;,&quot;dodgerblue&quot;,&quot;palegreen4&quot;,&quot;red&quot;,&quot;#CC79A7&quot;,&quot;mediumpurple&quot;,&quot;seagreen1&quot;)
-# visualize the cluster
-plot_cluster(legend=&quot;right&quot;,location=ST@location,clusterlabel_refine,pointsize=5,text_size=20 ,title_in=paste0(&quot;SpatialPCA&quot;),color_in=cbp_spatialpca)</code></pre>
-<p align="center">
-<img width="300" height="300" src="./figure/ST.Rmd/STcluster.pdf">
-</p>
-</div>
-<div id="trajectory-inference" class="section level4">
-<h4>Trajectory inference</h4>
-<p>In ST data, we focused on trajectory inference on tumor and tumor adjacent regions to investigate how these locations are connected to one another and underlie tumorigenesis. Based on the inferred pseudo-time values, we connected neighboring locations on the tissue to construct trajectories.</p>
-<pre class="r"><code>library(slingshot)
-# focus on tumor and its surrounding region
-tumor_ind = which(clusterlabel_refine %in% c(5,4,6))
-sim&lt;- SingleCellExperiment(assays = rawcount[,tumor_ind])
-reducedDims(sim) &lt;- SimpleList(DRM = t(ST@SpatialPCs[,tumor_ind]))
-colData(sim)$Walktrap &lt;- factor(clusterlabel_refine[tumor_ind])    
-sim  &lt;-slingshot(sim, clusterLabels = &#39;Walktrap&#39;, reducedDim = &#39;DRM&#39;,start.clus=&quot;5&quot; ) 
-# in this data we set tumor region as start cluster
-summary(sim@colData@listData)
-
-pseudotime_traj1 = sim@colData@listData$slingPseudotime_1
-gridnum = 10
-cbp &lt;- c(  &quot;plum1&quot;, &quot;chocolate1&quot;,&quot;dodgerblue&quot;,&quot;black&quot;)
-p_traj1 = plot_trajectory(pseudotime_traj1, ST@location[tumor_ind,],clusterlabel_refine[tumor_ind],gridnum,cbp,pointsize=5 ,arrowlength=0.2,arrowsize=1,textsize=15 )
-p_traj1$Arrowoverlay1
-p_traj1$Pseudotime</code></pre>
-<p align="center">
-<img width="300" height="300" src="./figure/ST.Rmd/traj1.pdf">
-</p>
-<p align="center">
-<img width="300" height="300" src="./figure/ST.Rmd/traj2.pdf">
-</p>
-</div>
-<div id="high-resolution-map-reconstruction" class="section level4">
-<h4>High resolution map reconstruction</h4>
-<pre class="r"><code>STsimu_high_ST = SpatialPCA_highresolution(ST)
-cluster_SpatialPCA_high = walktrap_clustering(7, latent_dat=STsimu_high_ST@highPCs,76)
-color_in=c(  &quot;plum1&quot;, &quot;palegreen4&quot;,&quot;mediumaquamarine&quot;,  &quot;chocolate1&quot;,&quot;#F0E442&quot;,&quot;dodgerblue&quot;,&quot;lightblue2&quot;)
-title_in=&quot;SpatialPCA High resolution&quot;
-plot_cluster(STsimu_high_ST@highPos, as.character(cluster_SpatialPCA_high), pointsize=2,text_size=20 ,title_in,color_in,legend=&quot;bottom&quot;)</code></pre>
-<p align="center">
-<img width="300" height="300" src="./figure/ST.Rmd/Highresolution1.pdf">
-</p>
-<p>By default the new unmeasured locations are generated based on the existing spots. We also generated custom locations and predicted the high resolution map.</p>
-<pre class="r"><code>loc_round = round(ST@location/100) # because we are using pixel coordinates provided by the original data paper, the scale of location coordinates is large, we divided by 100 for easily generating spots that cover the whole tissue slice.
-
-x_in = c()
-y_in = c()
-for(y_coor in unique(loc_round[,2])){
-    ind = which(loc_round[,2]==y_coor)
-    x_ind = loc_round[ind,1]
-    x_new = seq(from=min(x_ind),to=max(x_ind),by=1)
-    y_new = rep(y_coor, length(x_new))
-    x_in = c(x_in,x_new)
-    y_in = c(y_in, y_new)
-}
-loc_round=data.frame(x_in,y_in)
-x_in = c()
-y_in = c()
-for(x_coor in unique(loc_round[,1])){
-    ind = which(loc_round[,1]==x_coor)
-    y_ind = loc_round[ind,2]
-    y_new = seq(from=min(y_ind),to=max(y_ind),by=1)
-    x_new = rep(x_coor, length(y_new))
-    y_in = c(y_in,y_new)
-    x_in = c(x_in, x_new)
-}
-dat_sample = data.frame(x_in,y_in)*100
-
-STsimu_high_ST_random = SpatialPCA_highresolution(ST,newloc = dat_sample)
-cluster_SpatialPCA_high_custom = walktrap_clustering(8, latent_dat=STsimu_high_ST_random@highPCs,round(sqrt(dim(STsimu_high_ST_random@highPCs)[2])))
-color_in=c(  &quot;dodgerblue&quot;, &quot;mediumaquamarine&quot;,&quot;#CC79A7&quot;,  &quot;chocolate1&quot;,&quot;lightblue2&quot;,&quot;palegreen4&quot;,&quot;plum1&quot;,&quot;#F0E442&quot;,&quot;#CC79A7&quot;,&quot;mediumpurple&quot;,&quot;seagreen1&quot;)
-title_in=&quot;SpatialPCA High resolution&quot;
-plot_cluster(STsimu_high_ST_random@highPos, as.character(cluster_SpatialPCA_high_custom), pointsize=1.5,text_size=20 ,title_in,color_in,legend=&quot;bottom&quot;)</code></pre>
-<p align="center">
-<img width="300" height="300" src="./figure/ST.Rmd/Highresolution2.pdf">
-</p>
+<p>Let’s install SpatialPCA and try it out!</p>
+<div id="installation" class="section level2">
+<h2>Installation</h2>
+<pre class="r"><code># Install devtools, if necessary
+if (!requireNamespace(&quot;devtools&quot;, quietly = TRUE))
+    install.packages(&quot;devtools&quot;)
+# Install SpatialPCA
+devtools::install_github(&quot;shangll123/SpatialPCA&quot;)
+# load SpatialPCA
+library(SpatialPCA)</code></pre>
+<p>Installation should take no more than one minute.</p>
 <br>
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-sessioninfo" data-toggle="collapse" data-target="#workflowr-sessioninfo" style="display: block;">
@@ -697,53 +602,18 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] ggplot2_3.3.5    SpatialPCA_1.2.0
+[1] workflowr_1.6.2
 
 loaded via a namespace (and not attached):
-  [1] Seurat_4.0.5             Rtsne_0.15               colorspace_2.0-2        
-  [4] deldir_1.0-6             ellipsis_0.3.2           ggridges_0.5.3          
-  [7] rprojroot_2.0.2          RcppArmadillo_0.10.7.0.0 fs_1.5.0                
- [10] spatstat.data_2.1-0      leiden_0.3.9             listenv_0.8.0           
- [13] matlab_1.0.2             ggrepel_0.9.1            RSpectra_0.16-0         
- [16] fansi_0.5.0              codetools_0.2-18         splines_4.1.2           
- [19] doParallel_1.0.16        knitr_1.36               polyclip_1.10-0         
- [22] jsonlite_1.7.2           workflowr_1.6.2          umap_0.2.7.0            
- [25] ica_1.0-2                cluster_2.1.2            png_0.1-7               
- [28] uwot_0.1.10              spatstat.sparse_2.0-0    shiny_1.7.1             
- [31] sctransform_0.3.2        compiler_4.1.2           httr_1.4.2              
- [34] assertthat_0.2.1         SeuratObject_4.0.2       Matrix_1.3-4            
- [37] fastmap_1.1.0            lazyeval_0.2.2           later_1.3.0             
- [40] htmltools_0.5.2          tools_4.1.2              igraph_1.2.7            
- [43] gtable_0.3.0             glue_1.4.2               RANN_2.6.1              
- [46] reshape2_1.4.4           dplyr_1.0.7              Rcpp_1.0.7              
- [49] scattermore_0.7          jquerylib_0.1.4          vctrs_0.3.8             
- [52] SPARK_1.1.0              nlme_3.1-153             iterators_1.0.13        
- [55] lmtest_0.9-38            xfun_0.27                stringr_1.4.0           
- [58] globals_0.14.0           mime_0.12                miniUI_0.1.1.1          
- [61] CompQuadForm_1.4.3       lifecycle_1.0.1          irlba_2.3.3             
- [64] goftest_1.2-3            future_1.22.1            MASS_7.3-54             
- [67] zoo_1.8-9                scales_1.1.1             spatstat.core_2.3-0     
- [70] spatstat.utils_2.2-0     doSNOW_1.0.19            promises_1.2.0.1        
- [73] parallel_4.1.2           RColorBrewer_1.1-2       yaml_2.2.1              
- [76] reticulate_1.22          pbapply_1.5-0            gridExtra_2.3           
- [79] sass_0.4.0               rpart_4.1-15             stringi_1.7.5           
- [82] foreach_1.5.1            rlang_0.4.12             pkgconfig_2.0.3         
- [85] matrixStats_0.61.0       pracma_2.3.3             evaluate_0.14           
- [88] lattice_0.20-45          tensor_1.5               ROCR_1.0-11             
- [91] purrr_0.3.4              patchwork_1.1.1          htmlwidgets_1.5.4       
- [94] pdist_1.2                cowplot_1.1.1            tidyselect_1.1.1        
- [97] parallelly_1.28.1        RcppAnnoy_0.0.19         plyr_1.8.6              
-[100] magrittr_2.0.1           R6_2.5.1                 snow_0.4-4              
-[103] generics_0.1.1           DBI_1.1.1                withr_2.4.2             
-[106] mgcv_1.8-38              pillar_1.6.4             fitdistrplus_1.1-6      
-[109] abind_1.4-5              survival_3.2-13          tibble_3.1.5            
-[112] future.apply_1.8.1       crayon_1.4.1             KernSmooth_2.23-20      
-[115] utf8_1.2.2               spatstat.geom_2.3-0      plotly_4.10.0           
-[118] rmarkdown_2.11           grid_4.1.2               data.table_1.14.2       
-[121] git2r_0.28.0             digest_0.6.28            pbmcapply_1.5.0         
-[124] xtable_1.8-4             tidyr_1.1.4              httpuv_1.6.3            
-[127] openssl_1.4.5            munsell_0.5.0            viridisLite_0.4.0       
-[130] bslib_0.3.1              askpass_1.1             </code></pre>
+ [1] Rcpp_1.0.7       knitr_1.36       magrittr_2.0.1   R6_2.5.1        
+ [5] rlang_0.4.12     fastmap_1.1.0    fansi_0.5.0      stringr_1.4.0   
+ [9] tools_4.1.2      xfun_0.27        utf8_1.2.2       git2r_0.28.0    
+[13] jquerylib_0.1.4  htmltools_0.5.2  ellipsis_0.3.2   rprojroot_2.0.2 
+[17] yaml_2.2.1       digest_0.6.28    tibble_3.1.5     lifecycle_1.0.1 
+[21] crayon_1.4.1     later_1.3.0      sass_0.4.0       vctrs_0.3.8     
+[25] promises_1.2.0.1 fs_1.5.0         glue_1.4.2       evaluate_0.14   
+[29] rmarkdown_2.11   stringi_1.7.5    bslib_0.3.1      compiler_4.1.2  
+[33] pillar_1.6.4     jsonlite_1.7.2   httpuv_1.6.3     pkgconfig_2.0.3 </code></pre>
 </div>
 </div>
 
