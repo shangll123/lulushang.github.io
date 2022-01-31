@@ -17,7 +17,7 @@ install_github("shangll123/SpatialPCA")
 ## Let's try it!
 [SpatialPCA Tutorial](http://lulushang.org/SpatialPCA_Tutorial/index.html)
 
-
+## Overview of SpatialPCA
 <!--- [_config.yml]({{ site.baseurl }}/images/config.png)--->
 
 <!--- <img src="https://latex.codecogs.com/svg.latex?\Large&space;x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" title="\Large x=\frac{-b\pm\sqrt{b^2-4ac}}{2a}" />--->
