@@ -5,6 +5,17 @@ nav_order: 1
 has_children: false
 parent: SpatialPCA
 ---
+##### **SpatialPCA** is a spatially aware dimension reduction method that aims to infer a low dimensional representation of the gene expression data in spatial transcriptomics. SpatialPCA builds upon the probabilistic version of PCA, incorporates localization information as additional input, and uses a kernel matrix to explicitly model the spatial correlation structure across tissue locations. 
+
+
+## Install the Package
+
+```r
+library(devtools)
+install_github("shangll123/SpatialPCA")
+```
+## Let's try it!
+[SpatialPCA Tutorial](http://lulushang.org/SpatialPCA_Tutorial/index.html)
 
 
 <!--- [_config.yml]({{ site.baseurl }}/images/config.png)--->
@@ -23,14 +34,3 @@ parent: SpatialPCA
 
 
 
-##### **SpatialPCA** is a spatially aware dimension reduction method that aims to infer a low dimensional representation of the gene expression data in spatial transcriptomics. SpatialPCA builds upon the probabilistic version of PCA, incorporates localization information as additional input, and uses a kernel matrix to explicitly model the spatial correlation structure across tissue locations. 
-
-
-## Install the Package
-
-```r
-library(devtools)
-install_github("shangll123/SpatialPCA")
-```
-## Let's try it!
-[SpatialPCA Tutorial](http://lulushang.org/SpatialPCA_Tutorial/index.html)
