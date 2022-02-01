@@ -16,6 +16,111 @@ library(SpatialPCA)
 
 We used sample 151673 in DLPFC data as a main example which contains expression measurement of 33,538 genes on 3,639 spots. All 12 DLPFC samples can be downloaded from their original study [spatialLIBD](http://research.libd.org/spatialLIBD/index.html). We also saved the raw data that we used in our examples in RData format, which can be downloaded from [here](https://drive.google.com/drive/folders/1mkXV3kQKqwxk42SW4Rb263FgFj2K8HhT?usp=sharing).
 
+
+##### LIBD data
+```R
+
+#----------------
+# LIBD
+#----------------
+
+dataset="LIBD"
+
+# BiocManager::install("spatialLIBD")
+library('spatialLIBD')
+sce <- fetch_data(type = 'sce')
+metaData = SingleCellExperiment::colData(sce)
+expr = SingleCellExperiment::counts(sce)
+sample_names <- paste0("sample_", unique(colData(sce)$sample_name))
+sample_names
+sample_names[9]
+
+# first try on sample 151673
+i=9 # same as sample used in Bayespace, sample_151673
+sce_sub <- sce[, colData(sce)$sample_name == gsub("^sample_", "", sample_names[i])]
+dim(sce_sub)
+count_sub = SingleCellExperiment::counts(sce_sub)
+xy_coords <- data.frame(
+        x_coord = colData(sce_sub)[, c("imagecol")], 
+        y_coord = -colData(sce_sub)[, c("imagerow")]
+    )
+# max_spatial <- 1
+    # dims_spatial <- xy_coords
+    # colnames(dims_spatial) <- c("spatial_x", "spatial_y")
+    # rownames(dims_spatial) <- colnames(sce_sub)
+    # dim(dims_spatial)
+    # stopifnot(nrow(dims_spatial) == ncol(sce_sub))
+    # # scale spatial dimensions
+    # apply(dims_spatial, 2, range)
+    # dims_spatial <- apply(as.matrix(dims_spatial), 2, function(col) {
+    #     (col - min(col)) / (max(col) - min(col)) * (2 * max_spatial) - max_spatial
+    # })
+    # rownames(dims_spatial) <- colnames(sce_sub)
+    # apply(dims_spatial, 2, range)
+    # dim(dims_spatial)
+    # stopifnot(nrow(dims_spatial) == ncol(sce_sub))
+
+## Load known marker genes (from Kristen)
+# load spreadsheet of known marker genes (from Kristen)
+# download from https://github.com/LieberInstitute/HumanPilot/blob/master/Analysis/KRM_Layer_Markers.xlsx
+library( readxl)
+KRM_Layer_Markers <- read_xlsx("/net/mulan/disk2/shanglu/Projects/SpatialPCA/data/LIBD/KRM_Layer_Markers.xlsx")
+KRM_Layer_Markers
+dim(KRM_Layer_Markers)
+marker_genes_KRM <- KRM_Layer_Markers$Gene
+# get gene IDs (note: not all available in "sce" object)
+sum(toupper(marker_genes_KRM) %in% rowData(sce)$gene_name)
+genes_markers <- data.frame(gene_name = toupper(marker_genes_KRM))
+genes_markers$gene_id <- rowData(sce)$gene_id[match(genes_markers$gene_name, rowData(sce)$gene_name)]
+dim(genes_markers)
+sum(is.na(genes_markers$gene_id))
+# > dim(genes_markers)
+# [1] 81  2
+# > sum(is.na(genes_markers$gene_id))
+# [1] 4
+
+# check ground truth layer number
+true_num=c()
+ metaData1 = as.data.frame(metaData)
+ name=unique(colData(sce)$sample_name)
+for(i in 1:12){
+	true_num[i] = length(na.omit(unique(metaData1$layer_guess_reordered[which(metaData1$sample_name==name[i])])))
+
+}
+> true_num
+ [1] 7 7 7 7 5 5 5 5 7 7 7 7
+
+# > dim(count_sub)
+# [1] 33538  3639
+# > dim(xy_coords)
+# [1] 3639    2
+# > count_sub[1:4,1:4]
+# 4 x 4 sparse Matrix of class "dgCMatrix"
+#                 AAACAAGTATCTCCCA-1 AAACAATCTACTAGCA-1 AAACACCAATAACTGC-1
+# ENSG00000243485                  .                  .                  .
+# ENSG00000237613                  .                  .                  .
+# ENSG00000186092                  .                  .                  .
+# ENSG00000238009                  .                  .                  .
+#                 AAACAGAGCGACTCCT-1
+# ENSG00000243485                  .
+# ENSG00000237613                  .
+# ENSG00000186092                  .
+# ENSG00000238009                  .
+
+# then generate ready to use data for sample i from 1 to 12
+# also get ground truth labels for each sample
+    metaData1 = as.data.frame(metaData)
+    KRM_manual_layers_sub <- filter(metaData1, sample_name == gsub("^sample_", "", sample_names[i]))
+    dim(KRM_manual_layers_sub)
+     ground_truth_sub <- data.frame(
+         truth = rep(NA, ncol(sce_sub)))
+     rownames(ground_truth_sub) <- colnames(sce_sub)
+    ground_truth_sub$truth = KRM_manual_layers_sub$layer_guess_reordered
+    Layer_sub = KRM_manual_layers_sub$layer_guess_reordered
+    sum(as.character(KRM_manual_layers_sub$barcode) == colnames(count_sub)) # yes all matched
+    save(Layer_sub, xy_coords, KRM_manual_layers_sub, count_sub, file = paste0("~/SpatialPCA/LIBD/LIBD_sample",i,".RData") ) 
+
+```
 #### Load data
 ```R
 i=9 # use sample 9 as an example
