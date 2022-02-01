@@ -18,6 +18,7 @@ We used sample 151673 in DLPFC data as a main example which contains expression 
 
 
 ##### LIBD data
+Below are the codes I used when exploring the LIBD data and save the ready to use datasets.
 ```R
 
 #----------------
@@ -32,8 +33,6 @@ sce <- fetch_data(type = 'sce')
 metaData = SingleCellExperiment::colData(sce)
 expr = SingleCellExperiment::counts(sce)
 sample_names <- paste0("sample_", unique(colData(sce)$sample_name))
-sample_names
-sample_names[9]
 
 # first try on sample 151673
 i=9 # same as sample used in Bayespace, sample_151673
@@ -44,21 +43,6 @@ xy_coords <- data.frame(
         x_coord = colData(sce_sub)[, c("imagecol")], 
         y_coord = -colData(sce_sub)[, c("imagerow")]
     )
-# max_spatial <- 1
-    # dims_spatial <- xy_coords
-    # colnames(dims_spatial) <- c("spatial_x", "spatial_y")
-    # rownames(dims_spatial) <- colnames(sce_sub)
-    # dim(dims_spatial)
-    # stopifnot(nrow(dims_spatial) == ncol(sce_sub))
-    # # scale spatial dimensions
-    # apply(dims_spatial, 2, range)
-    # dims_spatial <- apply(as.matrix(dims_spatial), 2, function(col) {
-    #     (col - min(col)) / (max(col) - min(col)) * (2 * max_spatial) - max_spatial
-    # })
-    # rownames(dims_spatial) <- colnames(sce_sub)
-    # apply(dims_spatial, 2, range)
-    # dim(dims_spatial)
-    # stopifnot(nrow(dims_spatial) == ncol(sce_sub))
 
 ## Load known marker genes (from Kristen)
 # load spreadsheet of known marker genes (from Kristen)
@@ -118,14 +102,18 @@ for(i in 1:12){
     ground_truth_sub$truth = KRM_manual_layers_sub$layer_guess_reordered
     Layer_sub = KRM_manual_layers_sub$layer_guess_reordered
     sum(as.character(KRM_manual_layers_sub$barcode) == colnames(count_sub)) # yes all matched
-    save(Layer_sub, xy_coords, KRM_manual_layers_sub, count_sub, file = paste0("~/SpatialPCA/LIBD/LIBD_sample",i,".RData") ) 
+    save(Layer_sub, xy_coords, KRM_manual_layers_sub, count_sub, file = paste0("LIBD_sample",i,".RData") ) 
 
 ```
+
+
 #### Load data
+
+Or you can directly download the data I processed and saved in the [Google drive](https://drive.google.com/drive/folders/1mkXV3kQKqwxk42SW4Rb263FgFj2K8HhT?usp=sharing) mentioned above.
 ```R
 i=9 # use sample 9 as an example
 path_figure="~/SpatialPCA/LIBD/SpatialPCA"
-load(paste0("~/SpatialPCA/LIBD/LIBD_sample",i,".RData") ) 
+load(paste0("~/LIBD_sample",i,".RData") ) 
 dataset=paste0("LIBD_sample",i,"_SpatialPCA")
 clusterNum=c(7,7,7,7,5,5,5,5,7,7,7,7)
 
