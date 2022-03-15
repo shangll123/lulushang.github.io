@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Breast Tumor
+title: Breast Tumor Analysis
 nav_order: 5
 has_children: false
 parent: SpatialPCA
