@@ -196,6 +196,7 @@ simu = function(
     idx_zerosize <- apply(counts(sim_groups), MARGIN = 2, sum) == 0
     sim_groups <- sim_groups[, !idx_zerosize]
 
+   # 2. design different scenarios
     if(scenario == 1){
       prop <- c(0.85, 0.05, 0.05,0.05)
     }else if(scenario == 2){
@@ -282,7 +283,6 @@ load("LIBDsubsample.RData")
 load("init_params_LIBD.RData")
 # These two R object can be downloaded from https://drive.google.com/drive/folders/18rwQjB3-g86A-M9xYPPJlHz60bfMABdE?usp=sharing.
 
-
 res = simu(location=subsample[,2:3],label = subsample$label,init_params,
     scenario=i,J=5000, batch_facLoc=0, de_prop=0.5, de_facLoc=0.5, de_facScale=0.5,sim_seed=j, debug = FALSE)
 
@@ -296,11 +296,6 @@ location=as.matrix(location)
 celltypes = res[[2]]
 # first generate subspot level data
 grid_subspot = make_grid(square_size = 4,location)
-
-# square_size=4, 5077 spots generated
-# square_size=4, 5077 spots generated
-# square_size=4, 5077 spots generated
-
 
 count_location_subspot = make_spot(grid_subspot,count_mat,celltypes,subsample$label)
 count_subspot = count_location_subspot$count_spot
