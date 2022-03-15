@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Slide-seq V2
+title: Slide-Seq V2 Analysis
 nav_order: 4
 has_children: false
 parent: SpatialPCA
