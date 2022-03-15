@@ -1,6 +1,6 @@
 ---
 layout: default
-title: DLPFC
+title: DLPFC Analysis
 nav_order: 2
 has_children: false
 parent: SpatialPCA
