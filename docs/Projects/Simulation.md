@@ -196,13 +196,13 @@ simu = function(
     idx_zerosize <- apply(counts(sim_groups), MARGIN = 2, sum) == 0
     sim_groups <- sim_groups[, !idx_zerosize]
 
-    if(scenario == 2){
+    if(scenario == 1){
       prop <- c(0.85, 0.05, 0.05,0.05)
-    }else if(scenario == 16){
+    }else if(scenario == 2){
       prop <- c(0.45, 0.45, 0.05,0.05)
-    }else if(scenario == 17){
+    }else if(scenario == 3){
       prop <- c(0.60, 0.30, 0.05,0.05)
-    }else if(scenario == 18){
+    }else if(scenario == 4){
       prop <- c(0.35, 0.30, 0.30,0.05)
     }
 
