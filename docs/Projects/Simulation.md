@@ -107,7 +107,7 @@ save(subsample, file = "LIBDsubsample.RData")
 ```
 
 
-#### Generate single cell data
+### Generate single cell data
 
 Single cell data are downloaded from [GSE104276](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE104276).
 
@@ -152,7 +152,7 @@ save(init_params, file = "init_params_LIBD.RData")
 
 ```
 
-#### Main functions in simulation
+### Main functions in simulation
 
 ```R
 simu = function(
@@ -252,10 +252,137 @@ map_z2c = function(z)
 
 ```
 
-#### Simulate data
+### Simulate data, 10000 cells
+
+```R
+args <- as.numeric(commandArgs(TRUE))
+i = args[1] # scenario
+j = args[2] # repeat
+print(i)
+
+  library(tidyverse)
+  library(Giotto)
+  library(scater)
+  library(Seurat)
+  library(mclust)
+  library(SC3)
+  library(BayesSpace)
+  library(gtools)
+  library(splatter)
+  library(reticulate)
+  library(mclust )
+  library(igraph)
+  library(assertthat)
+  library(SpatialPCA)
+  library(ggplot2)
+  
+  
+load("LIBDsubsample.RData")
+load("init_params_LIBD.RData")
+# These two R object can be downloaded from https://drive.google.com/drive/folders/18rwQjB3-g86A-M9xYPPJlHz60bfMABdE?usp=sharing.
+
+res = simu(location=subsample[,2:3],label = subsample$label,init_params,
+    scenario=i,J=5000, batch_facLoc=0, de_prop=0.5, de_facLoc=0.5, de_facScale=0.5,sim_seed=j, debug = FALSE)
 
 
-##### 
+count_mat = res[[1]]
+truth = subsample$label
+location=as.matrix(subsample[,2:3])
+# truth = LIBDsimu_pseudo$info$z
+location=as.matrix(location)
+celltypes = res[[2]]
+count_spot = count_mat
+location_spot = location
+rownames(location_spot) = colnames(count_spot) = paste0("spot",1:dim(count_spot)[2])
+rownames(count_spot) = paste0("gene",1:dim(count_spot)[1])
+dim(count_spot)
+
+
+###############
+# Run SpatialPCA
+###############
+
+LIBDsimu = CreateSpatialPCAObject(counts=count_spot, location=location_spot, project = "SpatialPCA",gene.type="spatial",sparkversion="sparkx", gene.number=3000,customGenelist=NULL,min.loctions = 20, min.features=20)
+LIBDsimu = SpatialPCA_buildKernel(LIBDsimu, kerneltype="gaussian", bandwidthtype="Silverman")
+LIBDsimu = SpatialPCA_EstimateLoading(LIBDsimu,fast=TRUE,SpatialPCnum=20)
+LIBDsimu = SpatialPCA_SpatialPCs(LIBDsimu, fast=TRUE)
+
+
+# Collect results
+SpatialPCA_result = list()
+SpatialPCA_result$SpatialPCs  = LIBDsimu@SpatialPCs
+SpatialPCA_result$normalized_expr  = LIBDsimu@normalized_expr
+SpatialPCA_result$location = LIBDsimu@location
+pred_cluster= louvain_clustering_new(4,SpatialPCA_result$SpatialPCs,500 )
+SpatialPCA_result$clusterlabel = pred_cluster
+SpatialPCA_result$truth = truth[match(rownames(LIBDsimu@location),rownames(location_spot))]
+SpatialPCA_result$ARI = adjustedRandIndex(SpatialPCA_result$clusterlabel,SpatialPCA_result$truth)
+SpatialPCA_result$NMI = compare(as.factor(SpatialPCA_result$clusterlabel),as.factor(SpatialPCA_result$truth), method = "nmi")
+SpatialPCA_result$CHAOS = fx_CHAOS(SpatialPCA_result$clusterlabel, SpatialPCA_result$location)
+SpatialPCA_result$PAS = fx_PAS(SpatialPCA_result$clusterlabel, SpatialPCA_result$location)
+
+save(SpatialPCA_result, file = paste0("celllevel_SpatialPCA_spatialgene_result_scenario_",i,"_rep_",j,".RData"))
+
+###############
+# BayesSpace
+###############
+
+print("run BayesSpace, ST, hvg genes")
+
+# filter out spots with 0 counts
+ind_keep=which(colSums(count_spot) > 0)
+location_spot_bayesSpace=location_spot[ind_keep,]
+count_spot_BayesSpace=count_spot[,ind_keep]
+colnames(location_spot_bayesSpace) <- c("row", "col")
+
+sce_LIBDsimu_ST <- SingleCellExperiment(assays = list(counts = count_spot_BayesSpace), colData = location_spot_bayesSpace)
+sce_LIBDsimu_ST <- spatialPreprocess(sce_LIBDsimu_ST, platform="ST",n.PCs = 15, n.HVGs = 2000, log.normalize = T)
+sce_LIBDsimu_ST <- spatialCluster(sce_LIBDsimu_ST, q=4, d=15, platform='ST',nrep=10000, gamma=3, save.chain=FALSE) 
+sce_labels=sce_LIBDsimu_ST$spatial.cluster
+
+BayesSpace_ST_result = list()
+BayesSpace_ST_result$sce_LIBDsimu_ST = sce_LIBDsimu_ST
+BayesSpace_ST_result$clusterlabel = sce_labels
+BayesSpace_ST_result$location = location_spot_bayesSpace
+BayesSpace_ST_result$truth = truth[ind_keep]
+BayesSpace_ST_result$ARI = adjustedRandIndex(BayesSpace_ST_result$clusterlabel,BayesSpace_ST_result$truth)
+BayesSpace_ST_result$NMI = compare(BayesSpace_ST_result$clusterlabel,BayesSpace_ST_result$truth, method = "nmi")
+BayesSpace_ST_result$CHAOS = fx_CHAOS(BayesSpace_ST_result$clusterlabel, BayesSpace_ST_result$location)
+BayesSpace_ST_result$PAS = fx_PAS(BayesSpace_ST_result$clusterlabel, BayesSpace_ST_result$location)
+
+print(BayesSpace_ST_result$ARI)
+
+save(BayesSpace_ST_result,  file = paste0("celllevel_BayesSpace_hvggene_result_scenario_",i,"_rep_",j,".RData"))
+
+###############
+# prepare SpaGCN data
+# and then run in python
+###############
+
+print("SpaGCN")
+# SpaGCN uses all genes
+
+library(DropletUtils)
+write10xCounts(
+  paste0("celllevel_SpaGCN_scenairo_",i,"_rep_",j,"_count_allgene.h5"),
+  count_spot,
+  barcodes = colnames(count_spot),
+  gene.id = rownames(count_spot),
+  gene.symbol = rownames(count_spot),
+  gene.type = "Gene Expression",
+  overwrite = FALSE,
+  type = c( "HDF5"),
+  genome = "unknown",
+  #version = c("2", "3"),
+  #chemistry = "Single Cell 3' v3",
+  original.gem.groups = 1L,
+  library.ids = "custom"
+)
+
+```
+
+### Simulate data, 5077 locations
+
 ```R
 args <- as.numeric(commandArgs(TRUE))
 i = args[1] # scenario
@@ -398,7 +525,7 @@ write10xCounts(
 
 ```
 
-
+### Simulate data, 3602 locations
 
 
 
