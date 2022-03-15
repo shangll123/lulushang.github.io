@@ -12,3 +12,5 @@ permalink: /docs/Projects/SpatialPCA
 
 
 SpatialPCA is a spatially aware dimension reduction method that aims to infer a low dimensional representation of the gene expression data in spatial transcriptomics. 
+
+[SpatialPCA Tutorial Website](http://lulushang.org/SpatialPCA_Tutorial/index.html)
