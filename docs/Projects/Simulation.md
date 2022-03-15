@@ -340,16 +340,14 @@ SpatialPCA_result$clusterlabel = pred_refine
 SpatialPCA_result$truth = truth[match(rownames(LIBDsimu@location),rownames(location_spot))]
 SpatialPCA_result$ARI = adjustedRandIndex(SpatialPCA_result$clusterlabel,SpatialPCA_result$truth)
 SpatialPCA_result$NMI = compare(as.factor(SpatialPCA_result$clusterlabel),as.factor(SpatialPCA_result$truth), method = "nmi")
-SpatialPCA_result$CHAOS = fx_chaos(SpatialPCA_result$clusterlabel, SpatialPCA_result$location)
-SpatialPCA_result$PAS = fx_PAEP(SpatialPCA_result$clusterlabel, SpatialPCA_result$location)
+SpatialPCA_result$CHAOS = fx_CHAOS(SpatialPCA_result$clusterlabel, SpatialPCA_result$location)
+SpatialPCA_result$PAS = fx_PAS(SpatialPCA_result$clusterlabel, SpatialPCA_result$location)
 
 save(SpatialPCA_result, file = paste0("spotlevel_SpatialPCA_spatialgene_result_scenario_",i,"_rep_",j,".RData"))
 
 ###############
 # BayesSpace
 ###############
-
-print("run BayesSpace, ST, hvg genes")
 
 # filter out spots with 0 counts
 ind_keep=which(colSums(count_spot) > 0)
@@ -369,8 +367,8 @@ BayesSpace_ST_result$location = location_spot_bayesSpace
 BayesSpace_ST_result$truth = truth[ind_keep]
 BayesSpace_ST_result$ARI = adjustedRandIndex(BayesSpace_ST_result$clusterlabel,BayesSpace_ST_result$truth)
 BayesSpace_ST_result$NMI = compare(BayesSpace_ST_result$clusterlabel,BayesSpace_ST_result$truth, method = "nmi")
-BayesSpace_ST_result$CHAOS = fx_chaos(BayesSpace_ST_result$clusterlabel, BayesSpace_ST_result$location)
-BayesSpace_ST_result$PAS = fx_PAEP(BayesSpace_ST_result$clusterlabel, BayesSpace_ST_result$location)
+BayesSpace_ST_result$CHAOS = fx_CHAOS(BayesSpace_ST_result$clusterlabel, BayesSpace_ST_result$location)
+BayesSpace_ST_result$PAS = fx_PAS(BayesSpace_ST_result$clusterlabel, BayesSpace_ST_result$location)
 
 print(BayesSpace_ST_result$ARI)
 
