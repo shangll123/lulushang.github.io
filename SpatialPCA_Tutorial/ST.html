@@ -387,7 +387,7 @@ div.tocify {
 
 <p>
 <button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
-<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span>
 </button>
 </p>
 <div id="workflowr-report" class="collapse">
@@ -396,7 +396,7 @@ div.tocify {
 <a data-toggle="tab" href="#summary">Summary</a>
 </li>
 <li>
-<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> </a>
 </li>
 <li>
 <a data-toggle="tab" href="#versions">Past versions</a>
@@ -405,10 +405,10 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2022-01-27
+<strong>Last updated:</strong> 2022-03-22
 </p>
 <p>
-<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 7 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
 </p>
 <p>
 <strong>Knit directory:</strong> <code>Tutorial/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
@@ -424,12 +424,12 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
 </p>
 </div>
-<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
 <div class="panel-body">
-<p>The R Markdown is untracked by Git. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
 </div>
 </div>
 </div>
@@ -496,16 +496,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong9a0d220"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 9a0d220 </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrong251c36f"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> 251c36f </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrong9a0d220" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrong251c36f" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version 9a0d220. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version 251c36f. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -517,12 +517,6 @@ Ignored files:
     Ignored:    analysis/_main.html
 
 Untracked files:
-    Untracked:  analysis/DLPFC.Rmd
-    Untracked:  analysis/Installation.Rmd
-    Untracked:  analysis/ST.Rmd
-    Untracked:  analysis/Vizgen.Rmd
-    Untracked:  analysis/slideseq.Rmd
-    Untracked:  analysis/slideseqV2.Rmd
     Untracked:  code/Simulation.R
     Untracked:  code/SpatialPCA.R
     Untracked:  code/SpatialPCA_EstimateLoading.R
@@ -535,10 +529,7 @@ Untracked files:
     Untracked:  data/ST_data.RData
     Untracked:  data/Vizgen_Merfish_count_location.RData
     Untracked:  data/slideseq.rds
-
-Unstaged changes:
-    Modified:   analysis/_site.yml
-    Modified:   analysis/index.Rmd
+    Untracked:  docs.zip
 
 </code></pre>
 <p>
@@ -551,9 +542,52 @@ Note that any generated files, e.g. HTML, png, CSS, etc., are not included in t
 <hr>
 </div>
 <div id="versions" class="tab-pane fade">
+
 <p>
-There are no past versions. Publish this analysis with <code>wflow_publish()</code> to start tracking its development.
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/ST.Rmd</code>) and HTML (<code>docs/ST.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
 </p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+251c36f
+</td>
+<td>
+shangll123
+</td>
+<td>
+2022-03-22
+</td>
+<td>
+Publish SpatialPCA tutorial
+</td>
+</tr>
+</tbody>
+</table>
+</div>
 <hr>
 </div>
 </div>
@@ -677,7 +711,7 @@ plot_cluster(STsimu_high_ST_random@highPos, as.character(cluster_SpatialPCA_high
 </p>
 <div id="workflowr-sessioninfo" class="collapse">
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>R version 4.1.2 (2021-11-01)
+<pre><code>R version 4.1.3 (2022-03-10)
 Platform: x86_64-pc-linux-gnu (64-bit)
 Running under: Ubuntu 18.04.5 LTS
 
@@ -697,7 +731,7 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 other attached packages:
-[1] ggplot2_3.3.5    SpatialPCA_1.2.0
+[1] ggplot2_3.3.5    SpatialPCA_1.2.0 workflowr_1.6.2 
 
 loaded via a namespace (and not attached):
   [1] Seurat_4.0.5             Rtsne_0.15               colorspace_2.0-2        
@@ -705,41 +739,41 @@ loaded via a namespace (and not attached):
   [7] rprojroot_2.0.2          RcppArmadillo_0.10.7.0.0 fs_1.5.0                
  [10] spatstat.data_2.1-0      leiden_0.3.9             listenv_0.8.0           
  [13] matlab_1.0.2             ggrepel_0.9.1            RSpectra_0.16-0         
- [16] fansi_0.5.0              codetools_0.2-18         splines_4.1.2           
+ [16] fansi_0.5.0              codetools_0.2-18         splines_4.1.3           
  [19] doParallel_1.0.16        knitr_1.36               polyclip_1.10-0         
- [22] jsonlite_1.7.2           workflowr_1.6.2          umap_0.2.7.0            
- [25] ica_1.0-2                cluster_2.1.2            png_0.1-7               
- [28] uwot_0.1.10              spatstat.sparse_2.0-0    shiny_1.7.1             
- [31] sctransform_0.3.2        compiler_4.1.2           httr_1.4.2              
- [34] assertthat_0.2.1         SeuratObject_4.0.2       Matrix_1.3-4            
- [37] fastmap_1.1.0            lazyeval_0.2.2           later_1.3.0             
- [40] htmltools_0.5.2          tools_4.1.2              igraph_1.2.7            
- [43] gtable_0.3.0             glue_1.4.2               RANN_2.6.1              
- [46] reshape2_1.4.4           dplyr_1.0.7              Rcpp_1.0.7              
- [49] scattermore_0.7          jquerylib_0.1.4          vctrs_0.3.8             
- [52] SPARK_1.1.0              nlme_3.1-153             iterators_1.0.13        
- [55] lmtest_0.9-38            xfun_0.27                stringr_1.4.0           
- [58] globals_0.14.0           mime_0.12                miniUI_0.1.1.1          
- [61] CompQuadForm_1.4.3       lifecycle_1.0.1          irlba_2.3.3             
- [64] goftest_1.2-3            future_1.22.1            MASS_7.3-54             
- [67] zoo_1.8-9                scales_1.1.1             spatstat.core_2.3-0     
- [70] spatstat.utils_2.2-0     doSNOW_1.0.19            promises_1.2.0.1        
- [73] parallel_4.1.2           RColorBrewer_1.1-2       yaml_2.2.1              
- [76] reticulate_1.22          pbapply_1.5-0            gridExtra_2.3           
- [79] sass_0.4.0               rpart_4.1-15             stringi_1.7.5           
- [82] foreach_1.5.1            rlang_0.4.12             pkgconfig_2.0.3         
- [85] matrixStats_0.61.0       pracma_2.3.3             evaluate_0.14           
- [88] lattice_0.20-45          tensor_1.5               ROCR_1.0-11             
- [91] purrr_0.3.4              patchwork_1.1.1          htmlwidgets_1.5.4       
- [94] pdist_1.2                cowplot_1.1.1            tidyselect_1.1.1        
- [97] parallelly_1.28.1        RcppAnnoy_0.0.19         plyr_1.8.6              
-[100] magrittr_2.0.1           R6_2.5.1                 snow_0.4-4              
-[103] generics_0.1.1           DBI_1.1.1                withr_2.4.2             
-[106] mgcv_1.8-38              pillar_1.6.4             fitdistrplus_1.1-6      
+ [22] jsonlite_1.7.2           umap_0.2.7.0             ica_1.0-2               
+ [25] cluster_2.1.2            png_0.1-7                uwot_0.1.10             
+ [28] spatstat.sparse_2.0-0    shiny_1.7.1              sctransform_0.3.2       
+ [31] compiler_4.1.3           httr_1.4.2               assertthat_0.2.1        
+ [34] SeuratObject_4.0.2       Matrix_1.3-4             fastmap_1.1.0           
+ [37] lazyeval_0.2.2           later_1.3.0              htmltools_0.5.2         
+ [40] tools_4.1.3              igraph_1.2.7             gtable_0.3.0            
+ [43] glue_1.4.2               RANN_2.6.1               reshape2_1.4.4          
+ [46] dplyr_1.0.7              Rcpp_1.0.7               scattermore_0.7         
+ [49] jquerylib_0.1.4          vctrs_0.3.8              SPARK_1.1.0             
+ [52] nlme_3.1-153             iterators_1.0.13         lmtest_0.9-38           
+ [55] xfun_0.27                stringr_1.4.0            globals_0.14.0          
+ [58] mime_0.12                miniUI_0.1.1.1           CompQuadForm_1.4.3      
+ [61] lifecycle_1.0.1          irlba_2.3.3              goftest_1.2-3           
+ [64] future_1.22.1            MASS_7.3-54              zoo_1.8-9               
+ [67] scales_1.1.1             spatstat.core_2.3-0      spatstat.utils_2.2-0    
+ [70] doSNOW_1.0.19            promises_1.2.0.1         parallel_4.1.3          
+ [73] RColorBrewer_1.1-2       yaml_2.2.1               reticulate_1.22         
+ [76] pbapply_1.5-0            gridExtra_2.3            sass_0.4.0              
+ [79] rpart_4.1-15             stringi_1.7.5            foreach_1.5.1           
+ [82] rlang_0.4.12             pkgconfig_2.0.3          matrixStats_0.61.0      
+ [85] pracma_2.3.3             evaluate_0.14            lattice_0.20-45         
+ [88] tensor_1.5               ROCR_1.0-11              purrr_0.3.4             
+ [91] patchwork_1.1.1          htmlwidgets_1.5.4        pdist_1.2               
+ [94] cowplot_1.1.1            tidyselect_1.1.1         parallelly_1.28.1       
+ [97] RcppAnnoy_0.0.19         plyr_1.8.6               magrittr_2.0.1          
+[100] R6_2.5.1                 snow_0.4-4               generics_0.1.1          
+[103] DBI_1.1.1                withr_2.4.2              mgcv_1.8-38             
+[106] pillar_1.6.4             whisker_0.4              fitdistrplus_1.1-6      
 [109] abind_1.4-5              survival_3.2-13          tibble_3.1.5            
 [112] future.apply_1.8.1       crayon_1.4.1             KernSmooth_2.23-20      
 [115] utf8_1.2.2               spatstat.geom_2.3-0      plotly_4.10.0           
-[118] rmarkdown_2.11           grid_4.1.2               data.table_1.14.2       
+[118] rmarkdown_2.11           grid_4.1.3               data.table_1.14.2       
 [121] git2r_0.28.0             digest_0.6.28            pbmcapply_1.5.0         
 [124] xtable_1.8-4             tidyr_1.1.4              httpuv_1.6.3            
 [127] openssl_1.4.5            munsell_0.5.0            viridisLite_0.4.0       
