@@ -25,6 +25,13 @@ Published in the American Journal of Human Genetics (AJHG).<br />
 [DOI](https://www.sciencedirect.com/science/article/pii/S0002929720300781?via%3Dihub){: .btn .btn-blue }
 [Github](https://github.com/shangll123/GENOA_eQTL){: .btn .btn-green }<br />
 
+* <img align="left" src="/images/paper_icon.png" alt="drawing" width="20"/> **METRO: Multi-ancestry transcriptome-wide association studies for powerful gene-trait association detection**<br />
+Published in the American Journal of Human Genetics (AJHG).<br />
+<img align="left" src="/images/pen.png" alt="drawing" width="20"/> Zheng Li, Wei Zhao, **Lulu Shang**, Thomas H Mosley, Sharon LR Kardia, Jennifer A Smith, Xiang Zhou# (2020). <br />
+[PDF](https://reader.elsevier.com/reader/sd/pii/S0002929722000994?token=A4E98459B06A4BC23DD757DCE45BD8D25723DB776F2F5B54DE793E730DAA4B26C4DB9B3AC9BFB1D6886214F7AEB84398&originRegion=us-east-1&originCreation=20220401154328){: .btn .btn-purple }
+[DOI](https://www.sciencedirect.com/science/article/pii/S0002929722000994){: .btn .btn-blue }
+[Github](https://github.com/zhengli09/METRO){: .btn .btn-green }<br />
+
 * <img align="left" src="/images/paper_icon.png" alt="drawing" width="20"/> **Genome-wide meta-analysis identifies suggestive loci for sodium intake, potassium intake, and their ratio measured from 24-hour or half-day urine samples**<br />
 Published in the Journal of Nutrition.<br />
 <img align="left" src="/images/pen.png" alt="drawing" width="20"/> Minjung Kho, Jennifer A Smith, Niek Verweij, **Lulu Shang**, Kathleen A Ryan, Wei Zhao, Erin B Ware, Ron T Gansevoort, Marguerite R Irvin, Jung Eun Lee, Stephen T Turner, Joohon Sung, Pim van der Harst, Donna K Arnett, Ana Baylin, Sung Kyun Park, Young Ah Seo, Yen Pei C Chang, Xiang Zhou, John C Lieske, Sharon LR Kardia (2020). <br />
