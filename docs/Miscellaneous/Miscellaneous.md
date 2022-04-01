@@ -20,7 +20,7 @@ permalink: /docs/Miscellaneous
 
 * Presentations at the University of Michigan
 	* **Michigan Student Symposium for Interdisciplinary Statistical Sciences (MSSISS)**,  Ann Arbor, MI<br />
-	“Spatially Aware Dimension Reduction for Spatial Transcriptomics”,02/2022<br />
+	“Spatially Aware Dimension Reduction for Spatial Transcriptomics”,03/2022<br />
 	* **The Biostatistics Department Diversity Equity and Inclusion (DEI) Seminar**, University of Michigan<br />
 	“Contrasting the genetic architecture underlying gene expression levels in European Americans and African Americans: An eQTL mapping study in GENOA”, 03/2020<br />
 	* **Center for Statistical Genetics**, Department of Biostatistics, University of Michigan<br />
