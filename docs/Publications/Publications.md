@@ -27,7 +27,7 @@ Published in the American Journal of Human Genetics (AJHG).<br />
 
 * <img align="left" src="/images/paper_icon.png" alt="drawing" width="20"/> **METRO: Multi-ancestry transcriptome-wide association studies for powerful gene-trait association detection**<br />
 Published in the American Journal of Human Genetics (AJHG).<br />
-<img align="left" src="/images/pen.png" alt="drawing" width="20"/> Zheng Li, Wei Zhao, **Lulu Shang**, Thomas H Mosley, Sharon LR Kardia, Jennifer A Smith, Xiang Zhou# (2020). <br />
+<img align="left" src="/images/pen.png" alt="drawing" width="20"/> Zheng Li, Wei Zhao, **Lulu Shang**, Thomas H Mosley, Sharon LR Kardia, Jennifer A Smith, Xiang Zhou# (2022). <br />
 [PDF](https://reader.elsevier.com/reader/sd/pii/S0002929722000994?token=A4E98459B06A4BC23DD757DCE45BD8D25723DB776F2F5B54DE793E730DAA4B26C4DB9B3AC9BFB1D6886214F7AEB84398&originRegion=us-east-1&originCreation=20220401154328){: .btn .btn-purple }
 [DOI](https://www.sciencedirect.com/science/article/pii/S0002929722000994){: .btn .btn-blue }
 [Github](https://github.com/zhengli09/METRO){: .btn .btn-green }<br />
