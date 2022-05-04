@@ -7,7 +7,7 @@ permalink: /
 ---
 
 
-<img align="top" src="/images/lulu.jpeg" alt="photo" width="300"/> 
+<img align="top" src="/images/IMG_8019.jpeg" alt="photo" width="300"/> 
 
 
 
