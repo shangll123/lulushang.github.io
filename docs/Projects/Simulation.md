@@ -251,6 +251,119 @@ map_z2c = function(z)
     )
 }
 
+
+
+make_grid = function(square_size, location){
+  x=location[,1]
+  y=location[,2]
+  max_x = max(x)
+  min_x = min(x)
+  max_y = max(y)
+  min_y = min(y)
+  grid_num_x = round((max_x-min_x)/square_size)+1
+  grid_num_y = round((max_y-min_y)/square_size)+1
+
+
+
+  grid = list()
+  grid_ind = 0
+  for(grid_x_id in 1:grid_num_x){
+    for(grid_y_id in 1:grid_num_y){
+      grid_ind = grid_ind + 1
+      x_left = min_x + (grid_x_id-1)*square_size
+      x_right = min_x + (grid_x_id)*square_size
+      y_low = min_y + (grid_y_id-1)*square_size
+      y_up = min_y + (grid_y_id)*square_size
+      cell_ids = which(x>=x_left & x<=x_right & y>=y_low & y<=y_up)
+      center_x = (x_left+x_right)/2
+      center_y = (y_low+y_up)/2
+      grid[[grid_ind]] = list()
+      grid[[grid_ind]]$cell_ids = cell_ids
+      grid[[grid_ind]]$cell_num = length(cell_ids)
+      grid[[grid_ind]]$center_x = center_x
+      grid[[grid_ind]]$center_y = center_y
+      grid[[grid_ind]]$pseudo_x = grid_x_id
+      grid[[grid_ind]]$pseudo_y = grid_y_id
+    }
+  }
+  return(grid)
+}
+
+
+make_spot = function(grid_obj, count_mat,celltypes, celltruths){
+  gene_num = dim(count_mat)[1]
+  spot_num = length(grid_obj)
+  count_spot = matrix(0,gene_num,spot_num)
+  location_spot = matrix(NA,spot_num,2)
+  pseudo_location_spot = matrix(NA,spot_num,2)
+
+  celltype = c()
+  subspottruth = c()
+  for(spot in 1:spot_num){
+    if(length(grid_obj[[spot]]$cell_ids)==1){
+      count_spot[,spot] = count_mat[,grid_obj[[spot]]$cell_ids]
+      location_spot[spot,1] = grid_obj[[spot]]$center_x
+      location_spot[spot,2] = grid_obj[[spot]]$center_y
+      pseudo_location_spot[spot,1] = grid_obj[[spot]]$pseudo_x
+      pseudo_location_spot[spot,2] = grid_obj[[spot]]$pseudo_y
+      celltype[spot] = names(table(celltypes[grid_obj[[spot]]$cell_ids]))[which.max(table(celltypes[grid_obj[[spot]]$cell_ids]))]
+      subspottruth[spot] = names(table(celltruths[grid_obj[[spot]]$cell_ids]))[which.max(table(celltruths[grid_obj[[spot]]$cell_ids]))]
+
+    }else if(length(grid_obj[[spot]]$cell_ids)>=2){
+      count_spot[,spot] = rowSums(count_mat[,grid_obj[[spot]]$cell_ids])
+      location_spot[spot,1] = grid_obj[[spot]]$center_x
+      location_spot[spot,2] = grid_obj[[spot]]$center_y
+      pseudo_location_spot[spot,1] = grid_obj[[spot]]$pseudo_x
+      pseudo_location_spot[spot,2] = grid_obj[[spot]]$pseudo_y
+      celltype[spot] = names(table(celltypes[grid_obj[[spot]]$cell_ids]))[which.max(table(celltypes[grid_obj[[spot]]$cell_ids]))]
+      subspottruth[spot] = names(table(celltruths[grid_obj[[spot]]$cell_ids]))[which.max(table(celltruths[grid_obj[[spot]]$cell_ids]))]
+    }else{
+      count_spot[,spot] = 0
+      location_spot[spot,1] = grid_obj[[spot]]$center_x
+      location_spot[spot,2] = grid_obj[[spot]]$center_y
+      pseudo_location_spot[spot,1] = grid_obj[[spot]]$pseudo_x
+      pseudo_location_spot[spot,2] = grid_obj[[spot]]$pseudo_y
+      celltype[spot] = "empty"
+      subspottruth[spot] = "empty"
+
+    }
+  }
+
+
+  return(list("count_spot"=count_spot,"location_spot"=location_spot,"pseudo_location_spot"=pseudo_location_spot,"subspottruth"=subspottruth,"celltype"=celltype))
+}
+
+
+make_spot_from_subspot = function(count_location_subspot){
+  count_subspot = count_location_subspot[[1]]
+  location_subspot = count_location_subspot[[3]]/3
+  truth_subspot = count_location_subspot[[4]]
+
+  spot_x_max = floor(max(location_subspot[,1]))
+  spot_y_max = floor(max(location_subspot[,2]))
+
+  spot_num = spot_x_max * spot_y_max
+  used_subspots = c()
+  truth_spot = c()
+  count_spot = matrix(0, dim(count_subspot)[1], spot_num)
+  location_spot = matrix(NA, spot_num, 2)
+  count = 0
+  for(spot_id_x in 1:spot_x_max){
+    for(spot_id_y in 1:spot_y_max){
+      count = count + 1
+      subspot_id = which(location_subspot[,1]>=spot_id_x-0.5 & location_subspot[,1]<=spot_id_x+0.5 & location_subspot[,2]>=spot_id_y-0.5 & location_subspot[,2]<=spot_id_y+0.5)
+      used_subspots = c(used_subspots, subspot_id)
+      count_spot[, count] = rowSums(count_subspot[,subspot_id])
+      location_spot[count,1] = mean(location_subspot[subspot_id,1])
+      location_spot[count,2] = mean(location_subspot[subspot_id,2])
+      truth_spot[count] = names(table(count_location_subspot$subspottruth[subspot_id]))
+    }
+  }
+
+  return(list("count_spot"=count_spot, "location_spot" = location_spot, "truth_spot"=truth_spot,"used_subspots" = used_subspots))
+
+}
+
 ```
 
 
