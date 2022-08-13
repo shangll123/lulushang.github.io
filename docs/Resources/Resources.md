@@ -8,3 +8,6 @@ permalink: /docs/Resources
 
 
 {: .fs-6 .fw-300 }
+
+
+Here are some codes that I usually use to make figures, maintain the server, and make R packages. 
