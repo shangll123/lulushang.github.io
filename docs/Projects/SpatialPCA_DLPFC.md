@@ -1,9 +1,6 @@
 ---
 layout: default
 title: DLPFC Analysis
-nav_order: 2
-has_children: false
-parent: SpatialPCA
 permalink: /docs/Projects/SpatialPCA/DLPFC
 ---
 
