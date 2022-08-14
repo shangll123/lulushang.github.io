@@ -17,7 +17,8 @@ permalink: /docs/Projects/SpatialPCA/Simulation
 - [Simulate data, spot level](#simulate-data-spot-level)
 - [Simulate data, spot level with stripe pattern](#simulate-data-spot-level-with-stripe-pattern)
 - [Simulate data, spot level with arbitrary spatial correlation](#simulate-data-spot-level-with-arbitrary-spatial-correlation)
-
+- [High resolution spatial map reconstruction](#high-resolution-spatial-map-reconstruction)
+- 
 ## Prepare simulation datasets
 
 The locations are generated from pixels in a image (LIBDsimu.jpg), which can be downloaded from [here](https://drive.google.com/drive/folders/18rwQjB3-g86A-M9xYPPJlHz60bfMABdE?usp=sharing).
@@ -2110,7 +2111,236 @@ if(k ==1){
 
 ```
 
+## High resolution spatial map reconstruction
+```R
+args <- as.numeric(commandArgs(TRUE))
+i = args[1] # scenario
+j = args[2] # repeat
+print(i)
 
+  library(tidyverse)
+  library(Giotto)
+  library(scater)
+  library(Seurat)
+  library(mclust)
+  library(SC3)
+  library(BayesSpace)
+  library(gtools)
+  library(splatter)
+  library(reticulate)
+  library(mclust )
+  library(igraph)
+  library(assertthat)
+  library(SpatialPCA)
+  library(ggplot2)
+  
+ source("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer1/code_utility.R")
+load("/net/mulan/disk2/shanglu/Projects/SpatialPCA/reviewer/simulation/LIBDsimu/LIBDsubsample.RData")
+load("/net/mulan/disk2/shanglu/Projects/SpatialPCA/reviewer/simulation/LIBDsimu/init_params_LIBD.RData")
+load(paste0("LIBD_res_scenairo_",i,"_rep_",j,".RData"))
+
+
+# subspot level
+count_mat = res[[1]]
+truth = subsample$label
+location=as.matrix(subsample[,2:3])
+# truth = LIBDsimu_pseudo$info$z
+location=as.matrix(location)
+celltypes = res[[2]]
+# first generate subspot level data
+grid_subspot = make_grid(square_size = 7,location)
+count_location_subspot = make_spot(grid_subspot,count_mat,celltypes,subsample$label)
+count_subspot = count_location_subspot$count_spot
+location_subspot = count_location_subspot$pseudo_location_spot/3
+truth_subspot = count_location_subspot$subspottruth
+spot_level_data = make_spot_from_subspot(count_location_subspot)
+truth_subspot[spot_level_data$used_subspots]
+# spot level
+truth=spot_level_data$truth_spot
+truth_empty = which(truth=="empty")
+count_spot = spot_level_data$count_spot[,-truth_empty]
+location_spot = spot_level_data$location_spot[-truth_empty,]
+truth=truth[-truth_empty]
+rownames(location_spot) = colnames(count_spot) = paste0("spot",1:dim(count_spot)[2])
+rownames(count_spot) = paste0("gene",1:dim(count_spot)[1])
+
+dim(count_spot)
+
+save(count_spot, location_spot, truth, file = paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer1/Q3/simulation/prediction/data/Data_count_location_truth_scenario_",i,"_rep_",j,".RData"))
+
+
+#----------------------------------  
+# Run SpatialPCA
+#----------------------------------  
+print("run SpatialPCA")
+
+LIBDsimu = CreateSpatialPCAObject(counts=count_spot, location=location_spot, project = "SpatialPCA",gene.type="spatial",sparkversion="spark", gene.number=3000,customGenelist=NULL,min.loctions = 20, min.features=20)
+LIBDsimu = SpatialPCA_buildKernel(LIBDsimu, kerneltype="gaussian", bandwidthtype="SJ")
+LIBDsimu = SpatialPCA_EstimateLoading(LIBDsimu,fast=FALSE,SpatialPCnum=20)
+LIBDsimu = SpatialPCA_SpatialPCs(LIBDsimu, fast=FALSE)
+SpatialPCA_result = list()
+SpatialPCA_result$SpatialPCs  = LIBDsimu@SpatialPCs
+SpatialPCA_result$normalized_expr  = LIBDsimu@normalized_expr
+SpatialPCA_result$location = LIBDsimu@location
+pred_cluster= walktrap_clustering_new(4,SpatialPCA_result$SpatialPCs,100 )
+spotlist=rownames(SpatialPCA_result$location)
+dist = as.matrix(dist(SpatialPCA_result$location))
+pred_refine = refine_v2(spotlist, pred_cluster, dist,shape="square") 
+SpatialPCA_result$pred_cluster = pred_cluster
+SpatialPCA_result$clusterlabel = pred_refine
+SpatialPCA_result$truth = truth[match(rownames(LIBDsimu@location),rownames(location_spot))]
+SpatialPCA_result$ARI = adjustedRandIndex(SpatialPCA_result$clusterlabel,SpatialPCA_result$truth)
+SpatialPCA_result$NMI = compare(as.factor(SpatialPCA_result$clusterlabel),as.factor(SpatialPCA_result$truth), method = "nmi")
+SpatialPCA_result$CHAOS = fx_chaos(SpatialPCA_result$clusterlabel, SpatialPCA_result$location)
+SpatialPCA_result$PAS = fx_PAEP(SpatialPCA_result$clusterlabel, SpatialPCA_result$location)
+print(SpatialPCA_result$ARI )
+
+save(SpatialPCA_result, file = paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer1/Q3/simulation/prediction/result/spotlevel_SpatialPCA_spatialgene_result_scenario_",i,"_rep_",j,".RData"))
+
+# load(paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/reviewer/simulation/LIBDsimu/results_1948/spotlevel_SpatialPCA_spatialgene_result_scenario_",i,"_rep_",j,".RData"))
+
+#----------------------------------  
+# run BayesSpace, ST, hvg genes
+#----------------------------------  
+
+print("run BayesSpace, ST, hvg genes")
+# filter out spots with 0 counts
+ind_keep=which(colSums(count_spot) > 0)
+location_spot_bayesSpace=location_spot[ind_keep,]
+count_spot_BayesSpace=count_spot[,ind_keep]
+colnames(location_spot_bayesSpace) <- c("row", "col")
+
+sce_LIBDsimu_ST <- SingleCellExperiment(assays = list(counts = count_spot_BayesSpace), colData = location_spot_bayesSpace)
+sce_LIBDsimu_ST <- spatialPreprocess(sce_LIBDsimu_ST, platform="ST",n.PCs = 15, n.HVGs = 2000, log.normalize = T)
+sce_LIBDsimu_ST <- spatialCluster(sce_LIBDsimu_ST, q=4, d=15, platform='ST',nrep=10000, gamma=3, save.chain=FALSE) 
+sce_labels=sce_LIBDsimu_ST$spatial.cluster
+
+save(sce_LIBDsimu_ST,  file = paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer1/Q3/simulation/prediction/result/BayesSpace_sce_LIBDsimu_ST_scenario_",i,"_rep_",j,".RData"))
+
+
+#-------------------------------------
+# run BayesSpace, high resolution, ST
+#-------------------------------------
+
+print("BayesSpace, high resolution, ST")
+sce_LIBDsimu_ST_enhanced <- spatialEnhance(sce_LIBDsimu_ST, q=4, platform="ST", d=15,
+                                    model="t", gamma=2,
+                                    jitter_prior=0.3, jitter_scale=3.5,
+                                    nrep=10000, 
+                                    burn.in=1000,
+                                    save.chain=FALSE)
+sce_LIBDsimu_ST_enhanced=BayesSpace_high_ST_result$sce_LIBDsimu_ST_enhanced
+sce_LIBDsimu_ST_enhanced_labels = sce_LIBDsimu_ST_enhanced$spatial.cluster
+vertices_ST <- unique(.make_vertices(sce_LIBDsimu_ST_enhanced, sce_LIBDsimu_ST_enhanced_labels, "ST", is.enhanced="TRUE"))
+vertices_loc = unique(vertices_ST[,c(1,2,4)])
+vertices_location = vertices_loc[,1:2]
+BayesSpace_high_ST_result = list()
+BayesSpace_high_ST_result$sce_LIBDsimu_ST_enhanced = sce_LIBDsimu_ST_enhanced
+BayesSpace_high_ST_result$sce_cluster = sce_LIBDsimu_ST_enhanced_labels
+BayesSpace_high_ST_result$location = unique(data.frame("x"=vertices_location$y.pos,"y"=vertices_location$x.pos))
+coordinate_allsubspot = c()
+for(k in 1:dim(location_subspot)[1]){
+  x = round(location_subspot[k,1],3)
+  y = round(location_subspot[k,2],3)
+  coordinate_allsubspot[k] = paste0(x,"_",y)
+}
+coordinate_BayesSpacesubspot = c()
+for(k in 1:dim(BayesSpace_high_ST_result$location)[1]){
+  x = round(BayesSpace_high_ST_result$location[k,1],3)
+  y = round(BayesSpace_high_ST_result$location[k,2],3)
+  coordinate_BayesSpacesubspot[k] = paste0(x,"_",y)
+}
+id_empty = which(BayesSpace_high_ST_result$truth=="empty")
+ind_match_totalsubspots = match(coordinate_BayesSpacesubspot, coordinate_allsubspot)
+BayesSpace_high_ST_result$truth =truth_subspot[ind_match_totalsubspots]
+BayesSpace_high_ST_result$ARI = adjustedRandIndex(BayesSpace_high_ST_result$sce_cluster[-id_empty],BayesSpace_high_ST_result$truth[-id_empty])
+BayesSpace_high_ST_result$NMI = compare(as.factor(BayesSpace_high_ST_result$sce_cluster[-id_empty]),as.factor(BayesSpace_high_ST_result$truth[-id_empty]), method = "nmi")
+BayesSpace_high_ST_result$CHAOS = fx_chaos(BayesSpace_high_ST_result$sce_cluster[-id_empty], BayesSpace_high_ST_result$location[-id_empty,])
+BayesSpace_high_ST_result$PAS = fx_PAEP(BayesSpace_high_ST_result$sce_cluster[-id_empty], BayesSpace_high_ST_result$location[-id_empty,])
+print(BayesSpace_high_ST_result$ARI )
+
+save(BayesSpace_high_ST_result, file = paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer1/Q3/simulation/prediction/result/BayesSpace_sce_LIBDsimu_ST_enhanced_scenario_",i,"_rep_",j,".RData"))
+
+#-------------------------------------- 
+# run SpatialPCA, high resolution, ST
+#-------------------------------------- 
+
+print("run SpatialPCA, high resolution, ST")
+newloc_ST = BayesSpace_high_ST_result$location[-id_empty,] # note, here x and y switched in BayesSpace vertex
+LIBDsimu_high_ST = SpatialPCA_highresolution(LIBDsimu,newloc_ST)
+expr_high = LIBDsimu@W %*% LIBDsimu_high_ST@highPCs
+rownames(expr_high) = rownames(LIBDsimu@normalized_expr)
+colnames(expr_high) = vertices_loc$spot[-id_empty]
+SpatialPCA_high_ST_result = list()
+SpatialPCA_high_ST_result$LIBDsimu_high_ST = LIBDsimu_high_ST
+pred_cluster= louvain_clustering_new(4,LIBDsimu_high_ST@highPCs,1000 )
+SpatialPCA_high_ST_result$clusterlabel = pred_cluster
+SpatialPCA_high_ST_result$highPCs = LIBDsimu_high_ST@highPCs
+SpatialPCA_high_ST_result$location = LIBDsimu_high_ST@highPos
+SpatialPCA_high_ST_result$expr_high = expr_high
+SpatialPCA_high_ST_result$truth =BayesSpace_high_ST_result$truth[-id_empty]
+SpatialPCA_high_ST_result$ARI = adjustedRandIndex(SpatialPCA_high_ST_result$clusterlabel,SpatialPCA_high_ST_result$truth)
+SpatialPCA_high_ST_result$NMI = compare(as.factor(SpatialPCA_high_ST_result$clusterlabel),as.factor(SpatialPCA_high_ST_result$truth), method = "nmi")
+SpatialPCA_high_ST_result$CHAOS = fx_chaos(SpatialPCA_high_ST_result$clusterlabel, SpatialPCA_high_ST_result$location)
+SpatialPCA_high_ST_result$PAS = fx_PAEP(SpatialPCA_high_ST_result$clusterlabel, SpatialPCA_high_ST_result$location)
+print(SpatialPCA_high_ST_result$ARI)
+save(SpatialPCA_high_ST_result,  file = paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer1/Q3/simulation/prediction/result/spotlevel_SpatialPCA_highST_result_scenario_",i,"_rep_",j,".RData"))
+
+#-------------------------------------- 
+# run BayesSpace, prediction gene expression
+#-------------------------------------- 
+
+print("run BayesSpace, prediction gene expression")
+gene_input = rownames(SpatialPCA_result$normalized_expr)
+sce_pred = function(index){
+  sce_enhanced_each <- enhanceFeatures(sce_LIBDsimu_ST_enhanced, sce_LIBDsimu_ST,
+                                model="xgboost",
+                                feature_names=gene_input[index],
+                                nrounds=0)
+  logcounts = logcounts(sce_enhanced_each)
+  return(logcounts[which(rownames(logcounts) %in% gene_input[index]),])
+}
+expr_high_BayesSpace = matrix(NA, dim(expr_high)[1], dim(expr_high)[2])
+for(index in 1:length(gene_input)){
+  print(index)
+  pred_expr =c(sce_pred(index))
+  expr_high_BayesSpace[index,] = pred_expr[-id_empty]
+}
+rownames(expr_high_BayesSpace) = gene_input
+
+save(expr_high_BayesSpace, file = paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer1/Q3/simulation/prediction/result/expr_high_BayesSpace_result_scenairo_",i,"_rep_",j,".RData"))
+
+coordinate_allsubspot = c()
+for(k in 1:dim(location_subspot)[1]){
+  x = round(location_subspot[k,1],3)
+  y = round(location_subspot[k,2],3)
+  coordinate_allsubspot[k] = paste0(x,"_",y)
+}
+coordinate_BayesSpacesubspot = c()
+for(k in 1:dim(BayesSpace_high_ST_result$location)[1]){
+  x = round(BayesSpace_high_ST_result$location[k,1],3)
+  y = round(BayesSpace_high_ST_result$location[k,2],3)
+  coordinate_BayesSpacesubspot[k] = paste0(x,"_",y)
+}
+ind_match_totalsubspots = match(coordinate_BayesSpacesubspot, coordinate_allsubspot)
+real_subspot_count = count_location_subspot$count_spot[,ind_match_totalsubspots]
+real_subspot_count = real_subspot_count[,-id_empty]
+rownames(real_subspot_count) = paste0("gene",1:5000)
+
+real_subspot_count_sub = real_subspot_count[match(rownames(expr_high),rownames(real_subspot_count)),]
+ind_remove = which(is.na(real_subspot_count_sub[1,]))
+dat_result = list()
+dat_result$real_subspot_count=real_subspot_count
+dat_result$real_subspot_count_sub=real_subspot_count_sub[,-ind_remove]
+dat_result$expr_high=expr_high[,-ind_remove]
+dat_result$expr_high_BayesSpace=expr_high_BayesSpace[,-ind_remove]
+
+save(dat_result, file = paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer1/Q3/simulation/prediction/result/Compare_pred_expr_",i,"_rep_",j,".RData"))
+
+
+
+
+```
 
 
 
