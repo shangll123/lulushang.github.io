@@ -18,7 +18,7 @@ permalink: /docs/Projects/SpatialPCA/Simulation
 - [Simulate data, spot level with stripe pattern](#simulate-data-spot-level-with-stripe-pattern)
 - [Simulate data, spot level with arbitrary spatial correlation](#simulate-data-spot-level-with-arbitrary-spatial-correlation)
 
-#### Prepare simulation datasets
+## Prepare simulation datasets
 
 The locations are generated from pixels in a image (LIBDsimu.jpg), which can be downloaded from [here](https://drive.google.com/drive/folders/18rwQjB3-g86A-M9xYPPJlHz60bfMABdE?usp=sharing).
 
@@ -118,7 +118,7 @@ save(subsample, file = "LIBDsubsample.RData")
 ```
 
 
-#### Generate single cell data
+## Generate single cell data
 
 Single cell data are downloaded from [GSE104276](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE104276).
 
@@ -163,7 +163,7 @@ save(init_params, file = "init_params_LIBD.RData")
 
 ```
 
-#### Main functions in simulation
+## Main functions in simulation
 code_utility.R
 ```R
 "%&%" <- function(x, y) paste0(x, y)
@@ -862,7 +862,7 @@ def run_SpaGCN_py(sim_cnt, info, R, p = 0.5):
 ```
 
 
-#### Simulate data, 10000 cells
+## Simulate data, 10000 cells
 
 ```R
 args <- as.numeric(commandArgs(TRUE))
@@ -998,7 +998,7 @@ write10xCounts(
 
 
 
-#### Simulate data, spot level
+## Simulate data, spot level
 
 ```R
 
@@ -1381,7 +1381,7 @@ if(k ==1){
 
 ```
 
-#### Simulate data, spot level with stripe pattern
+## Simulate data, spot level with stripe pattern
 ```R
 args <- as.numeric(commandArgs(TRUE))
 i = args[1] # scenario
@@ -1703,7 +1703,7 @@ save(NMF_result, file = paste0("stripe_pattern_NMF_result_scenario_",i,"_rep_",j
 ```
 
 
-#### Simulate data, spot level with arbitrary spatial correlation
+## Simulate data, spot level with arbitrary spatial correlation
 ```R
 
 args <- as.numeric(commandArgs(TRUE))
