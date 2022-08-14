@@ -1386,8 +1386,8 @@ if(k ==1){
 ```R
 args <- as.numeric(commandArgs(TRUE))
 i = args[1] # scenario
-j = args[2] # seed
-k = args[3] # seed
+j = args[2] # repeatment
+k = args[3] # method
 print(i)
 print(j)
 print(k)
@@ -1772,7 +1772,7 @@ truth = subsample$label
 location=as.matrix(subsample[,2:3])
 knearest = 4
 indNN = FNN::get.knn(location,k=knearest)[[1]] 
-# randomly select 1000 cells to fuse with its nearest 4 cells
+# randomly select 2500 cells to fuse with its nearest 4 cells
 set.seed(j+07132022)
 tofuse_cells = sample(1:10000,2500)
 count_mat_use = count_mat
