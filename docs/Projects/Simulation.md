@@ -7,6 +7,19 @@ parent: SpatialPCA
 permalink: /docs/Projects/SpatialPCA/Simulation
 ---
 
+
+## Table of Contents
+
+- [Prepare simulation datasets](#prepare-simulation-datasets)
+- [Generate single cell data](#generate-single-cell-data)
+- [Main functions in simulation](#main-functions-in-simulation)
+- [Simulate data, 10000 cells](#simulate-data-10000-cells)
+	- [Mouse OB slideseqV2](#mouse-ob-slideseqV2)
+	- [TLS-RCC](#tls-rcc)
+	- [Breast cancer](#breast-cancer)
+	- [Lung cancer](#lung-cancer)
+
+
 #### Prepare simulation datasets
 
 The locations are generated from pixels in a image (LIBDsimu.jpg), which can be downloaded from [here](https://drive.google.com/drive/folders/18rwQjB3-g86A-M9xYPPJlHz60bfMABdE?usp=sharing).
@@ -107,7 +120,7 @@ save(subsample, file = "LIBDsubsample.RData")
 ```
 
 
-### Generate single cell data
+#### Generate single cell data
 
 Single cell data are downloaded from [GSE104276](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE104276).
 
@@ -152,10 +165,444 @@ save(init_params, file = "init_params_LIBD.RData")
 
 ```
 
-### Main functions in simulation
-Simulation_func.R
-
+#### Main functions in simulation
+code_utility.R
 ```R
+"%&%" <- function(x, y) paste0(x, y)
+
+BayesSpace_read <- function(count_in, location_in,platform="ST") {
+    spot = rownames(location_in)
+    in_tissue = rep(1,length(spot))
+    row = location_in[,1]
+    col = location_in[,2]
+    imagerow = location_in[,1]
+    imagecol = location_in[,2]
+    colData=data.frame(spot,in_tissue, row, col, imagerow, imagecol)
+    colnames(colData) <- c("spot", "in_tissue", "row", "col", "imagerow", "imagecol")
+    rownames(colData) <- colData$spot
+    colData <- colData[colData$in_tissue > 0, ]
+    gene_id = gene_name = rownames(count_in)
+    feature_type = rep("",length(gene_id))
+    rowData = data.frame(gene_id, gene_name, feature_type)
+    colnames(rowData) <- c("gene_id", "gene_name", "feature_type")
+    rowData <- rowData[, c("gene_id", "gene_name")]
+    rownames(rowData) <- scater::uniquifyFeatureNames(rowData$gene_id, rowData$gene_name)
+    sce <- SingleCellExperiment(assays=list(counts=count_in),
+                                rowData=rowData,
+                                colData=colData)
+    sce <- scater::logNormCounts(sce)
+    metadata(sce)$BayesSpace.data <- list()
+    print("BayesSpace platform")
+    print(platform)
+    metadata(sce)$BayesSpace.data$platform <- platform
+    metadata(sce)$BayesSpace.data$is.enhanced <- FALSE
+    
+    return(sce)
+}
+
+
+BayesSpace_func = function(count_in, location_in, clusternum,nrep=50000,ifLIBD = FALSE,LIBD_sampleid=NULL,platform = "Visium"){
+	
+	if(ifLIBD==TRUE){
+
+		library(igraph)
+		library(peakRAM)
+		library(SingleCellExperiment)
+		library(ggplot2)
+		library(BayesSpace)
+		library('spatialLIBD')
+		# library(BiocFileCache)
+
+		clusternums = c(7,7,7,7,5,5,5,5,7,7,7,7)
+		# sce <- fetch_data(type = 'sce')
+		sce <- spatialLIBD::fetch_data(type = 'sce',destdir="/net/mulan/disk2/shanglu/Projects/SpatialPCA/LIBD_dat")
+		metaData = SingleCellExperiment::colData(sce)
+		sample_names <- paste0( unique(colData(sce)$sample_name))
+
+		dlpfc <- getRDS("2020_maynard_prefrontal-cortex", sample_names[i],cache=FALSE)
+		load(paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/LIBD/LIBD_sample",LIBD_sampleid,".RData") )
+		ground_truth = KRM_manual_layers_sub$layer_guess_reordered
+
+		# use top 2000 genes
+		set.seed(101)
+		dec <- scran::modelGeneVar(dlpfc)
+		top <- scran::getTopHVGs(dec, n = 2000)
+		set.seed(102)
+		dlpfc <- scater::runPCA(dlpfc, subset_row=top)
+		## Add BayesSpace metadata
+		dlpfc <- spatialPreprocess(dlpfc, platform="Visium", skip.PCA=TRUE)
+		#q <- length(table(ground_truth))  # Number of clusters
+		q=clusternums[LIBD_sampleid]
+		d <- 15  # Number of PCs
+		## Run BayesSpace clustering
+		set.seed(104)
+		dlpfc <- spatialCluster(dlpfc, q=q, d=d, platform='Visium',
+		                        nrep=50000, gamma=3, save.chain=TRUE) 
+
+		clusterlabel = dlpfc$spatial.cluster
+		loc1 = unlist(dlpfc@colData@listData$imagecol)
+		loc2 = unlist(dlpfc@colData@listData$imagerow)
+		location = data.frame(loc1, loc2)
+
+		return(list("clusterlabel"=clusterlabel,"location"=location))
+
+	}else if(ifLIBD==FALSE){
+
+		library(peakRAM)
+		library(SingleCellExperiment)
+		library(ggplot2)
+		library(BayesSpace)
+		library(Matrix)
+    print("platform")
+    print(platform)
+    platform_in = platform
+		sce = BayesSpace_read(count_in,location_in,platform_in)
+		set.seed(1234)
+		top <- scran::getTopHVGs(sce, n = 2000)
+		sce <- scater::runPCA(sce, subset_row=top)
+		## Add BayesSpace metadata
+		sce <- spatialPreprocess(sce, platform=platform_in, skip.PCA=TRUE)
+		q <- clusternum # Number of clusters
+		d <- 15  # Number of PCs
+		## Run BayesSpace clustering
+		sce <- spatialCluster(sce, q=q, d=d, platform=platform_in,
+		                        nrep=nrep, gamma=3, save.chain=FALSE)  # slow
+		clusterlabel = sce$spatial.cluster
+		loc1 = unlist(sce@colData@listData$imagecol)
+		loc2 = unlist(sce@colData@listData$imagerow)
+		location = data.frame(loc1, loc2)
+
+		return(list("clusterlabel"=clusterlabel,"location"=location))
+	}
+
+}
+
+
+HMRF_func = function(count_in, location_in, clusternum,path_out,betas=c(28,2,2)){
+	
+	# HMRF, giotto
+	library(Giotto)
+	library(peakRAM)
+	library(tidyverse)
+	my_python_path = "/net/mulan/home/shanglu/anaconda3/envs/SpaGCN/bin/python3.7"
+	instrs <- createGiottoInstructions(python_path = my_python_path)
+	hmrf <- createGiottoObject(raw_exprs = as.data.frame(t(count_in)), 
+	spatial_locs = location_in, instructions = instrs)
+	hmrf <- filterGiotto(gobject = hmrf, expression_threshold = 0.5, 
+	gene_det_in_min_cells = 20, min_det_genes_per_cell = 0)
+	hmrf <- normalizeGiotto(hmrf) 
+	hmrf <- addStatistics(hmrf)
+	hmrf <- createSpatialNetwork(hmrf, minimum_k = 2)
+	# select SE genes using
+	genes <- binSpect(hmrf, bin_method = 'kmeans')$genes
+	genes <- genes[1:100]
+	outfile <- file.path(path_out)
+	R=clusternum
+	verbose <- doHMRF(
+	gobject = hmrf, 
+	spatial_genes = genes, 
+	expression_values = "scaled", 
+	k = clusternum, 
+	betas=betas,
+	#betas = c(0, 2, 26), # betas = [start, step, number]
+	output_folder = outfile,
+	python_path = my_python_path, 
+	overwrite_output = T)
+	files <- list.files(file.path(outfile, "result.spatial.zscore", 
+	"k_" %&% R), pattern = "\\.prob\\.txt", full.names = T)
+	labels <- lapply(files, function(f){
+	res.i <- read.table(f, row.names = 1)
+	apply(res.i, 1, which.max)
+	})
+	labels <- do.call(cbind, labels)
+	betas <- sapply(strsplit(files, "beta\\.|\\.0\\.prob"), `[`, 2)
+	colnames(labels) <- paste0("beta", betas)
+	labels <- labels[, order(as.numeric(betas))]
+
+	return(labels)
+
+}
+
+
+get_NMF = function(count, PCnum){
+  suppressMessages(require(scater))
+  suppressMessages(require(NMF))
+  suppressMessages(require(SingleCellExperiment))
+  suppressMessages(require(RcppML))
+  #expr = log(count+1) # non negative
+  sce <- SingleCellExperiment(list(counts=count))
+  sce <- logNormCounts(sce)
+  #sce <- runNMF(sce,ncomponents = PCnum)
+  res <- scater::calculateNMF(sce, ncomponents = PCnum)
+  Z_NMF = t(res)
+  return(Z_NMF)
+}
+
+
+
+NMF_cluster_func = function(count_in, genelist,PCnum,cluster_method="walktrap",clusternum){
+# install.packages("RcppML")
+# devtools::install_github("zdebruine/RcppML")
+	library(RcppML)
+	library(SpatialPCA)
+	count_use = count_in[match(genelist,rownames(count_in)),]
+	#res <- RcppML::nmf(count_use,  k = PCnum, nonneg = TRUE)
+	# NMF_pcs = res$h
+
+  NMF_pcs = get_NMF(count_use,PCnum)
+
+	if(cluster_method=="walktrap"){
+		clusterlabel = walktrap_clustering(clusternum=clusternum,latent_dat=as.matrix(NMF_pcs),knearest=round(sqrt(dim(NMF_pcs)[2])) ) 
+	}else if(cluster_method=="louvain"){
+		clusterlabel = louvain_clustering(clusternum=clusternum,latent_dat=as.matrix(NMF_pcs),knearest=round(sqrt(dim(NMF_pcs)[2])) ) 
+	}
+
+	return(list("PC"=NMF_pcs,"clusterlabel"=clusterlabel))
+
+}
+
+
+
+PCA_cluster_func = function(expr, PCnum,cluster_method="walktrap",clusternum){
+	output=expr
+	d=PCnum
+	n=dim(expr)[2]
+	k = dim(output)[1]
+	output_sub_mean=matrix(0,k,n)
+	for(i_k in 1:k){
+  		output_sub_mean[i_k,]=output[i_k,]-mean(output[i_k,])
+	}
+	svd_output_sub_mean=svd(output_sub_mean)
+	A_ini=svd_output_sub_mean$u[,1:d] 
+	Z_pca = t(A_ini) %*% output_sub_mean
+
+	if(cluster_method=="walktrap"){
+		clusterlabel = walktrap_clustering(clusternum=clusternum,latent_dat=as.matrix(Z_pca),knearest=round(sqrt(dim(Z_pca)[2])) ) 
+	}else if(cluster_method=="louvain"){
+		clusterlabel = louvain_clustering(clusternum=clusternum,latent_dat=as.matrix(Z_pca),knearest=round(sqrt(dim(Z_pca)[2])) ) 
+	}
+
+	return(list("PC"=Z_pca,"clusterlabel"=clusterlabel))
+}
+
+
+fx_lisi = function(clusterlabel_in, location){
+	library(lisi)
+	dat = data.frame("clusterlabel"=clusterlabel_in)
+	lisi=compute_lisi(location, dat, c("clusterlabel"))
+	return("lisi"=lisi$clusterlabel)
+}
+
+
+	library(BayesSpace)
+	library(assertthat)
+	library(RCurl)
+
+getRDS <- function(dataset, sample, cache=TRUE) {
+
+
+    url <- "https://fh-pi-gottardo-r-eco-public.s3.amazonaws.com/SpatialTranscriptomes/%s/%s.rds"
+    url <- sprintf(url, dataset, sample)
+    assert_that(url.exists(url), msg="Dataset/sample not available")
+    
+    if (cache) {
+        bfc <- BiocFileCache()
+        local.path <- bfcrpath(bfc, url)
+    } else {
+        local.path <- tempfile(fileext=".rds")
+        download.file(url, local.path, quiet=TRUE, mode="wb")
+    }
+    
+    readRDS(local.path)
+}
+
+simu_stripe = function(
+  location,
+  label,
+  init_params,
+  scenario,
+  J,
+  batch_facLoc,
+  de_prop,
+  de_facLoc,
+  de_facScale,
+  sim_seed,
+  debug = FALSE
+  )
+{ 
+
+  N <- nrow(location)
+  set.seed(sim_seed)
+  # 1.simulate count data
+  noBatch <- ifelse(batch_facLoc == 0, TRUE, FALSE)
+  params <- setParams(
+    init_params,
+    batchCells = rep(3 * N, 1),
+    batch.rmEffect = noBatch,
+    batch.facLoc = batch_facLoc,
+    nGenes = J,
+    group.prob = c(0.25, 0.25, 0.25,0.25),
+    out.prob = 0,
+    de.prob = de_prop,
+    de.facLoc = de_facLoc,
+    de.facScale = de_facScale,
+    seed = sim_seed)
+
+  sim_groups <- splatSimulate(
+    params = params,
+    method = "groups",
+    verbose = FALSE)
+
+  # remove cells having no expressed genes
+    idx_zerosize <- apply(counts(sim_groups), MARGIN = 2, sum) == 0
+    sim_groups <- sim_groups[, !idx_zerosize]
+
+   if(scenario == 1){
+      prop <- c(0.6, 0.3, 0.05,0.05)
+    }else if(scenario == 2){
+      prop <- c(0.45, 0.45, 0.05,0.05)
+    }else if(scenario == 3){
+      prop <- c(0.35, 0.30, 0.30,0.05)
+    }
+
+  # 3.generate cell types
+  print("generate cell types")
+
+    ztrue <- label
+    c_simu <- rep(NA, length(ztrue))
+    if(scenario == 1){ # scenario 1: 4 cell types
+      print("scenario == 1")
+      c_simu <- ztrue # cell type assignment same as region assignment
+    }else if(scenario != 1){
+      print("scenario != 1")
+      for(z in unique(label)){
+        zi_idx <- ztrue == z # zi_idx is index for region z
+        c_simu[zi_idx] <- sample(map_z2c(z), sum(zi_idx), prob = prop, replace = T)
+      }
+    }
+
+    # 4.assign count data
+    groups <- as.data.frame(colData(sim_groups)) %>% filter(Batch == "Batch" %&% 1)
+    sim_cnt <- array(NA, c(J, N))
+    for(c in 1:4){
+      c_size <- sum(c_simu == c)  # true number of cells in cell type c
+      c_cells <- groups$Cell[grepl(c, groups$Group)] # generated cells in group c
+      cells_select <- sample(as.character(c_cells), c_size, replace = F)
+      # sample same number of group c cells in real data from generated cells
+      sim_cnt[, c_simu == c] <- as.matrix(counts(sim_groups)[, cells_select])
+      # for positions of original cell type c cells, assign generated counts of group c
+    }
+    colnames(sim_cnt) <- "Cell" %&% 1:N
+    rownames(sim_cnt) <- "Gene" %&% 1:J
+
+  return(list(sim_cnt, c_simu, sim_seed))
+}
+
+
+
+
+map_z2c = function(z)
+{
+  case_when(
+    z == 1 ~ c(1, 2, 3, 4),
+    z == 2 ~ c(2, 3, 4, 1),
+    z == 3 ~ c(3, 4, 1, 2),
+    z == 4 ~ c(4, 1, 2, 3)
+    )
+}
+
+
+louvain_clustering_new=function(clusternum, latent_dat,knearest=10){
+set.seed(1234)
+suppressMessages(require(FNN))
+suppressMessages(require(igraph))
+suppressMessages(require(bluster))
+ 
+  PCvalues = latent_dat
+info.spatial = as.data.frame(t(PCvalues))
+colnames(info.spatial) =  paste0("factor", 1:nrow(PCvalues))
+
+  knn.norm = get.knn(as.matrix(t(PCvalues)), k = knearest)
+  knn.norm = data.frame(from = rep(1:nrow(knn.norm$nn.index), 
+  k=10), to = as.vector(knn.norm$nn.index), weight = 1/(1 + as.vector(knn.norm$nn.dist)))
+  nw.norm = graph_from_data_frame(knn.norm, directed = FALSE)
+  nw.norm = simplify(nw.norm)
+  lc.norm = cluster_louvain(nw.norm)
+  merged <- mergeCommunities(nw.norm, lc.norm$membership, number=clusternum)
+  clusterlabel = as.character(as.integer(as.factor(paste0("cluster",merged))))
+return("cluster_label"=clusterlabel)
+}
+
+
+refine_v2 = function(spotlist, pred_cluster, dist, shape="square"){
+  # refined_pred = c(NA,length(pred_cluster))
+  #pred = data.frame("spot"=spotlist, "cluster"=pred_cluster)
+  dis_df = as.matrix(dist)
+  if(shape=="square"){
+    num_obs = 4
+  }else if(shape == "hexagon"){
+    num_nbs = 6
+  }else{
+    print("Shape is not recongized, shape='hexagon' for Visium data, 'square' for ST data.")
+  }
+  refined_pred = pred_cluster
+  for(i in 1:length(pred_cluster)){
+    nearby_spot_ind = order(dist[i,])[1:(num_obs+1)]
+    labels_nearby_spot_ind = refined_pred[nearby_spot_ind]  # use updated cluster
+    spot_of_interest = refined_pred[i]
+    labels_table = table(labels_nearby_spot_ind)
+    if( labels_table[spot_of_interest]<num_obs/2 & max(labels_table)>num_obs/2){
+      refined_pred[i] = names(labels_table)[which.max(labels_table)]
+    }else{
+      refined_pred[i] = spot_of_interest
+    }
+
+  }
+
+  return(refined_pred)
+
+}
+
+
+library(tidyverse)
+library(mclust)
+library(CVXR)
+permLabel <- function(labels, perm, zeroidx = FALSE)
+{
+  if(zeroidx){
+    labels <- labels + 1
+  }
+  K <- length(perm)
+  idx <- list()
+  for(i in 1:K)
+  {
+    idx[[i]] <- labels == i
+  }
+  for(i in 1:K)
+  {
+    labels[idx[[i]]] <- perm[i]
+  }
+  labels
+}
+
+matchLabel <- function(est_labels, true_labels)
+{
+  C <- length(unique(true_labels))
+  est_labels <- factor(est_labels, 1:C)
+  A <- matrix(table(est_labels, true_labels), C, C)
+  P <- Variable(C, C, boolean = T) # row permutation matrix
+  Y <- Variable(C, C)
+  problem <- suppressMessages(
+    Problem(Maximize(matrix_trace(Y)), list(Y == P %*% A, 
+      sum_entries(P, axis = 1) == 1, sum_entries(P, axis = 2) == 1))
+  ) 
+  result <- suppressMessages(solve(problem))
+  P <- result$getValue(P)
+  perm <- apply(P, MARGIN = 2, function(x) which(x==1))
+  est_labels <- permLabel(est_labels, perm)
+}
+
+
 simu = function(
   location,
   label,
@@ -197,13 +644,13 @@ simu = function(
     idx_zerosize <- apply(counts(sim_groups), MARGIN = 2, sum) == 0
     sim_groups <- sim_groups[, !idx_zerosize]
 
-   # 2. design different scenarios
-    if(scenario == 1){
-      prop <- c(0.85, 0.05, 0.05,0.05)
+
+   if(scenario == 1){
+      prop <- c(0.7, 0.1, 0.1,0.1)
     }else if(scenario == 2){
-      prop <- c(0.45, 0.45, 0.05,0.05)
+      prop <- c(0.6, 0.3, 0.05,0.05)
     }else if(scenario == 3){
-      prop <- c(0.60, 0.30, 0.05,0.05)
+      prop <- c(0.45, 0.45, 0.05,0.05)
     }else if(scenario == 4){
       prop <- c(0.35, 0.30, 0.30,0.05)
     }
@@ -239,16 +686,6 @@ simu = function(
     rownames(sim_cnt) <- "Gene" %&% 1:J
 
   return(list(sim_cnt, c_simu, sim_seed))
-}
-
-map_z2c = function(z)
-{
-  case_when(
-    z == 1 ~ c(1, 2, 3, 4),
-    z == 2 ~ c(2, 3, 4, 1),
-    z == 3 ~ c(3, 4, 1, 2),
-    z == 4 ~ c(4, 1, 2, 3)
-    )
 }
 
 
@@ -364,10 +801,74 @@ make_spot_from_subspot = function(count_location_subspot){
 
 }
 
+
+
+```
+
+code_utility_python.py
+```python
+import anndata as ad
+import SpaGCN as spg
+import pandas as pd
+import numpy as np
+import scanpy as sc
+from scanpy import read_10x_h5
+import random
+import torch
+import cv2
+import os
+
+def run_SpaGCN_py(sim_cnt, info, R, p = 0.5):
+  adata = ad.AnnData(sim_cnt, obs = info)
+  # calculate adjacency matrix
+  x_array = adata.obs["x"].tolist()
+  y_array = adata.obs["y"].tolist()
+  adj = spg.calculate_adj_matrix(x = x_array, y = y_array, histology = False)
+  
+  # Expression data preprocessing
+  adata.var_names_make_unique()
+  spg.prefilter_genes(adata)
+  spg.prefilter_specialgenes(adata)
+  sc.pp.normalize_per_cell(adata)
+  sc.pp.log1p(adata)
+
+  # set hyper-parameters
+  l = spg.search_l(p, adj, start = 0.01, end = 1000, tol = 0.01, max_run = 100)
+  n_clusters = R
+  r_seed = t_seed = n_seed = 0
+  res = spg.search_res(adata, adj, l, n_clusters, 
+    start = 0.7, step = 0.1, tol = 5e-3, lr = 0.05, 
+    max_epochs = 20, r_seed = r_seed, t_seed = t_seed, 
+    n_seed = n_seed)
+
+  # run spaGCN
+  clf = spg.SpaGCN()
+  clf.set_l(l)
+  random.seed(r_seed)
+  torch.manual_seed(t_seed)
+  np.random.seed(n_seed)
+  clf.train(adata, adj, init_spa = True, init = "louvain", res = res, 
+    tol = 5e-3, lr = 0.05, max_epochs = 200)
+  y_pred, prob = clf.predict()
+  adata.obs["pred"]= y_pred
+  adata.obs["pred"] = adata.obs["pred"].astype('category')
+
+  # cluster refinement
+  adj_2d = spg.calculate_adj_matrix(x = x_array, y = y_array, histology = False)
+  refined_pred = spg.refine(sample_id = adata.obs.index.tolist(), 
+    pred = adata.obs["pred"].tolist(), dis = adj_2d, shape = "hexagon")
+  adata.obs["refined_pred"] = refined_pred
+  adata.obs["refined_pred"] = adata.obs["refined_pred"].astype('category')
+
+  return(adata.obs)
 ```
 
 
-### Simulate data, 10000 cells
+
+
+
+
+#### Simulate data, 10000 cells
 
 ```R
 args <- as.numeric(commandArgs(TRUE))
