@@ -16,7 +16,7 @@ permalink: /docs/Projects/SpatialPCA/Simulation
 - [Simulate data, 10000 cells](#simulate-data-10000-cells)
 - [Simulate data, spot level](#simulate-data-spot-level)
 - [Simulate data, spot level with stripe pattern](#simulate-data-spot-level-with-stripe-pattern)
-
+- [Simulate data, spot level with arbitrary spatial correlation](#simulate-data-spot-level-with-arbitrary-spatial-correlation)
 
 #### Prepare simulation datasets
 
@@ -1703,7 +1703,412 @@ save(NMF_result, file = paste0("stripe_pattern_NMF_result_scenario_",i,"_rep_",j
 ```
 
 
+#### Simulate data, spot level with arbitrary spatial correlation
+```R
 
+args <- as.numeric(commandArgs(TRUE))
+i = args[1] # scenario
+j = args[2] # repeatment
+k = args[3] # method
+num = args[4] # spot level dataset
+print(i)
+print(j)
+print(k)
+print(num)
+
+if(num == 1){
+	spotnum=5077
+}else if(num==2){
+	spotnum=3602
+}else{
+	spotnum=1948
+}
+
+# cd /net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer2/Q3
+
+#--------------------------------------------------------------------
+
+
+setwd("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer2/Q3/July29")
+
+
+
+library(tidyverse)
+library(Giotto)
+library(scater)
+library(SC3)
+library(BayesSpace)
+library(gtools)
+library(splatter)
+library(igraph)
+library(assertthat)
+library(SPARK)
+library(Seurat)
+library(peakRAM)
+library(ggplot2)
+library(ggpubr)
+library(mclust) # ARI
+library(aricode)# NMI
+library(SpatialPCA)# NMI
+library(lisi) # lisi score
+library(reticulate) 
+library(FNN)
+
+source("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer1/code_utility.R")
+load("/net/mulan/disk2/shanglu/Projects/SpatialPCA/reviewer/simulation/LIBDsimu/LIBDsubsample.RData")
+load("/net/mulan/disk2/shanglu/Projects/SpatialPCA/reviewer/simulation/LIBDsimu/init_params_LIBD.RData")
+
+load(paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/reviewer/simulation/LIBDsimu/results_5077_spark/LIBD_res_scenairo_",i,"_rep_",j,".RData"))
+
+
+D3=c("#f4f1de","#e07a5f","#3d405b","#81b29a","#f2cc8f","#a8dadc","#f1faee","#f08080",
+	"#F94144", "#dda15e", "#F8961E" ,"#bc6c25", "#F9C74F" ,"#90BE6D", "#43AA8B")
+
+
+# subspot level
+count_mat = res[[1]]
+truth = subsample$label
+location=as.matrix(subsample[,2:3])
+knearest = 4
+indNN = FNN::get.knn(location,k=knearest)[[1]] 
+# randomly select 1000 cells to fuse with its nearest 4 cells
+set.seed(j+07132022)
+tofuse_cells = sample(1:10000,2500)
+count_mat_use = count_mat
+for(cell_id in tofuse_cells){
+	set.seed(cell_id+07292022)
+	sample_tmp = sample(1:10,knearest)
+	prop = matrix(sample_tmp/sum(sample_tmp),1,knearest) 
+	# for each nearest cell, randomly split the current cell to 4 components, and fuse to the 4 nearest cells
+	count_mat_use[,indNN[cell_id,]] = count_mat[,indNN[cell_id,]]+ count_mat[,cell_id] %*% prop
+	count_mat_use[,cell_id]=0
+}
+count_mat= count_mat_use
+location=as.matrix(location)
+celltypes = res[[2]]
+# first generate subspot level data
+if(spotnum == 5077){
+	grid_subspot = make_grid(square_size = 4,location)
+}else if(spotnum == 3602){
+	grid_subspot = make_grid(square_size = 5,location)
+}else if(spotnum == 1948){
+	grid_subspot = make_grid(square_size = 7,location)
+}
+count_location_subspot = make_spot(grid_subspot,count_mat,celltypes,subsample$label)
+count_subspot = count_location_subspot$count_spot
+location_subspot = count_location_subspot$pseudo_location_spot/3
+truth_subspot = count_location_subspot$subspottruth
+spot_level_data = make_spot_from_subspot(count_location_subspot)
+# truth_subspot[spot_level_data$used_subspots]
+# spot level
+truth=spot_level_data$truth_spot
+truth_empty = which(truth=="empty")
+count_spot = spot_level_data$count_spot[,-truth_empty]
+location_spot = spot_level_data$location_spot[-truth_empty,]
+truth=truth[-truth_empty]
+rownames(location_spot) = colnames(count_spot) = paste0("spot",1:dim(count_spot)[2])
+rownames(count_spot) = paste0("gene",1:dim(count_spot)[1])
+
+save(count_spot,location_spot, truth,celltypes,file=paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer2/Q3/July29/fuse_res_scenairo_",i,"_rep_",j,"_dataset_",num,"_count_location.RData"))
+
+
+
+load(paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer2/Q3/July29/fuse_res_scenairo_",i,"_rep_",j,"_dataset_",num,"_count_location.RData"))
+
+
+if(k ==1){
+
+	if(num==1){
+
+		fusesimu = CreateSpatialPCAObject(counts=count_spot, location=location_spot, project = "SpatialPCA",gene.type="spatial",sparkversion="spark", gene.number=3000,customGenelist=NULL,min.loctions = 20, min.features=20)
+		fusesimu = SpatialPCA_buildKernel(fusesimu, kerneltype="gaussian", bandwidthtype="Silverman")
+		fusesimu = SpatialPCA_EstimateLoading(fusesimu,fast=FALSE,SpatialPCnum=20)
+		fusesimu = SpatialPCA_SpatialPCs(fusesimu, fast=FALSE)
+		SpatialPCA_result = list()
+		SpatialPCA_result$SpatialPCs  = fusesimu@SpatialPCs
+		SpatialPCA_result$location = fusesimu@location
+		SpatialPCA_result$celltypes = paste0("celltype",celltypes)
+		SpatialPCA_result$Truth = truth[match(rownames(fusesimu@location),rownames(location_spot))]
+		SpatialPCA_result$clusterlabel = louvain_clustering(4,SpatialPCA_result$SpatialPCs,500) # original:500
+		SpatialPCA_result$clusterlabel_refine = refine_cluster_10x(SpatialPCA_result$clusterlabel, SpatialPCA_result$location,shape="square") 
+		SpatialPCA_result$ARI = adjustedRandIndex(SpatialPCA_result$clusterlabel,SpatialPCA_result$Truth)
+		SpatialPCA_result$ARI_refine = adjustedRandIndex(SpatialPCA_result$clusterlabel_refine,SpatialPCA_result$Truth)
+		SpatialPCA_result$NMI = NMI(as.character(SpatialPCA_result$clusterlabel),as.character(SpatialPCA_result$Truth))
+		SpatialPCA_result$CHAOS = fx_CHAOS(SpatialPCA_result$clusterlabel, SpatialPCA_result$location)
+		SpatialPCA_result$PAS = fx_PAS(SpatialPCA_result$clusterlabel, SpatialPCA_result$location)
+		SpatialPCA_result$LISI = fx_lisi(SpatialPCA_result$clusterlabel, SpatialPCA_result$location)
+		SpatialPCA_result$count_spot = count_spot
+		SpatialPCA_result$location_spot = location_spot
+		SpatialPCA_result$normalized_expr = fusesimu@normalized_expr
+		clusterNum=length(unique(SpatialPCA_result$clusterlabel))
+		save(SpatialPCA_result, file = paste0("fused_cells_SpatialPCA_result_scenario_",i,"_rep_",j,"_dataset_",num,".RData"))
+
+		#load(paste0("fused_cells_SpatialPCA_result_scenario_",i,"_rep_",j,"_dataset_",num,".RData"))
+		clusterNum=length(unique(SpatialPCA_result$clusterlabel))
+		pdf(paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer2/Q3/July29/figure/SpatialPCA_scenario_",i,"_rep_",j,"_dataset_",num,".pdf"),width=10,height=5)
+		p1=plot_cluster(location=SpatialPCA_result$location,clusterlabel=SpatialPCA_result$Truth,pointsize=2,text_size=20 ,title_in=paste0("Truth"),color_in=D3[1:clusterNum])
+		p2=plot_cluster(location=SpatialPCA_result$location,clusterlabel=SpatialPCA_result$clusterlabel,pointsize=2,text_size=20 ,title_in=paste0("SpatialPCA"),color_in=D3[1:clusterNum])
+		print(ggarrange(p1, p2, ncol = 2, nrow = 1))
+		dev.off()
+
+	}else if (num==2){
+
+		fusesimu = CreateSpatialPCAObject(counts=count_spot, location=location_spot, project = "SpatialPCA",gene.type="spatial",sparkversion="spark", gene.number=3000,customGenelist=NULL,min.loctions = 20, min.features=20)
+		fusesimu = SpatialPCA_buildKernel(fusesimu, kerneltype="gaussian", bandwidthtype="Silverman")
+		fusesimu = SpatialPCA_EstimateLoading(fusesimu,fast=FALSE,SpatialPCnum=20)
+		fusesimu = SpatialPCA_SpatialPCs(fusesimu, fast=FALSE)
+		SpatialPCA_result = list()
+		SpatialPCA_result$SpatialPCs  = fusesimu@SpatialPCs
+		SpatialPCA_result$location = fusesimu@location
+		SpatialPCA_result$celltypes = paste0("celltype",celltypes)
+		SpatialPCA_result$Truth = truth[match(rownames(fusesimu@location),rownames(location_spot))]
+		SpatialPCA_result$clusterlabel = louvain_clustering(4,SpatialPCA_result$SpatialPCs,500) # original:500
+		SpatialPCA_result$clusterlabel_refine = refine_cluster_10x(SpatialPCA_result$clusterlabel, SpatialPCA_result$location,shape="square") 
+		SpatialPCA_result$ARI = adjustedRandIndex(SpatialPCA_result$clusterlabel,SpatialPCA_result$Truth)
+		SpatialPCA_result$ARI_refine = adjustedRandIndex(SpatialPCA_result$clusterlabel_refine,SpatialPCA_result$Truth)
+		SpatialPCA_result$NMI = NMI(as.character(SpatialPCA_result$clusterlabel),as.character(SpatialPCA_result$Truth))
+		SpatialPCA_result$CHAOS = fx_CHAOS(SpatialPCA_result$clusterlabel, SpatialPCA_result$location)
+		SpatialPCA_result$PAS = fx_PAS(SpatialPCA_result$clusterlabel, SpatialPCA_result$location)
+		SpatialPCA_result$LISI = fx_lisi(SpatialPCA_result$clusterlabel, SpatialPCA_result$location)
+		SpatialPCA_result$count_spot = count_spot
+		SpatialPCA_result$location_spot = location_spot
+		SpatialPCA_result$normalized_expr = fusesimu@normalized_expr
+		clusterNum=length(unique(SpatialPCA_result$clusterlabel))
+		save(SpatialPCA_result, file = paste0("fused_cells_SpatialPCA_result_scenario_",i,"_rep_",j,"_dataset_",num,".RData"))
+
+	#load(paste0("fused_cells_SpatialPCA_result_scenario_",i,"_rep_",j,"_dataset_",num,".RData"))
+	clusterNum=length(unique(SpatialPCA_result$clusterlabel))
+		pdf(paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer2/Q3/July29/figure/SpatialPCA_scenario_",i,"_rep_",j,"_dataset_",num,".pdf"),width=10,height=5)
+		p1=plot_cluster(location=SpatialPCA_result$location,clusterlabel=SpatialPCA_result$Truth,pointsize=2,text_size=20 ,title_in=paste0("Truth"),color_in=D3[1:clusterNum])
+		p2=plot_cluster(location=SpatialPCA_result$location,clusterlabel=SpatialPCA_result$clusterlabel,pointsize=2,text_size=20 ,title_in=paste0("SpatialPCA"),color_in=D3[1:clusterNum])
+		print(ggarrange(p1, p2, ncol = 2, nrow = 1))
+		dev.off()
+
+	}else if (num==3){
+
+		fusesimu = CreateSpatialPCAObject(counts=count_spot, location=location_spot, project = "SpatialPCA",gene.type="spatial",sparkversion="spark", gene.number=3000,customGenelist=NULL,min.loctions = 20, min.features=20)
+		fusesimu = SpatialPCA_buildKernel(fusesimu, kerneltype="gaussian", bandwidthtype="Silverman")
+		fusesimu = SpatialPCA_EstimateLoading(fusesimu,fast=FALSE,SpatialPCnum=20)
+		fusesimu = SpatialPCA_SpatialPCs(fusesimu, fast=FALSE)
+		SpatialPCA_result = list()
+		SpatialPCA_result$SpatialPCs  = fusesimu@SpatialPCs
+		SpatialPCA_result$location = fusesimu@location
+		SpatialPCA_result$celltypes = paste0("celltype",celltypes)
+		SpatialPCA_result$Truth = truth[match(rownames(fusesimu@location),rownames(location_spot))]
+		SpatialPCA_result$clusterlabel = walktrap_clustering(4,SpatialPCA_result$SpatialPCs,100) 
+		SpatialPCA_result$clusterlabel_refine = refine_cluster_10x(SpatialPCA_result$clusterlabel, SpatialPCA_result$location,shape="square") 
+		SpatialPCA_result$ARI = adjustedRandIndex(SpatialPCA_result$clusterlabel,SpatialPCA_result$Truth)
+		SpatialPCA_result$ARI_refine = adjustedRandIndex(SpatialPCA_result$clusterlabel_refine,SpatialPCA_result$Truth)
+		SpatialPCA_result$NMI = NMI(as.character(SpatialPCA_result$clusterlabel),as.character(SpatialPCA_result$Truth))
+		SpatialPCA_result$CHAOS = fx_CHAOS(SpatialPCA_result$clusterlabel, SpatialPCA_result$location)
+		SpatialPCA_result$PAS = fx_PAS(SpatialPCA_result$clusterlabel, SpatialPCA_result$location)
+		SpatialPCA_result$LISI = fx_lisi(SpatialPCA_result$clusterlabel, SpatialPCA_result$location)
+		SpatialPCA_result$count_spot = count_spot
+		SpatialPCA_result$location_spot = location_spot
+		SpatialPCA_result$normalized_expr = fusesimu@normalized_expr
+		clusterNum=length(unique(SpatialPCA_result$clusterlabel))
+		save(SpatialPCA_result, file = paste0("fused_cells_SpatialPCA_result_scenario_",i,"_rep_",j,"_dataset_",num,".RData"))
+
+	#load(paste0("fused_cells_SpatialPCA_result_scenario_",i,"_rep_",j,"_dataset_",num,".RData"))
+	clusterNum=length(unique(SpatialPCA_result$clusterlabel))
+		pdf(paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer2/Q3/July29/figure/SpatialPCA_scenario_",i,"_rep_",j,"_dataset_",num,".pdf"),width=10,height=5)
+		p1=plot_cluster(location=SpatialPCA_result$location,clusterlabel=SpatialPCA_result$Truth,pointsize=2,text_size=20 ,title_in=paste0("Truth"),color_in=D3[1:clusterNum])
+		p2=plot_cluster(location=SpatialPCA_result$location,clusterlabel=SpatialPCA_result$clusterlabel,pointsize=2,text_size=20 ,title_in=paste0("SpatialPCA"),color_in=D3[1:clusterNum])
+		print(ggarrange(p1, p2, ncol = 2, nrow = 1))
+		dev.off()
+
+	}
+
+
+
+}else if (k==2){ # BayesSpace
+
+	load(paste0("fused_cells_SpatialPCA_result_scenario_",i,"_rep_",j,"_dataset_",num,".RData"))
+	match_id=match(colnames(SpatialPCA_result$normalized_expr), colnames(SpatialPCA_result$count_spot))
+	count_in = SpatialPCA_result$count_spot[,match_id]
+	loc_in=as.data.frame( SpatialPCA_result$location_spot[match_id,])
+	clusterNum = length(unique(SpatialPCA_result$Truth))
+	colnames(loc_in)=c("x","y") # important
+
+	res = BayesSpace_func(count_in, loc_in, clusternum=clusterNum,nrep=50000,ifLIBD=FALSE,platform="ST")
+	tabb = na.omit(data.frame("Truth"=SpatialPCA_result$Truth,"clusterlabel"=res$clusterlabel))
+
+	save(res, file = paste0("fused_cells_BayesSpace_result_scenario_",i,"_rep_",j,".RData"))
+
+	BayesSpace_result = list()
+	BayesSpace_result$clusterlabel = as.character(res$clusterlabel)
+	BayesSpace_result$location = SpatialPCA_result$location
+	BayesSpace_result$Truth = SpatialPCA_result$Truth
+	BayesSpace_result$ARI = adjustedRandIndex(tabb[,1], tabb[,2])
+	BayesSpace_result$NMI = NMI(tabb[,1],tabb[,2])
+	BayesSpace_result$CHAOS = fx_CHAOS(res$clusterlabel, SpatialPCA_result$location)
+	BayesSpace_result$PAS = fx_PAS(res$clusterlabel, SpatialPCA_result$location)
+	BayesSpace_result$LISI = fx_lisi(res$clusterlabel, SpatialPCA_result$location)
+	BayesSpace_result$count_spot = SpatialPCA_result$count_spot
+	BayesSpace_result$location_spot = SpatialPCA_result$location_spot
+	BayesSpace_result$res = res
+
+	save(BayesSpace_result, file = paste0("fused_cells_BayesSpace_result_scenario_",i,"_rep_",j,"_dataset_",num,".RData"))
+
+	clusterNum=length(unique(BayesSpace_result$clusterlabel))
+
+	pdf(paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer2/Q3/July29/figure/BayesSpace_scenario_",i,"_rep_",j,"_dataset_",num,".pdf"),width=10,height=5)
+	p1=plot_cluster(location=BayesSpace_result$location,clusterlabel=BayesSpace_result$Truth,pointsize=2,text_size=20 ,title_in=paste0("Truth"),color_in=D3[1:clusterNum])
+	p2=plot_cluster(location=BayesSpace_result$location,clusterlabel=BayesSpace_result$clusterlabel,pointsize=2,text_size=20 ,title_in=paste0("BayesSpace"),color_in=D3[1:clusterNum])
+	print(ggarrange(p1, p2, ncol = 2, nrow = 1))
+	dev.off()
+
+
+
+}else if(k==3){ # SpaGCN
+
+	library(reticulate)
+	library(tidyverse)
+	use_python("/net/mulan/home/shanglu/anaconda3/envs/SpaGCN/bin/python3.7", required=TRUE)
+	source_python("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer1/code_utility_python.py")
+
+	load(paste0("fused_cells_SpatialPCA_result_scenario_",i,"_rep_",j,"_dataset_",num,".RData"))
+	match_id=match(colnames(SpatialPCA_result$normalized_expr), colnames(SpatialPCA_result$count_spot))
+	count_in = SpatialPCA_result$count_spot[,match_id]
+	loc_in=as.data.frame( SpatialPCA_result$location_spot[match_id,])
+	clusterNum = length(unique(SpatialPCA_result$Truth))
+	colnames(loc_in)=c("x","y") # important
+	res = run_SpaGCN_py(t(count_in), loc_in , clusterNum) # cell by gene 
+	tabb = na.omit(data.frame("Truth"=SpatialPCA_result$Truth,"clusterlabel"=res$refined_pred))
+
+	SpaGCN_result = list()
+	SpaGCN_result$clusterlabel = res$refined_pred
+	SpaGCN_result$location = res[,c("x","y")]
+	SpaGCN_result$Truth = SpatialPCA_result$Truth
+	SpaGCN_result$ARI = adjustedRandIndex(tabb[,1], tabb[,2])
+	SpaGCN_result$NMI = NMI(tabb[,1],tabb[,2])
+	SpaGCN_result$CHAOS = fx_CHAOS(res$refined_pred, SpaGCN_result$location)
+	SpaGCN_result$PAS = fx_PAS(res$refined_pred, SpaGCN_result$location)
+	SpaGCN_result$LISI = fx_lisi(res$refined_pred, SpaGCN_result$location)
+	SpaGCN_result$count_spot = SpatialPCA_result$count_spot
+	SpaGCN_result$location_spot = SpatialPCA_result$location_spot
+
+	save(SpaGCN_result, file = paste0("fused_cells_SpaGCN_result_scenario_",i,"_rep_",j,"_dataset_",num,".RData"))
+
+	pdf(paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer2/Q3/July29/figure/SpaGCN_scenario_",i,"_rep_",j,"_dataset_",num,".pdf"),width=10,height=5)
+	p1=plot_cluster(location=SpaGCN_result$location,clusterlabel=SpaGCN_result$Truth,pointsize=2,text_size=20 ,title_in=paste0("Truth"),color_in=D3[1:clusterNum])
+	p2=plot_cluster(location=SpaGCN_result$location,clusterlabel=SpaGCN_result$clusterlabel,pointsize=2,text_size=20 ,title_in=paste0("SpaGCN"),color_in=D3[1:clusterNum])
+	print(ggarrange(p1, p2, ncol = 2, nrow = 1))
+	dev.off()
+
+
+}else if(k==4){ # HMRF
+	
+	library(reticulate)
+	library(tidyverse)
+	library(peakRAM)	
+	load(paste0("fused_cells_SpatialPCA_result_scenario_",i,"_rep_",j,"_dataset_",num,".RData"))
+	match_id=match(colnames(SpatialPCA_result$normalized_expr), colnames(SpatialPCA_result$count_spot))
+	count_in = SpatialPCA_result$count_spot[,match_id]
+	loc_in=as.data.frame( SpatialPCA_result$location_spot[match_id,])
+	clusterNum = length(unique(SpatialPCA_result$Truth))
+	colnames(loc_in)=c("x","y") # important
+
+	path_out = paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer2/Q3/HMRF/scenario_",i,"_rep_",j,"_dataset_",num)
+	res = HMRF_func(count_in=t(count_in), location_in=loc_in, clusternum=clusterNum,path_out=path_out,betas = c(0,2,6)) # betas = [start, step, number]
+	tabb = na.omit(data.frame("Truth"=SpatialPCA_result$Truth,"clusterlabel"=res[,6]))
+
+	HMRF_result = list()
+	HMRF_result$clusterlabel = as.character(res[,6])
+	HMRF_result$location = SpatialPCA_result$location
+	HMRF_result$Truth = SpatialPCA_result$Truth
+	HMRF_result$ARI = adjustedRandIndex(tabb[,1], tabb[,2])
+	HMRF_result$NMI = NMI(tabb[,1],tabb[,2])
+	HMRF_result$CHAOS = fx_CHAOS(HMRF_result$clusterlabel, HMRF_result$location)
+	HMRF_result$PAS = fx_PAS(HMRF_result$clusterlabel, HMRF_result$location)
+	HMRF_result$LISI = fx_lisi(HMRF_result$clusterlabel, HMRF_result$location)
+	HMRF_result$res = res
+
+	save(HMRF_result, file = paste0("fused_cells_HMRF_result_scenario_",i,"_rep_",j,"_dataset_",num,".RData"))
+
+	pdf(paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer2/Q3/July29/figure/HMRF_scenario_",i,"_rep_",j,"_dataset_",num,".pdf"),width=10,height=5)
+	p1=plot_cluster(location=HMRF_result$location,clusterlabel=HMRF_result$Truth,pointsize=2,text_size=20 ,title_in=paste0("Truth"),color_in=D3[1:clusterNum])
+	p2=plot_cluster(location=HMRF_result$location,clusterlabel=HMRF_result$clusterlabel,pointsize=2,text_size=20 ,title_in=paste0("HMRF"),color_in=D3[1:clusterNum])
+	print(ggarrange(p1, p2, ncol = 2, nrow = 1))
+	dev.off()
+
+
+
+}else if(k==5){ # NMF
+
+	library(peakRAM)
+
+	load(paste0("fused_cells_SpatialPCA_result_scenario_",i,"_rep_",j,"_dataset_",num,".RData"))
+	clusterNum = length(unique(na.omit(SpatialPCA_result$Truth)))
+	match_id=match(colnames(SpatialPCA_result$normalized_expr), colnames(SpatialPCA_result$count_spot))
+	count_in = SpatialPCA_result$count_spot[,match_id]
+	loc_in=as.data.frame( SpatialPCA_result$location_spot[match_id,])
+
+	res = NMF_cluster_func(count_in=count_in, genelist=rownames(count_in),PCnum=20,cluster_method="louvain",clusternum=clusterNum)
+	tabb = na.omit(data.frame("Truth"=SpatialPCA_result$Truth,"clusterlabel"=res$clusterlabel))
+
+	NMF_result = list()
+	NMF_result$clusterlabel = res$clusterlabel
+	NMF_result$location = SpatialPCA_result$location
+	NMF_result$Truth = SpatialPCA_result$Truth
+	NMF_result$ARI =  adjustedRandIndex(tabb[,1], tabb[,2])
+	NMF_result$NMI = NMI(tabb[,1],tabb[,2])
+	NMF_result$CHAOS = fx_CHAOS(NMF_result$clusterlabel, SpatialPCA_result$location)
+	NMF_result$PAS = fx_PAS(NMF_result$clusterlabel, SpatialPCA_result$location)
+	NMF_result$LISI = fx_lisi(NMF_result$clusterlabel, SpatialPCA_result$location)
+	NMF_result$PCs = res$PC
+
+	save(NMF_result, file = paste0("fused_cells_NMF_result_scenario_",i,"_rep_",j,"_dataset_",num,".RData"))
+
+	pdf(paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer2/Q3/July29/figure/NMF_scenario_",i,"_rep_",j,"_dataset_",num,".pdf"),width=10,height=5)
+	p1=plot_cluster(location=NMF_result$location,clusterlabel=NMF_result$Truth,pointsize=2,text_size=20 ,title_in=paste0("Truth"),color_in=D3[1:clusterNum])
+	p2=plot_cluster(location=NMF_result$location,clusterlabel=NMF_result$clusterlabel,pointsize=2,text_size=20 ,title_in=paste0("NMF"),color_in=D3[1:clusterNum])
+	print(ggarrange(p1, p2, ncol = 2, nrow = 1))
+	dev.off()
+
+
+
+}else if(k==6){ # PCA
+
+	
+	load(paste0("fused_cells_SpatialPCA_result_scenario_",i,"_rep_",j,"_dataset_",num,".RData"))
+	clusterNum = length(unique(na.omit(SpatialPCA_result$Truth)))
+	match_id = match(colnames(SpatialPCA_result$normalized_expr),colnames(SpatialPCA_result$count_spot))
+	loc_in = as.data.frame(SpatialPCA_result$location_spot[match_id,])
+	count_in = as.matrix(SpatialPCA_result$count_spot[,match_id])
+
+	res = PCA_cluster_func(expr=SpatialPCA_result$normalized_expr,PCnum=20,cluster_method="louvain",clusternum=clusterNum)
+	tabb = na.omit(data.frame("Truth"=SpatialPCA_result$Truth,"clusterlabel"=res$clusterlabel))
+
+	PCA_result = list()
+	PCA_result$clusterlabel = res$clusterlabel
+	PCA_result$location = SpatialPCA_result$location
+	PCA_result$Truth = SpatialPCA_result$Truth
+	PCA_result$ARI =  adjustedRandIndex(tabb[,1], tabb[,2])
+	PCA_result$NMI = NMI(tabb[,1],tabb[,2])
+	PCA_result$CHAOS = fx_CHAOS(PCA_result$clusterlabel, PCA_result$location)
+	PCA_result$PAS = fx_PAS(PCA_result$clusterlabel, PCA_result$location)
+	PCA_result$LISI = fx_lisi(PCA_result$clusterlabel, PCA_result$location)
+	PCA_result$PCs = res$PC
+	PCA_result$count_spot = SpatialPCA_result$count_spot
+	PCA_result$location_spot = SpatialPCA_result$location_spot
+
+
+	save(PCA_result, file = paste0("fused_cells_PCA_result_scenario_",i,"_rep_",j,"_dataset_",num,".RData"))
+
+	pdf(paste0("/net/mulan/disk2/shanglu/Projects/SpatialPCA/NC/Reviewer2/Q3/July29/figure/PCA_scenario_",i,"_rep_",j,"_dataset_",num,".pdf"),width=10,height=5)
+	p1=plot_cluster(location=PCA_result$location,clusterlabel=PCA_result$Truth,pointsize=2,text_size=20 ,title_in=paste0("Truth"),color_in=D3[1:clusterNum])
+	p2=plot_cluster(location=PCA_result$location,clusterlabel=PCA_result$clusterlabel,pointsize=2,text_size=20 ,title_in=paste0("PCA"),color_in=D3[1:clusterNum])
+	print(ggarrange(p1, p2, ncol = 2, nrow = 1))
+	dev.off()
+
+
+}
+
+
+
+
+```
 
 
 
