@@ -18,7 +18,7 @@ permalink: /docs/Projects/SpatialPCA/Simulation
 - [Simulate data, spot level with stripe pattern](#simulate-data-spot-level-with-stripe-pattern)
 - [Simulate data, spot level with arbitrary spatial correlation](#simulate-data-spot-level-with-arbitrary-spatial-correlation)
 - [High resolution spatial map reconstruction](#high-resolution-spatial-map-reconstruction)
-- 
+
 ## Prepare simulation datasets
 
 The locations are generated from pixels in a image (LIBDsimu.jpg), which can be downloaded from [here](https://drive.google.com/drive/folders/18rwQjB3-g86A-M9xYPPJlHz60bfMABdE?usp=sharing).
