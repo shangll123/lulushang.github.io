@@ -23,6 +23,9 @@ permalink: /docs/Projects/SpatialPCA/HER2ST
 	- [Moran's I of top spatial PCs](#morans-i-of-top-spatial-pcs )
 	- [TLS region marker genes](#tls-region-marker-genes)
 	- [Deconvolution](#deconvolution)
+	- [RGB plots](#rgb-plots)
+	- [Trajectory analysis](#trajectory-analysis)
+	- [High resolution spatial map reconstrucion](#high-resolution-spatial-map-reconstrucion)
 
 
 ### Load package
