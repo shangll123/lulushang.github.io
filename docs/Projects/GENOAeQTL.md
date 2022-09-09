@@ -17,7 +17,7 @@ Lulu Shang\*, Jennifer A. Smith\*, Wei Zhao, Minjung Kho, Stephen T. Turner, Tho
 
 ### Here are some slides for DEI presentation on March 13, 2020:
 
-![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/DEI/DEI.001.jpeg)
+
 ![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/DEI/DEI.002.jpeg)
 ![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/DEI/DEI.003.jpeg)
 ![mountain](https://raw.githubusercontent.com/shangll123/shangll123.github.io/master/images/DEI/DEI.004.jpeg)
