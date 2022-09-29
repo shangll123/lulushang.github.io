@@ -18,8 +18,6 @@ permalink: /
 ##### Email: shanglu [at] umich.edu
 
 
-{: .new }
-> **Test**
-> Test
+
 
 ==
