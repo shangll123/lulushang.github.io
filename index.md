@@ -16,8 +16,4 @@ permalink: /
 ##### [Twitter](https://twitter.com/shang_lulu)
 ##### [Google Scholar](https://scholar.google.com/citations?user=tkt5ZOYAAAAJ&hl=en&authuser=1&oi=ao)
 ##### Email: shanglu [at] umich.edu
-##### Email: shanglu [at] umich.edu
-
-
-
 
